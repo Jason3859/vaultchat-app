@@ -81,8 +81,8 @@ class MessagingViewModel(
 
         viewModelScope.launch {
             val message = Message(
-                from = currentUser.uid,
-                to = otherUser.uid,
+                from = currentUser,
+                to = otherUser.toUser(),
                 text = uiState.messageText,
                 timestamp = LocalDateTime.now()
             )
@@ -129,9 +129,9 @@ class MessagingViewModel(
                 currentUserUid = currentUser.uid,
                 otherUserUid = otherUser.uid,
                 coroutineScope = this
-            ).map { pagingData ->
-                pagingData.map { it.toUi() }
-            }.cachedIn(this)
+            )
+                .map { it.map(Message::toUi) }
+                .cachedIn(this)
                 .collect { data ->
                     _messages.value = data
                 }

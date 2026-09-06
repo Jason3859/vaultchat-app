@@ -35,9 +35,9 @@ data class UserUi(
 
 fun User.toUi() = UserUi(
     uid = uid,
-    displayName = displayName,
-    profilePictureUrl = profilePictureUrl,
-    status = status
+    displayName = displayName!!,
+    profilePictureUrl = profilePictureUrl!!,
+    status = status!!
 )
 
 fun UserUi.toUser() = User(

@@ -6,7 +6,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION_START_MAIN_ACTIVITY
+import dev.jason.app.compose.vaultchat.core.AppConstants.EXTRA_KEY_UID
 import dev.jason.app.compose.vaultchat.core.AppConstants.EXTRA_NAV_DESTINATION_KEY
+import dev.jason.app.compose.vaultchat.core.model.message.Message
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,12 +23,12 @@ class MessagesNotificationChannelConfig(private val context: Context) :
 
     @Suppress("UNCHECKED_CAST")
     override fun showNotification(vararg args: Any?) {
-        val (fromUid, fromDisplayName) = args[0] as? List<String> ?: return
-        val content = args[1] as? String ?: return
+        val message = args.first() as? Message ?: return
+        if (message.from == AppState.currentUser.value) return
 
         val intent = Intent(ACTION_START_MAIN_ACTIVITY).apply {
             putExtra(EXTRA_NAV_DESTINATION_KEY, "messaging")
-            putExtra("uid", fromUid)
+            putExtra(EXTRA_KEY_UID, message.from.uid)
 
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
@@ -36,8 +38,8 @@ class MessagesNotificationChannelConfig(private val context: Context) :
 
         val notificationManager = AppNotificationManager(context)
         val notification = NotificationCompat.Builder(context, id)
-            .setContentTitle(fromDisplayName)
-            .setContentText(content)
+            .setContentTitle(message.from.displayName)
+            .setContentText(message.text)
             .setSmallIcon(R.drawable.ic_launcher_foreground) // FIXME: to be replaced
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
@@ -54,11 +56,10 @@ class MessagesNotificationChannelConfig(private val context: Context) :
         coroutineScope.launch {
             AppEvents.events.collect { event ->
                 if (event is AppEvent.ShowNotification) {
-                    val (title, text, channel, extras) = event
+                    val (title, text, channel, /* extras */ message) = event
 
                     if (channel == NotificationChannel.MESSAGES) {
-                        // extras has `from` value
-                        showNotification(extras, text)
+                        showNotification(message)
                     }
                 }
             }

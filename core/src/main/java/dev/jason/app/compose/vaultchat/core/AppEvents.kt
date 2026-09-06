@@ -44,7 +44,6 @@ object AppEvents {
 
 sealed interface AppEvent {
 
-    data class UpdateConnections(val connections: List<User>) : AppEvent
     data class UpdateConnectionStatus(val uid: String, val status: User.Status) : AppEvent
 
     data class AddMessage(val message: Message) : AppEvent
@@ -57,7 +56,14 @@ sealed interface AppEvent {
         val content: String,
         val channel: NotificationChannel,
         val extras: Any? = null
-    ) : AppEvent
+    ) : AppEvent {
+        companion object {
+            fun newMessage(message: Message) = ShowNotification(
+                "not required, get title and content from `message`", "also not required",
+                NotificationChannel.MESSAGES, message
+            )
+        }
+    }
 
     sealed interface NavEvent : AppEvent {
 

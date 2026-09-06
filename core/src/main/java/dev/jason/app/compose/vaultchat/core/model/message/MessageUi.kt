@@ -12,8 +12,8 @@ data class MessageUi(
 )
 
 fun Message.toUi() = MessageUi(
-    from = from,
-    to = to,
+    from = from.uid,
+    to = to.uid,
     text = text,
     timestamp = timestamp.asString()
 )

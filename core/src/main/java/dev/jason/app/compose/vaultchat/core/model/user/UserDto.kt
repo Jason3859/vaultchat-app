@@ -5,9 +5,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserDto(
     val uid: String,
-    val displayName: String,
-    val profilePictureUrl: String,
-    val status: Status
+    val displayName: String?,
+    val profilePictureUrl: String?,
+    val status: Status?
 ) {
     @Serializable
     enum class Status {
@@ -15,14 +15,19 @@ data class UserDto(
     }
 }
 
-fun UserDto.Status.toStatus() = when (this) {
-    UserDto.Status.Offline -> User.Status.Offline
-    UserDto.Status.Online -> User.Status.Online
-}
-
 fun UserDto.toUser() = User(
     uid = uid,
     displayName = displayName,
     profilePictureUrl = profilePictureUrl,
-    status = status.toStatus()
+    status = status?.toStatus()
 )
+
+fun User.toDto() = UserDto(
+    uid = uid,
+    displayName = displayName,
+    profilePictureUrl = profilePictureUrl,
+    status = status?.toStatus()
+)
+
+private fun UserDto.Status.toStatus() = User.Status.valueOf(this.name)
+private fun User.Status.toStatus() = UserDto.Status.valueOf(this.name)

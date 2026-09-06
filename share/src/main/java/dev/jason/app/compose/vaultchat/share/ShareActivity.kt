@@ -31,10 +31,12 @@ import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION_MAIN_ACTIVITY_CL
 import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION_START_MAIN_ACTIVITY
 import dev.jason.app.compose.vaultchat.core.AppConstants.SHARE_ACTIVITY_LAUNCH_MAIN_ACTIVITY_ACTION
 import dev.jason.app.compose.vaultchat.core.AppConstants.TEXT_PLAIN
+import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.message.Message
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUi
+import dev.jason.app.compose.vaultchat.core.model.user.toUser
 import dev.jason.app.compose.vaultchat.core.ui.LoadProfilePicture
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
 import dev.jason.app.compose.vaultchat.feature.connections.ConnectionsService
@@ -116,10 +118,10 @@ class ShareActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             selectedUsers.forEach { user ->
-                val uid = Firebase.auth.currentUser?.uid!!
+                val currentUser = AppState.currentUser.value!!
                 val message = Message(
-                    from = uid,
-                    to = user.uid,
+                    from = currentUser,
+                    to = user.toUser(),
                     text = getSharedText()!!,
                     timestamp = LocalDateTime.now()
                 )

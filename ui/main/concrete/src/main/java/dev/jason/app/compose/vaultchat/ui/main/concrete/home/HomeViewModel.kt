@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.jason.app.compose.vaultchat.core.AppEvent
 import dev.jason.app.compose.vaultchat.core.AppEvents
-import dev.jason.app.compose.vaultchat.core.NotificationChannel
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUi
@@ -86,17 +85,10 @@ class HomeViewModel(
         val fetchedMessages = messagingApiService.fetchMessages()
         val newMessages = fetchedMessages.filter { it !in localMessages }
 
-        messageDatabaseService.addMessages(fetchedMessages)
+        messageDatabaseService.addMessages(newMessages)
 
         newMessages.forEach { message ->
-            AppEvents.sendEvent(
-                AppEvent.ShowNotification(
-                    title = "New Message",
-                    content = message.text,
-                    channel = NotificationChannel.MESSAGES,
-                    extras = listOf(message.from, message.fromDisplayName)
-                )
-            )
+            AppEvents.sendEvent(AppEvent.ShowNotification.newMessage(message))
         }
     }
 

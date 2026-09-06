@@ -44,26 +44,11 @@ class ConnectionsService(
         }
     }
 
-    /**
-     * updates all connections existing connections in database.
-     */
-    suspend fun updateConnections(list: List<User>) {
-        dbRepository.updateConnections(list)
-    }
-
-    suspend fun updateStatus(uid: String, status: User.Status) {
-        dbRepository.updateStatus(uid, status)
-    }
-
     init {
         coroutineScope.launch {
             AppEvents.events.collect { event ->
                 if (event is AppEvent.UpdateConnectionStatus) {
-                    updateStatus(event.uid, event.status)
-                }
-
-                if (event is AppEvent.UpdateConnections) {
-                    updateConnections(event.connections)
+                    dbRepository.updateStatus(event.uid, event.status)
                 }
 
                 if (event is AppEvent.ReFetchConnections) {

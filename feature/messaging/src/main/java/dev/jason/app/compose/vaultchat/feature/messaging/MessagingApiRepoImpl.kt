@@ -7,12 +7,11 @@ import dev.jason.app.compose.vaultchat.core.AppEvent
 import dev.jason.app.compose.vaultchat.core.AppEvent.ShowNotification
 import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.AppState
-import dev.jason.app.compose.vaultchat.core.NotificationChannel
 import dev.jason.app.compose.vaultchat.core.ToastController
 import dev.jason.app.compose.vaultchat.core.model.message.Message
 import dev.jason.app.compose.vaultchat.core.model.message.MessageDto
-import dev.jason.app.compose.vaultchat.core.model.message.toDto
 import dev.jason.app.compose.vaultchat.core.model.message.toMessage
+import dev.jason.app.compose.vaultchat.core.model.message.toPayload
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -43,7 +42,8 @@ class MessagingApiRepoImpl(
     }
 
     override suspend fun sendMessage(message: Message) {
-        webSocketSession.sendText("/app/send", Json.encodeToString(message.toDto()))
+        val body = Json.encodeToString(message.toPayload())
+        webSocketSession.sendText("/app/send", body)
     }
 
     override suspend fun fetchMessages(): List<Message> {
@@ -91,8 +91,8 @@ class MessagingApiRepoImpl(
     }
 
     private fun showNotification(message: Message) {
-        if (message.from != AppState.currentUser.value?.uid) {
-            if (AppState.otherUser.value?.uid != message.from) {
+        if (message.from != AppState.currentUser.value) {
+            if (AppState.otherUser.value != message.from) {
                 sendShowNotificationEvent(message)
             } else {
                 if (!AppState.isAppInForeground.value) {
@@ -103,13 +103,6 @@ class MessagingApiRepoImpl(
     }
 
     private fun sendShowNotificationEvent(message: Message) {
-        AppEvents.sendEvent(
-            ShowNotification(
-                title = "New message",
-                content = message.text,
-                channel = NotificationChannel.MESSAGES,
-                extras = listOf(message.from, message.fromDisplayName)
-            )
-        )
+        AppEvents.sendEvent(ShowNotification.newMessage(message))
     }
 }

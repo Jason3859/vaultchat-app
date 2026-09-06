@@ -3,6 +3,7 @@ package dev.jason.app.compose.vaultchat.feature.messages
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import dev.jason.app.compose.vaultchat.core.model.message.Message
+import dev.jason.app.compose.vaultchat.core.model.user.User
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -18,16 +19,16 @@ data class MessageEntity(
 
 fun MessageEntity.toMessage() = Message(
     id = id,
-    from = from,
-    to = to,
+    from = User.emptyUserWithUid(from),
+    to = User.emptyUserWithUid(to),
     text = text,
     timestamp = timestamp.toLocalDateTime()
 )
 
 fun Message.toEntity() = MessageEntity(
     id = id!!,
-    from = from,
-    to = to,
+    from = from.uid,
+    to = to.uid,
     text = text,
     timestamp = timestamp.toLong()
 )

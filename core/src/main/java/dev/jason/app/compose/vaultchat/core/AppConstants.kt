@@ -9,6 +9,7 @@ object AppConstants {
 
     const val TEXT_PLAIN = "text/plain"
     const val EXTRA_NAV_DESTINATION_KEY = "nav_destination"
+    const val EXTRA_KEY_UID = "uid"
     const val ACTION_START_MAIN_ACTIVITY = "dev.jason.app.compose.vaultchat.main.ACTION_START_MAIN_ACTIVITY"
     const val SHARE_ACTIVITY_LAUNCH_MAIN_ACTIVITY_ACTION = "SHARE_ACTIVITY_LAUNCH_MAIN_ACTIVITY_ACTION"
     const val ACTION_MAIN_ACTIVITY_CLEAR_OTHER_USER = "ACTION_MAIN_ACTIVITY_CLEAR_OTHER_USER"

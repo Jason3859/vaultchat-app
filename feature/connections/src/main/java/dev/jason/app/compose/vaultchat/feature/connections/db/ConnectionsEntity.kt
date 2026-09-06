@@ -13,5 +13,5 @@ data class ConnectionsEntity(
     val status: User.Status
 )
 
-fun User.toEntity() = ConnectionsEntity(uid, displayName, profilePictureUrl, status)
+fun User.toEntity() = ConnectionsEntity(uid, displayName!!, profilePictureUrl!!, status!!)
 fun ConnectionsEntity.toUser() = User(id, displayName, profilePictureUrl, status)
