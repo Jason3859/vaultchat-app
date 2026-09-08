@@ -23,8 +23,7 @@ data class HomeUiState(
                 name = "device @$index",
                 type = if (index % 2 == 0) Device.Type.Mobile else Device.Type.Tablet,
                 os = Device.Os.Android,
-                version = "10",
-                token = "token"
+                version = "10"
             )
         }.toImmutableList()
 

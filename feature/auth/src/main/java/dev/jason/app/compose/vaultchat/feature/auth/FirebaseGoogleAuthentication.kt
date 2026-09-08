@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.auth.concrete
+package dev.jason.app.compose.vaultchat.feature.auth
 
 import android.content.Context
 import android.util.Log
@@ -16,9 +16,11 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import dev.jason.app.compose.vaultchat.core.ToastController
 
-object FirebaseGoogleAuthentication {
+class FirebaseGoogleAuthentication(
+    private val context: Context
+) {
 
-    suspend fun beginSignIn(context: Context): Task<AuthResult?>? {
+    suspend fun beginSignIn(): Task<AuthResult?>? {
         try {
             val googleIdOption = GetGoogleIdOption.Builder()
                 .setFilterByAuthorizedAccounts(false)

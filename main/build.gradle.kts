@@ -37,7 +37,6 @@ dependencies {
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
-    implementation(libs.firebase.messaging)
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.android)

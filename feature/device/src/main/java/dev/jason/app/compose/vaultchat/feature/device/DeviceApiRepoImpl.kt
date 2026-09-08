@@ -1,9 +1,7 @@
 package dev.jason.app.compose.vaultchat.feature.device
 
-import android.util.Log
 import dev.jason.app.compose.vaultchat.core.AppConstants.BASE_HTTP_URL
 import dev.jason.app.compose.vaultchat.core.AppState
-import dev.jason.app.compose.vaultchat.core.ToastController
 import dev.jason.app.compose.vaultchat.core.model.device.Device
 import dev.jason.app.compose.vaultchat.core.model.device.DeviceDto
 import dev.jason.app.compose.vaultchat.core.model.device.toDevice
@@ -17,16 +15,11 @@ class DeviceApiRepoImpl(
 ) : DeviceApiRepository {
 
     override suspend fun getDevices(): List<Device> {
-        return try {
-            val response = client.get("$BASE_HTTP_URL/device/mine") {
-                parameter("uid", AppState.currentUser.value?.uid ?: throw IllegalStateException("user is null"))
-            }
-
-            response.body<List<DeviceDto>>().map(DeviceDto::toDevice)
-        } catch (e: Exception) {
-            Log.e("RemoteDeviceApiRepoImpl", "getDevices: exception occurred", e)
-            ToastController.showErrorOccurredToast()
-            emptyList()
+        val response = client.get("$BASE_HTTP_URL/device/mine") {
+            parameter("uid", AppState.currentUser.value?.uid ?: throw IllegalStateException("user is null"))
         }
+
+        return response.body<List<DeviceDto>>()
+            .map(DeviceDto::toDevice)
     }
 }

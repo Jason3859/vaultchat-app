@@ -40,6 +40,7 @@ include(":feature:messaging")
 include(":feature:messages")
 include(":feature:blocklist")
 include(":feature:open-links")
+include(":feature:auth")
 
 include(":ui")
 include(":ui:auth")

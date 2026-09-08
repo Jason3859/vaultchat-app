@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import com.google.firebase.messaging.messaging
 import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION_MAIN_ACTIVITY_CLEAR_OTHER_USER
 import dev.jason.app.compose.vaultchat.core.AppConstants.EXTRA_NAV_DESTINATION_KEY
 import dev.jason.app.compose.vaultchat.core.AppConstants.SHARE_ACTIVITY_LAUNCH_MAIN_ACTIVITY_ACTION
@@ -30,20 +29,12 @@ import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.device.Device
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
-import dev.jason.app.compose.vaultchat.feature.user.UserApiService
 import dev.jason.app.compose.vaultchat.ui.main.concrete.MainScreen
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import org.koin.android.ext.android.inject
-import java.net.UnknownHostException
-import kotlin.time.Duration.Companion.seconds
 
 class MainActivity : ComponentActivity() {
 
     private val navViewModel: NavViewModel by viewModels()
-    private val userApiService: UserApiService by inject()
 
     private val firebaseUser = Firebase.auth.currentUser!!
     private val currentUser = User(
@@ -73,32 +64,11 @@ class MainActivity : ComponentActivity() {
             .build()
         connectivityManager.registerNetworkCallback(request, networkCallback)
 
-//        AppState.apply {
-//            if (isNetworkAvailable(connectivityManager))
-//                deviceOnline()
-//            else
-//                deviceOffline()
-//        }
-
         lifecycleScope.launch {
             AppState.updateCurrentUser(currentUser)
-            val token = Firebase.messaging.token.await()
             AppState.updateCurrentDevice(
-                Device.getCurrentDevice(this@MainActivity, currentUser.uid, token)
+                Device.getCurrentDevice(this@MainActivity, currentUser.uid)
             )
-        }
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            val isOnline = isNetworkAvailable(connectivityManager)
-            while (true) {
-                try {
-                    if (isOnline) {
-                        userApiService.heartbeat(currentUser.uid)
-                    }
-                    delay(15.seconds)
-                } catch (_: UnknownHostException) {
-                }
-            }
         }
 
         handleIntent(intent)

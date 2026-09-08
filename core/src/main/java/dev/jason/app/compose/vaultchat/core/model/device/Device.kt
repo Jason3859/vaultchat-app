@@ -10,7 +10,6 @@ data class Device(
     val type: Type,
     val os: Os,
     val version: String,
-    val token: String,
 ) {
 
     override fun equals(other: Any?): Boolean {
@@ -26,7 +25,6 @@ data class Device(
         result = 31 * result + type.hashCode()
         result = 31 * result + os.hashCode()
         result = 31 * result + version.hashCode()
-        result = 31 * result + token.hashCode()
         return result
     }
 
@@ -39,13 +37,12 @@ data class Device(
     }
 
     companion object {
-        fun getCurrentDevice(context: Context, ownerUid: String, token: String): Device {
+        fun getCurrentDevice(context: Context, ownerUid: String): Device {
             return Device(
                 ownerUid = ownerUid,
                 name = "${Build.MANUFACTURER} ${Build.MODEL}",
                 os = Os.Android,
                 version = "${Build.VERSION.RELEASE}",
-                token = token,
                 type = getDeviceType(context)
             )
         }

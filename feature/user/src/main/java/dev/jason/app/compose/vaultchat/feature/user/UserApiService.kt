@@ -9,24 +9,6 @@ class UserApiService(
     private val repository: UserApiRepository
 ) {
 
-    suspend fun heartbeat(uid: String) {
-        try {
-            repository.heartbeat(uid)
-        } catch (e: Exception) {
-            Log.e("UserApiService", "heartbeat: exception", e)
-            ToastController.showErrorOccurredToast()
-        }
-    }
-
-    suspend fun registerUser(dto: RegisterUserDto) {
-        try {
-            repository.registerUser(dto)
-        } catch (e: Exception) {
-            Log.e("UserApiService", "registerUser: exception occurred", e)
-            ToastController.showErrorOccurredToast()
-        }
-    }
-
     suspend fun searchUsers(query: String): List<User> {
         return try {
             repository.searchUser(query)

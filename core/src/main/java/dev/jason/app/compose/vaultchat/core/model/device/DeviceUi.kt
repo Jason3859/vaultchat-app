@@ -9,7 +9,6 @@ data class DeviceUi(
     val type: Device.Type,
     val os: Device.Os,
     val version: String,
-    val token: String,
 )
 
 fun Device.toUi() = DeviceUi(
@@ -18,7 +17,6 @@ fun Device.toUi() = DeviceUi(
     type = type,
     os = os,
     version = version,
-    token = token
 )
 
 fun DeviceUi.toDevice() = Device(
@@ -27,5 +25,4 @@ fun DeviceUi.toDevice() = Device(
     type = type,
     os = os,
     version = version,
-    token = token
 )

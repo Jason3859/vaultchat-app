@@ -5,6 +5,7 @@ import android.app.Application
 import android.os.Bundle
 import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.MessagesNotificationChannelConfig
+import dev.jason.app.compose.vaultchat.feature.auth.AuthFeatureKoinModule
 import dev.jason.app.compose.vaultchat.feature.blocklist.BlocklistFeatureKoinModule
 import dev.jason.app.compose.vaultchat.feature.connections.ConnectionsFeatureKoinModule
 import dev.jason.app.compose.vaultchat.feature.device.DeviceFeatureKoinModule
@@ -57,6 +58,7 @@ class MainApplication : Application() {
             androidContext(this@MainApplication)
             modules(
                 baseModule,
+                AuthFeatureKoinModule,
                 UserServiceKoinModule,
                 ConnectionsFeatureKoinModule,
                 AuthKoinModule,

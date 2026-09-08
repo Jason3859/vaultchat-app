@@ -2,7 +2,6 @@ package dev.jason.app.compose.vaultchat.feature.user
 
 import dev.jason.app.compose.vaultchat.core.AppConstants.BASE_HTTP_URL
 import dev.jason.app.compose.vaultchat.core.AppState
-import dev.jason.app.compose.vaultchat.core.model.user.RegisterUserDto
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.model.user.UserDto
 import dev.jason.app.compose.vaultchat.core.model.user.toUser
@@ -10,28 +9,10 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
-import io.ktor.client.request.patch
-import io.ktor.client.request.post
-import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
 
 internal class UserApiRepoImpl(
     private val client: HttpClient
 ) : UserApiRepository {
-
-    override suspend fun heartbeat(uid: String) {
-        client.patch("$BASE_HTTP_URL/user/heartbeat") {
-            parameter("uid", uid)
-        }
-    }
-
-    override suspend fun registerUser(body: RegisterUserDto) {
-        client.post("$BASE_HTTP_URL/register-user") {
-            contentType(ContentType.Application.Json)
-            setBody(body)
-        }
-    }
 
     override suspend fun searchUser(displayName: String): List<User> {
         val response = client.get("$BASE_HTTP_URL/user/search") {

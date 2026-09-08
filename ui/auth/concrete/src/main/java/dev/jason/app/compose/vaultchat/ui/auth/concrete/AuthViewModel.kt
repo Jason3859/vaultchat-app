@@ -1,35 +1,40 @@
 package dev.jason.app.compose.vaultchat.ui.auth.concrete
 
-import android.content.Context
+import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.messaging.messaging
-import dev.jason.app.compose.vaultchat.core.model.device.Device
-import dev.jason.app.compose.vaultchat.core.model.device.toDto
-import dev.jason.app.compose.vaultchat.core.model.user.RegisterUserDto
-import dev.jason.app.compose.vaultchat.feature.user.UserApiService
-import kotlinx.coroutines.Job
+import dev.jason.app.compose.vaultchat.feature.auth.AuthApiService
+import dev.jason.app.compose.vaultchat.feature.auth.FirebaseGoogleAuthentication
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
-class AuthViewModel(private val userApiService: UserApiService) : ViewModel() {
+class AuthViewModel(
+    private val authApiService: AuthApiService,
+    private val firebaseGoogleAuthentication: FirebaseGoogleAuthentication
+) : ViewModel() {
 
-    fun registerUser(user: FirebaseUser, context: Context): Job {
-        return viewModelScope.launch {
-            val token = Firebase.messaging.token.await()
+    val backStack = mutableStateListOf(Route.AUTH)
 
-            val currentDevice = Device.getCurrentDevice(context, user.uid, token)
+    fun register(onAuthSuccess: () -> Unit) {
 
-            val registerUserDto = RegisterUserDto(
-                uid = user.uid,
-                displayName = user.displayName!!,
-                profilePictureUrl = user.photoUrl?.toString()!!,
-                device = currentDevice.toDto()
-            )
+        viewModelScope.launch {
+            firebaseGoogleAuthentication.beginSignIn()
+                ?.addOnFailureListener {
+                    Log.e(
+                        "AuthViewModel",
+                        "registerUser: exception while signing in with google",
+                        it
+                    )
+                }
+                ?.addOnSuccessListener {
+                    backStack.add(Route.LOADING)
+                    backStack.remove(Route.AUTH)
 
-            userApiService.registerUser(registerUserDto)
+                    viewModelScope.launch {
+                        authApiService.register()
+                        onAuthSuccess.invoke()
+                    }
+                }
         }
     }
 }

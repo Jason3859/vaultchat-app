@@ -47,6 +47,7 @@ dependencies {
     implementation(projects.share)
 
     projects.feature.apply {
+        implementation(auth)
         implementation(logout)
         implementation(device)
         implementation(connections)

@@ -9,7 +9,6 @@ data class DeviceDto(
     val type: Type,
     val os: OS,
     val version: String,
-    val token: String,
 ) {
     @Serializable
     enum class OS {
@@ -49,8 +48,7 @@ fun Device.toDto() = DeviceDto(
     name = name,
     type = DeviceDto.Type.fromDomain(type),
     os = DeviceDto.OS.fromDomain(os),
-    version = version,
-    token = token
+    version = version
 )
 
 fun DeviceDto.toDevice() = Device(
@@ -59,5 +57,4 @@ fun DeviceDto.toDevice() = Device(
     type = type.toDomain(),
     os = os.toDomain(),
     version = version,
-    token = token
 )
