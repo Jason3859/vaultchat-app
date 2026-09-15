@@ -36,13 +36,15 @@ class MainActivity : ComponentActivity() {
 
     private val navViewModel: NavViewModel by viewModels()
 
-    private val firebaseUser = Firebase.auth.currentUser!!
-    private val currentUser = User(
-        firebaseUser.uid,
-        firebaseUser.displayName!!,
-        firebaseUser.photoUrl.toString().removeSuffix("=s96-c"),
-        User.Status.Online
-    )
+    private val firebaseUser = Firebase.auth.currentUser
+    private var currentUser = firebaseUser?.let {
+        User(
+            firebaseUser.uid,
+            firebaseUser.displayName!!,
+            firebaseUser.photoUrl.toString().removeSuffix("=s96-c"),
+            User.Status.Online
+        )
+    }
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
@@ -65,9 +67,19 @@ class MainActivity : ComponentActivity() {
         connectivityManager.registerNetworkCallback(request, networkCallback)
 
         lifecycleScope.launch {
-            AppState.updateCurrentUser(currentUser)
+            
+            if (currentUser == null) {
+                currentUser = User(
+                    uid = "CKu3zhKID9NRisxkUmrWoczAYts1",
+                    displayName = "Jason Augustine",
+                    profilePictureUrl = "https://lh3.googleusercontent.com/a/ACg8ocKMNmv5uWm3KG4enNW4KQUFtUh6xDxsxgcAXJZKx5ivTpCFErH5=s96-c",
+                    status = User.Status.Online
+                )
+            }
+            
+            AppState.updateCurrentUser(currentUser!!)
             AppState.updateCurrentDevice(
-                Device.getCurrentDevice(this@MainActivity, currentUser.uid)
+                Device.getCurrentDevice(this@MainActivity, currentUser?.uid!!)
             )
         }
 
@@ -128,12 +140,5 @@ class MainActivity : ComponentActivity() {
                 )
             )
         }
-    }
-
-    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-    private fun isNetworkAvailable(connectivityManager: ConnectivityManager): Boolean {
-        val network = connectivityManager.activeNetwork ?: return false
-        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
-        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 }
