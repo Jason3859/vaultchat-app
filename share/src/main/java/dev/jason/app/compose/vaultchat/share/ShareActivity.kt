@@ -40,8 +40,8 @@ import dev.jason.app.compose.vaultchat.core.model.user.toUser
 import dev.jason.app.compose.vaultchat.core.ui.LoadProfilePicture
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
 import dev.jason.app.compose.vaultchat.feature.connections.ConnectionsService
-import dev.jason.app.compose.vaultchat.feature.messages.MessageDatabaseService
 import dev.jason.app.compose.vaultchat.feature.messaging.MessagingApiService
+import dev.jason.app.compose.vaultchat.feature.room_db.messages.MessageDatabaseRepository
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
@@ -52,7 +52,7 @@ class ShareActivity : ComponentActivity() {
 
     private val connectionsService: ConnectionsService by inject()
     private val messagingApiService: MessagingApiService by inject()
-    private val messageDatabaseService: MessageDatabaseService by inject()
+    private val messageDatabaseRepository: MessageDatabaseRepository by inject()
 
     private val connections = mutableStateListOf<UserUi>()
     private val selectedUsers = mutableStateListOf<UserUi>()
@@ -127,7 +127,7 @@ class ShareActivity : ComponentActivity() {
                 )
 
                 messagingApiService.sendMessage(message)
-                messageDatabaseService.addMessage(message)
+                messageDatabaseRepository.addMessage(message)
             }
         }.invokeOnCompletion { finish() }
 

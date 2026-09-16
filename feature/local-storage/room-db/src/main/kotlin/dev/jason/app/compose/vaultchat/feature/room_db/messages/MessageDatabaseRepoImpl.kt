@@ -1,18 +1,22 @@
-package dev.jason.app.compose.vaultchat.feature.messages
+package dev.jason.app.compose.vaultchat.feature.room_db.messages
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
+import dev.jason.app.compose.vaultchat.core.AppEvent
+import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.model.message.Message
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
-class MessageDatabaseRepoImpl(
-    private val dao: MessageDao
-) : MessageDatabaseRepository {
+class MessageDatabaseRepoImpl(private val dao: MessageDao) : MessageDatabaseRepository {
+
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
     override fun getMessagesPaginated(
         currentUserUid: String,
@@ -56,5 +60,17 @@ class MessageDatabaseRepoImpl(
 
     override suspend fun getAllMessages(): List<Message> {
         return dao.getAllMessages().map(MessageEntity::toMessage)
+    }
+
+    init {
+        coroutineScope.launch {
+            AppEvents.events.collect { event ->
+                when (event) {
+                    is AppEvent.AddMessage -> addMessage(event.message)
+                    is AppEvent.DeleteAllMessages -> deleteAllMessages()
+                    else -> {}
+                }
+            }
+        }
     }
 }

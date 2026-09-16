@@ -8,8 +8,8 @@ import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUi
 import dev.jason.app.compose.vaultchat.feature.connections.ConnectionsService
-import dev.jason.app.compose.vaultchat.feature.messages.MessageDatabaseService
 import dev.jason.app.compose.vaultchat.feature.messaging.MessagingApiService
+import dev.jason.app.compose.vaultchat.feature.room_db.messages.MessageDatabaseRepository
 import dev.jason.app.compose.vaultchat.feature.user.UserApiService
 import dev.jason.app.compose.vaultchat.ui.main.abstractt.home.HomeUiAction
 import dev.jason.app.compose.vaultchat.ui.main.abstractt.home.HomeUiState
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val userApiService: UserApiService,
     private val connectionsService: ConnectionsService,
-    private val messageDatabaseService: MessageDatabaseService,
+    private val messageDatabaseRepository: MessageDatabaseRepository,
     private val messagingApiService: MessagingApiService
 ) : ViewModel() {
 
@@ -81,11 +81,11 @@ class HomeViewModel(
     }
 
     private suspend fun fetchAndAddMessagesToDatabase() {
-        val localMessages = messageDatabaseService.getAllMessages()
+        val localMessages = messageDatabaseRepository.getAllMessages()
         val fetchedMessages = messagingApiService.fetchMessages()
         val newMessages = fetchedMessages.filter { it !in localMessages }
 
-        messageDatabaseService.addMessages(newMessages)
+        messageDatabaseRepository.addMessages(newMessages)
 
         newMessages.forEach { message ->
             AppEvents.sendEvent(AppEvent.ShowNotification.newMessage(message))

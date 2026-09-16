@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.jason.app.compose.vaultchat.feature.messages"
+    namespace = "dev.jason.app.compose.vaultchat.feature.room_db"
     compileSdk {
         version = release(37)
     }

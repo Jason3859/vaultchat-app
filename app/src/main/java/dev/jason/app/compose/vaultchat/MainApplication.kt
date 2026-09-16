@@ -3,16 +3,18 @@ package dev.jason.app.compose.vaultchat
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import androidx.datastore.preferences.preferencesDataStore
 import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.MessagesNotificationChannelConfig
 import dev.jason.app.compose.vaultchat.feature.auth.AuthFeatureKoinModule
 import dev.jason.app.compose.vaultchat.feature.blocklist.BlocklistFeatureKoinModule
 import dev.jason.app.compose.vaultchat.feature.connections.ConnectionsFeatureKoinModule
+import dev.jason.app.compose.vaultchat.feature.datastore.DataStoreKoinModule
 import dev.jason.app.compose.vaultchat.feature.device.DeviceFeatureKoinModule
 import dev.jason.app.compose.vaultchat.feature.logout.FeatureLogoutKoinModule
-import dev.jason.app.compose.vaultchat.feature.messages.MessagesFeatureKoinModule
 import dev.jason.app.compose.vaultchat.feature.messaging.MessagingFeatureKoinModule
 import dev.jason.app.compose.vaultchat.feature.open_links.OpenLinksFeatureKoinModule
+import dev.jason.app.compose.vaultchat.feature.room_db.RoomDbFeatureKoinModule
 import dev.jason.app.compose.vaultchat.feature.user.UserServiceKoinModule
 import dev.jason.app.compose.vaultchat.ui.auth.concrete.AuthKoinModule
 import dev.jason.app.compose.vaultchat.ui.main.concrete.MainKoinModule
@@ -24,11 +26,16 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 class MainApplication : Application() {
 
+    private val dataStore by preferencesDataStore("prefs")
+
     private val baseModule = module {
+
+        singleOf(::dataStore)
         single<HttpClient> {
             HttpClient(CIO) {
                 install(WebSockets)
@@ -66,9 +73,10 @@ class MainApplication : Application() {
                 FeatureLogoutKoinModule,
                 MainKoinModule,
                 BlocklistFeatureKoinModule,
-                MessagesFeatureKoinModule,
+                RoomDbFeatureKoinModule,
                 DeviceFeatureKoinModule,
-                OpenLinksFeatureKoinModule
+                OpenLinksFeatureKoinModule,
+                DataStoreKoinModule
             )
         }
     }

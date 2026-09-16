@@ -30,7 +30,7 @@ dependencies {
     implementation(projects.feature.connections)
     implementation(projects.feature.device)
     implementation(projects.feature.logout)
-    implementation(projects.feature.messages)
+    implementation(projects.feature.localStorage.roomDb)
     implementation(projects.feature.messaging)
     implementation(projects.feature.user)
     implementation(projects.feature.openLinks)

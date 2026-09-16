@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
-    alias(libs.plugins.kotlin.plugin.serialization)
 }
 
 android {
@@ -46,30 +44,21 @@ dependencies {
     implementation(projects.main)
     implementation(projects.share)
 
-    projects.feature.apply {
-        implementation(auth)
-        implementation(logout)
-        implementation(device)
-        implementation(connections)
-        implementation(user)
-        implementation(messaging)
-        implementation(messages)
-        implementation(blocklist)
-        implementation(openLinks)
-    }
+    implementation(projects.feature.auth)
+    implementation(projects.feature.logout)
+    implementation(projects.feature.device)
+    implementation(projects.feature.connections)
+    implementation(projects.feature.user)
+    implementation(projects.feature.messaging)
+    implementation(projects.feature.blocklist)
+    implementation(projects.feature.openLinks)
+    implementation(projects.feature.localStorage.datastore)
+    implementation(projects.feature.localStorage.roomDb)
 
-    projects.ui.apply {
-        implementation(auth)
-        implementation(auth.abstract)
-        implementation(auth.concrete)
-        implementation(main)
-        implementation(main.abstract)
-        implementation(main.concrete)
-    }
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
+    implementation(projects.ui.auth.abstract)
+    implementation(projects.ui.auth.concrete)
+    implementation(projects.ui.main.abstract)
+    implementation(projects.ui.main.concrete)
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.android)
@@ -82,6 +71,8 @@ dependencies {
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.androidx.datastore.preferences)
 
     testImplementation(libs.junit)
 

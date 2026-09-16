@@ -14,7 +14,7 @@ import dev.jason.app.compose.vaultchat.core.model.user.toUser
 import dev.jason.app.compose.vaultchat.feature.blocklist.BlocklistApiService
 import dev.jason.app.compose.vaultchat.feature.device.DeviceApiService
 import dev.jason.app.compose.vaultchat.feature.logout.LogoutService
-import dev.jason.app.compose.vaultchat.feature.messages.MessageDatabaseService
+import dev.jason.app.compose.vaultchat.feature.room_db.messages.MessageDatabaseRepository
 import dev.jason.app.compose.vaultchat.ui.main.abstractt.profile.ProfileUiAction
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -28,7 +28,7 @@ class ProfileViewModel(
     private val logoutService: LogoutService,
     private val deviceApiService: DeviceApiService,
     private val blocklistApiService: BlocklistApiService,
-    private val messageDatabaseService: MessageDatabaseService
+    private val messageDatabaseRepository: MessageDatabaseRepository
 ) : ViewModel() {
 
     private val _devices = MutableStateFlow<List<DeviceUi>>(emptyList())
@@ -127,7 +127,7 @@ class ProfileViewModel(
             val currentUser = AppState.currentUser.value!!
             val otherUser = AppState.otherUser.value!!
 
-            messageDatabaseService.deleteMessageHistory(currentUser.uid, otherUser.uid)
+            messageDatabaseRepository.deleteMessageHistory(currentUser.uid, otherUser.uid)
         }
     }
 }

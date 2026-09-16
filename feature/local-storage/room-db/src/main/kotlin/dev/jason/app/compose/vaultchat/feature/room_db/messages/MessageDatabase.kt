@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.feature.messages
+package dev.jason.app.compose.vaultchat.feature.room_db.messages
 
 import android.content.Context
 import androidx.room.Database

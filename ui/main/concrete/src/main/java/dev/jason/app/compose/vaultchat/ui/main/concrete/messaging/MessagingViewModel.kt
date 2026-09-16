@@ -16,9 +16,9 @@ import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUser
 import dev.jason.app.compose.vaultchat.feature.connections.ConnectionsService
-import dev.jason.app.compose.vaultchat.feature.messages.MessageDatabaseService
 import dev.jason.app.compose.vaultchat.feature.messaging.MessagingApiService
 import dev.jason.app.compose.vaultchat.feature.open_links.OpenLinksService
+import dev.jason.app.compose.vaultchat.feature.room_db.messages.MessageDatabaseRepository
 import dev.jason.app.compose.vaultchat.ui.main.abstractt.messaging.MessagingUiAction
 import dev.jason.app.compose.vaultchat.ui.main.abstractt.messaging.MessagingUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +31,7 @@ import java.time.LocalDateTime
 class MessagingViewModel(
     otherUser: UserUi,
     private val connectionsService: ConnectionsService,
-    private val messageDatabaseService: MessageDatabaseService,
+    private val messageDatabaseRepository: MessageDatabaseRepository,
     private val messagingApiService: MessagingApiService,
     private val openLinksService: OpenLinksService
 ) : ViewModel() {
@@ -125,7 +125,7 @@ class MessagingViewModel(
         }
 
         viewModelScope.launch {
-            messageDatabaseService.getMessagesPaginated(
+            messageDatabaseRepository.getMessagesPaginated(
                 currentUserUid = currentUser.uid,
                 otherUserUid = otherUser.uid,
                 coroutineScope = this
