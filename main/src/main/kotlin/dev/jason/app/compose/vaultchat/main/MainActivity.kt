@@ -39,15 +39,13 @@ class MainActivity : ComponentActivity() {
     private val navViewModel: NavViewModel by viewModels()
     private val deviceIdDataStoreRepository: DeviceIdDataStoreRepository by inject()
 
-    private val firebaseUser = Firebase.auth.currentUser
-    private var currentUser = firebaseUser?.let {
-        User(
-            firebaseUser.uid,
-            firebaseUser.displayName!!,
-            firebaseUser.photoUrl.toString().removeSuffix("=s96-c"),
-            User.Status.Online
-        )
-    }
+    private val firebaseUser = Firebase.auth.currentUser!!
+    private var currentUser = User(
+        firebaseUser.uid,
+        firebaseUser.displayName!!,
+        firebaseUser.photoUrl.toString().removeSuffix("=s96-c"),
+        User.Status.Online
+    )
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
@@ -73,21 +71,12 @@ class MainActivity : ComponentActivity() {
 
             if (AppState.currentUser.value != null) return@launch
 
-            if (currentUser == null) {
-                currentUser = User(
-                    uid = "CKu3zhKID9NRisxkUmrWoczAYts1",
-                    displayName = "Jason Augustine",
-                    profilePictureUrl = "https://lh3.googleusercontent.com/a/ACg8ocKMNmv5uWm3KG4enNW4KQUFtUh6xDxsxgcAXJZKx5ivTpCFErH5=s96-c",
-                    status = User.Status.Online
-                )
-            }
-
             val deviceId = deviceIdDataStoreRepository.getCurrentDeviceId()
                 ?: throw IllegalStateException("device id is null")
 
-            AppState.updateCurrentUser(currentUser!!)
+            AppState.updateCurrentUser(currentUser)
             AppState.updateCurrentDevice(
-                Device.getCurrentDevice(this@MainActivity, deviceId, currentUser?.uid!!)
+                Device.getCurrentDevice(this@MainActivity, deviceId, currentUser.uid)
             )
         }
 

@@ -32,9 +32,6 @@ fun AuthScreen(onAuthSuccess: () -> Unit) {
                 AbstractAuthScreen(
                     onSignInClick = {
                         authViewModel.register(onAuthSuccess)
-                    },
-                    onNoFirebaseAuthClick = {
-                        onAuthSuccess.invoke()
                     }
                 )
             }

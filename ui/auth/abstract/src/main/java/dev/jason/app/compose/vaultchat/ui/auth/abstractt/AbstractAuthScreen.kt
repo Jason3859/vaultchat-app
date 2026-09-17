@@ -1,7 +1,5 @@
 package dev.jason.app.compose.vaultchat.ui.auth.abstractt
 
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
@@ -11,14 +9,9 @@ import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
 @Composable
 fun AbstractAuthScreen(
     onSignInClick: () -> Unit,
-    onNoFirebaseAuthClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val deviceType = DeviceType.rememberWindowSize()
-
-    Button(onNoFirebaseAuthClick) {
-        Text("Continue without firebase google authentication")
-    }
 
     when (deviceType) {
         is DeviceType.Compact -> CompactAuthScreen(onSignInClick, modifier)
@@ -35,8 +28,7 @@ fun AbstractAuthScreen(
 private fun AbstractAuthScreenPreview() {
     VaultChatTheme {
         AbstractAuthScreen(
-            onSignInClick = {},
-            onNoFirebaseAuthClick = {}
+            onSignInClick = {}
         )
     }
 }
