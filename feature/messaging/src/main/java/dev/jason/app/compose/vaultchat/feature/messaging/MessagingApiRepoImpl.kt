@@ -33,6 +33,10 @@ class MessagingApiRepoImpl(
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     private lateinit var webSocketSession: StompSession
 
+    private val currentUser by lazy { AppState.currentUser.value }
+    private val currentDevice by lazy { AppState.currentDevice.value }
+    private val otherUser by lazy { AppState.otherUser.value }
+
     init {
         coroutineScope.launch {
             connectToWebSocketServer()
@@ -47,7 +51,7 @@ class MessagingApiRepoImpl(
     }
 
     override suspend fun fetchMessages(): List<Message> {
-        val urlString = "$BASE_HTTP_URL/messages/fetch?uid=${AppState.currentUser.value?.uid!!}"
+        val urlString = "$BASE_HTTP_URL/messages/fetch?uid=${currentUser?.uid!!}"
         return httpClient.get(urlString)
             .body<List<MessageDto>>()
             .map(MessageDto::toMessage)
@@ -55,7 +59,10 @@ class MessagingApiRepoImpl(
 
     private suspend fun connectToWebSocketServer() {
         try {
-            val url = "$BASE_WS_URL/messages?uid=${AppState.currentUser.value?.uid!!}"
+            val uid = currentUser?.uid!!
+            val deviceId = currentDevice?.id!!
+
+            val url = "$BASE_WS_URL/ws?uid=$uid&device_id=$deviceId"
             webSocketSession = stompClient.connect(url)
         } catch (e: Exception) {
             Log.e("MessagingApiRepoImpl", "connectToWebSocketServer: websocket connection error", e)
@@ -91,15 +98,10 @@ class MessagingApiRepoImpl(
     }
 
     private fun showNotification(message: Message) {
-        if (message.from != AppState.currentUser.value) {
-            if (AppState.otherUser.value != message.from) {
-                sendShowNotificationEvent(message)
-            } else {
-                if (!AppState.isAppInForeground.value) {
-                    sendShowNotificationEvent(message)
-                }
-            }
-        }
+        if (message.from == currentUser) return
+        if (otherUser == message.from && AppState.isAppInForeground.value) return
+        
+        sendShowNotificationEvent(message)
     }
 
     private fun sendShowNotificationEvent(message: Message) {

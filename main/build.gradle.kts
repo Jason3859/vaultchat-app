@@ -34,6 +34,7 @@ dependencies {
 
     implementation(projects.ui.main.concrete)
     implementation(projects.feature.user)
+    implementation(projects.feature.localStorage.datastore)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)

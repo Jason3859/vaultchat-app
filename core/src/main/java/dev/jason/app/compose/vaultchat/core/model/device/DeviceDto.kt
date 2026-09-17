@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DeviceDto(
+    val id: String? = null,
     val ownerUid: String,
     val name: String,
     val type: Type,
@@ -44,6 +45,7 @@ data class DeviceDto(
 }
 
 fun Device.toDto() = DeviceDto(
+    id = id,
     ownerUid = ownerUid,
     name = name,
     type = DeviceDto.Type.fromDomain(type),
@@ -52,6 +54,7 @@ fun Device.toDto() = DeviceDto(
 )
 
 fun DeviceDto.toDevice() = Device(
+    id = id,
     ownerUid = ownerUid,
     name = name,
     type = type.toDomain(),

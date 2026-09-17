@@ -57,14 +57,5 @@ class ConnectionsService(
                 }
             }
         }
-
-        coroutineScope.launch {
-            AppEvents.requests.collect { request ->
-                if (request is AppEvent.Request.GetConnectionRequest) {
-                    val connection = getConnection(request.uid)
-                    AppEvents.sendResponse(AppEvent.Response.GetConnectionResponse(connection))
-                }
-            }
-        }
     }
 }

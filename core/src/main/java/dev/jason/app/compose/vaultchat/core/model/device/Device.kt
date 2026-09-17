@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.os.Build
 
 data class Device(
+    val id: String? = null,
     val ownerUid: String,
     val name: String,
     val type: Type,
@@ -37,8 +38,9 @@ data class Device(
     }
 
     companion object {
-        fun getCurrentDevice(context: Context, ownerUid: String): Device {
+        fun getCurrentDevice(context: Context, deviceId: String?, ownerUid: String): Device {
             return Device(
+                id = deviceId,
                 ownerUid = ownerUid,
                 name = "${Build.MANUFACTURER} ${Build.MODEL}",
                 os = Os.Android,

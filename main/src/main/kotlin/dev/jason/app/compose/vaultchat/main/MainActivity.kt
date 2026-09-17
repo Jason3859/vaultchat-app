@@ -29,12 +29,15 @@ import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.device.Device
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
+import dev.jason.app.compose.vaultchat.feature.datastore.device_id.DeviceIdDataStoreRepository
 import dev.jason.app.compose.vaultchat.ui.main.concrete.MainScreen
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
 
     private val navViewModel: NavViewModel by viewModels()
+    private val deviceIdDataStoreRepository: DeviceIdDataStoreRepository by inject()
 
     private val firebaseUser = Firebase.auth.currentUser
     private var currentUser = firebaseUser?.let {
@@ -67,7 +70,9 @@ class MainActivity : ComponentActivity() {
         connectivityManager.registerNetworkCallback(request, networkCallback)
 
         lifecycleScope.launch {
-            
+
+            if (AppState.currentUser.value != null) return@launch
+
             if (currentUser == null) {
                 currentUser = User(
                     uid = "CKu3zhKID9NRisxkUmrWoczAYts1",
@@ -76,10 +81,13 @@ class MainActivity : ComponentActivity() {
                     status = User.Status.Online
                 )
             }
-            
+
+            val deviceId = deviceIdDataStoreRepository.getCurrentDeviceId()
+                ?: throw IllegalStateException("device id is null")
+
             AppState.updateCurrentUser(currentUser!!)
             AppState.updateCurrentDevice(
-                Device.getCurrentDevice(this@MainActivity, currentUser?.uid!!)
+                Device.getCurrentDevice(this@MainActivity, deviceId, currentUser?.uid!!)
             )
         }
 
@@ -121,7 +129,8 @@ class MainActivity : ComponentActivity() {
             return
         }
 
-        val stringFromReceivedIntent = intent.getStringExtra(SHARE_ACTIVITY_LAUNCH_MAIN_ACTIVITY_ACTION)
+        val stringFromReceivedIntent =
+            intent.getStringExtra(SHARE_ACTIVITY_LAUNCH_MAIN_ACTIVITY_ACTION)
 
         if (stringFromReceivedIntent == ACTION_MAIN_ACTIVITY_CLEAR_OTHER_USER) {
             AppState.updateOtherUser(null)
