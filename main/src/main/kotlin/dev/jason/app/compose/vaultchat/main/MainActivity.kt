@@ -26,7 +26,7 @@ import dev.jason.app.compose.vaultchat.core.AppEvent
 import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
-import dev.jason.app.compose.vaultchat.ui.main.concrete.MainScreen
+import dev.jason.app.compose.vaultchat.ui.main.stateful.MainScreen
 
 class MainActivity : ComponentActivity() {
 

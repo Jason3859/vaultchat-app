@@ -1,0 +1,13 @@
+package dev.jason.app.compose.vaultchat.ui.main.stateful
+
+import dev.jason.app.compose.vaultchat.ui.main.stateful.home.HomeViewModel
+import dev.jason.app.compose.vaultchat.ui.main.stateful.messaging.MessagingViewModel
+import dev.jason.app.compose.vaultchat.ui.main.stateful.profile.ProfileViewModel
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.module
+
+val StatefulMainKoinModule = module {
+    viewModelOf(::HomeViewModel)
+    viewModelOf(::MessagingViewModel)
+    viewModelOf(::ProfileViewModel)
+}

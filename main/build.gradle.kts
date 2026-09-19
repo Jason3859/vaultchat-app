@@ -32,7 +32,7 @@ android {
 
 dependencies {
 
-    implementation(projects.ui.main.concrete)
+    implementation(projects.ui.main.stateful)
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.android)

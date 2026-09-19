@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dev.jason.app.compose.vaultchat.core.AppEvent
 import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.AppState
-import dev.jason.app.compose.vaultchat.ui.main.concrete.nav.Route
+import dev.jason.app.compose.vaultchat.ui.main.stateful.nav.Route
 import kotlinx.coroutines.launch
 
 class NavViewModel : ViewModel() {

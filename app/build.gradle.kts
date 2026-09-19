@@ -52,10 +52,10 @@ dependencies {
     implementation(projects.feature.localStorage.datastore)
     implementation(projects.feature.localStorage.roomDb)
 
-    implementation(projects.ui.auth.abstract)
-    implementation(projects.ui.auth.concrete)
-    implementation(projects.ui.main.abstract)
-    implementation(projects.ui.main.concrete)
+    implementation(projects.ui.auth.stateless)
+    implementation(projects.ui.auth.stateful)
+    implementation(projects.ui.main.stateless)
+    implementation(projects.ui.main.stateful)
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.android)

@@ -16,8 +16,8 @@ import dev.jason.app.compose.vaultchat.feature.messaging.MessagingFeatureKoinMod
 import dev.jason.app.compose.vaultchat.feature.open_links.OpenLinksFeatureKoinModule
 import dev.jason.app.compose.vaultchat.feature.room_db.RoomDbFeatureKoinModule
 import dev.jason.app.compose.vaultchat.feature.user.UserServiceKoinModule
-import dev.jason.app.compose.vaultchat.ui.auth.concrete.AuthKoinModule
-import dev.jason.app.compose.vaultchat.ui.main.concrete.MainKoinModule
+import dev.jason.app.compose.vaultchat.ui.auth.stateful.AuthKoinModule
+import dev.jason.app.compose.vaultchat.ui.main.stateful.StatefulMainKoinModule
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -71,7 +71,7 @@ class MainApplication : Application() {
                 AuthKoinModule,
                 MessagingFeatureKoinModule,
                 FeatureLogoutKoinModule,
-                MainKoinModule,
+                StatefulMainKoinModule,
                 BlocklistFeatureKoinModule,
                 RoomDbFeatureKoinModule,
                 DeviceFeatureKoinModule,

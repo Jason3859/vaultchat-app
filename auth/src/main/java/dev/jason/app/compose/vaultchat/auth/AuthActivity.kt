@@ -24,7 +24,7 @@ import dev.jason.app.compose.vaultchat.core.model.device.Device
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
 import dev.jason.app.compose.vaultchat.feature.datastore.device_id.DeviceIdDataStoreRepository
-import dev.jason.app.compose.vaultchat.ui.auth.concrete.AuthScreen
+import dev.jason.app.compose.vaultchat.ui.auth.stateful.AuthScreen
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
