@@ -7,7 +7,6 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -20,9 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION_MAIN_ACTIVITY_CLEAR_OTHER_USER
-import dev.jason.app.compose.vaultchat.core.AppConstants.EXTRA_NAV_DESTINATION_KEY
-import dev.jason.app.compose.vaultchat.core.AppConstants.SHARE_ACTIVITY_LAUNCH_MAIN_ACTIVITY_ACTION
+import dev.jason.app.compose.vaultchat.core.AppConstants
+import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION
+import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT_NEW_MESSAGE
+import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT
+import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT_LAUNCH_FROM_SHARE_ACTIVITY
+import dev.jason.app.compose.vaultchat.core.AppConstants.EXTRA_KEY_OTHER_USER_UID
 import dev.jason.app.compose.vaultchat.core.AppEvent
 import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.AppState
@@ -108,35 +110,31 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun handleIntent(intent: Intent) {
-        val navigateToMessagingScreenString = intent.getStringExtra(EXTRA_NAV_DESTINATION_KEY)
-        if (navigateToMessagingScreenString != null) {
-            AppEvents.sendEvent(
-                AppEvent.NavEvent.NavigateToMessagingScreen(
-                    intent.getStringExtra("uid") ?: return // received from notification
-                )
-            )
-            return
+        val event = intent.getStringExtra(EVENT)
+
+        when (event) {
+            EVENT_NEW_MESSAGE -> handleNewMessageEvent(intent)
+            EVENT_LAUNCH_FROM_SHARE_ACTIVITY -> handleLaunchFromShareActivityEvent(intent)
         }
+    }
 
-        val stringFromReceivedIntent =
-            intent.getStringExtra(SHARE_ACTIVITY_LAUNCH_MAIN_ACTIVITY_ACTION)
+    private fun handleLaunchFromShareActivityEvent(intent: Intent) {
+        val action = intent.getStringExtra(ACTION) ?: return
 
-        if (stringFromReceivedIntent == ACTION_MAIN_ACTIVITY_CLEAR_OTHER_USER) {
-            AppState.updateOtherUser(null)
-        } else {
-            // here, value of `stringFromReceivedIntent` will be the uid of user
+        if (action == AppConstants.ACTION_NAVIGATE_TO_MESSAGING_SCREEN) {
+            val uid = intent.getStringExtra(EXTRA_KEY_OTHER_USER_UID) ?: return
 
-            // send event to navigate to the screen
-            // with the uid of the user that current user
-            // is wanting to send something to.
             AppEvents.sendEvent(
-                AppEvent.NavEvent.NavigateToMessagingScreen(
-                    stringFromReceivedIntent ?: run {
-                        Log.w("MainActivity", "invalid intent received")
-                        return
-                    }
-                )
+                AppEvent.NavEvent.NavigateToMessagingScreen(uid)
             )
         }
+    }
+
+    private fun handleNewMessageEvent(intent: Intent) {
+        AppEvents.sendEvent(
+            AppEvent.NavEvent.NavigateToMessagingScreen(
+                intent.getStringExtra(EXTRA_KEY_OTHER_USER_UID) ?: return // received from notification
+            )
+        )
     }
 }

@@ -2,8 +2,6 @@ package dev.jason.app.compose.vaultchat.ui.main.concrete.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.jason.app.compose.vaultchat.core.AppEvent
-import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUi
@@ -81,22 +79,20 @@ class HomeViewModel(
     }
 
     private suspend fun fetchAndAddMessagesToDatabase() {
+        _uiState.update { it.copy(isLoading = true) }
+
         val localMessages = messageDatabaseRepository.getAllMessages()
         val fetchedMessages = messagingApiService.fetchMessages()
         val newMessages = fetchedMessages.filter { it !in localMessages }
 
         messageDatabaseRepository.addMessages(newMessages)
 
-        newMessages.forEach { message ->
-            AppEvents.sendEvent(AppEvent.ShowNotification.newMessage(message))
-        }
+        _uiState.update { it.copy(isLoading = false) }
     }
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiState.update { it.copy(isLoading = true) }
             fetchAndAddMessagesToDatabase()
-            _uiState.update { it.copy(isLoading = false) }
         }
     }
 }

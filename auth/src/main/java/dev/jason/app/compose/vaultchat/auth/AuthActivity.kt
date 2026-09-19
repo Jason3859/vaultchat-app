@@ -13,6 +13,8 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION_START_MAIN_ACTIVITY
+import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT_LAUNCH_FROM_AUTH_ACTIVITY
+import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
 import dev.jason.app.compose.vaultchat.ui.auth.concrete.AuthScreen
 
@@ -39,7 +41,9 @@ class AuthActivity : ComponentActivity() {
     }
 
     private fun startMainActivity() {
-        startActivity(Intent(ACTION_START_MAIN_ACTIVITY))
+        val intent = Intent(ACTION_START_MAIN_ACTIVITY)
+        intent.putExtra(EVENT, EVENT_LAUNCH_FROM_AUTH_ACTIVITY)
+        startActivity(intent)
         finish()
     }
 

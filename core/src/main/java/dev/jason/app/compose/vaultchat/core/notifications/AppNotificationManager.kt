@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.core
+package dev.jason.app.compose.vaultchat.core.notifications
 
 import android.app.Notification
 import android.app.NotificationManager
@@ -9,7 +9,7 @@ class AppNotificationManager(
     private val context: Context
 ) {
 
-    fun showNotification(notification: Notification, notificationChannel: AppNotificationChannelConfig) {
+    fun showNotification(notification: Notification, notificationChannel: AppNotificationChannel) {
         val notificationManager = context.getSystemService<NotificationManager>()!!
 
         notificationManager.createNotificationChannel(notificationChannel.channel())

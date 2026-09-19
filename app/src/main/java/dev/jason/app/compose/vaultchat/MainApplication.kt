@@ -5,7 +5,7 @@ import android.app.Application
 import android.os.Bundle
 import androidx.datastore.preferences.preferencesDataStore
 import dev.jason.app.compose.vaultchat.core.AppState
-import dev.jason.app.compose.vaultchat.core.MessagesNotificationChannelConfig
+import dev.jason.app.compose.vaultchat.core.notifications.MessagesNotificationChannel
 import dev.jason.app.compose.vaultchat.feature.auth.AuthFeatureKoinModule
 import dev.jason.app.compose.vaultchat.feature.blocklist.BlocklistFeatureKoinModule
 import dev.jason.app.compose.vaultchat.feature.connections.ConnectionsFeatureKoinModule
@@ -57,7 +57,7 @@ class MainApplication : Application() {
         super.onCreate()
         initKoin()
         registerActivityLifecycleCallbacks(VcActivityLifecycleCallbacks)
-        MessagesNotificationChannelConfig(this)
+        MessagesNotificationChannel(this)
     }
 
     private fun initKoin() {
@@ -82,26 +82,28 @@ class MainApplication : Application() {
     }
 
     private object VcActivityLifecycleCallbacks : ActivityLifecycleCallbacks {
+
         private var activityCount = 0
 
+        override fun onActivityResumed(activity: Activity) {}
+        override fun onActivityDestroyed(activity: Activity) {}
+        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
+
+        override fun onActivityPaused(activity: Activity) = AppState.updateOtherUser(null)
+
         override fun onActivityStarted(activity: Activity) {
             if (activityCount == 0) {
                 AppState.appInForeground()
             }
             activityCount++
         }
-        override fun onActivityResumed(activity: Activity) {}
-        override fun onActivityPaused(activity: Activity) {
-            AppState.updateOtherUser(null)
-        }
+
         override fun onActivityStopped(activity: Activity) {
             activityCount--
             if (activityCount == 0) {
                 AppState.appInBackground()
             }
         }
-        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
-        override fun onActivityDestroyed(activity: Activity) {}
     }
 }

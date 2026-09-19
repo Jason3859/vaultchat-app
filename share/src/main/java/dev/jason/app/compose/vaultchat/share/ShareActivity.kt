@@ -27,9 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION_MAIN_ACTIVITY_CLEAR_OTHER_USER
+import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION
+import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION_NAVIGATE_TO_MESSAGING_SCREEN
 import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION_START_MAIN_ACTIVITY
-import dev.jason.app.compose.vaultchat.core.AppConstants.SHARE_ACTIVITY_LAUNCH_MAIN_ACTIVITY_ACTION
+import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT
+import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT_LAUNCH_FROM_SHARE_ACTIVITY
+import dev.jason.app.compose.vaultchat.core.AppConstants.EXTRA_KEY_OTHER_USER_UID
 import dev.jason.app.compose.vaultchat.core.AppConstants.TEXT_PLAIN
 import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.message.Message
@@ -133,10 +136,14 @@ class ShareActivity : ComponentActivity() {
 
         val intent = Intent(ACTION_START_MAIN_ACTIVITY)
 
-        intent.putExtra(
-            SHARE_ACTIVITY_LAUNCH_MAIN_ACTIVITY_ACTION,
-            if (selectedUsers.size > 1) ACTION_MAIN_ACTIVITY_CLEAR_OTHER_USER else selectedUsers.first().uid
-        )
+        intent.putExtra(EVENT, EVENT_LAUNCH_FROM_SHARE_ACTIVITY)
+
+        if (selectedUsers.size <= 1) {
+            intent.putExtra(ACTION, ACTION_NAVIGATE_TO_MESSAGING_SCREEN)
+            intent.putExtra(EXTRA_KEY_OTHER_USER_UID, selectedUsers.first().uid)
+        } else {
+            AppState.updateOtherUser(null)
+        }
 
         startActivity(intent)
     }

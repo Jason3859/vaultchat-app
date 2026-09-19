@@ -99,8 +99,10 @@ class MessagingApiRepoImpl(
 
     private fun showNotification(message: Message) {
         if (message.from == currentUser) return
-        if (otherUser == message.from && AppState.isAppInForeground.value) return
-        
+        if (message.from == otherUser) {
+            if (AppState.isAppInForeground.value) return
+        }
+
         sendShowNotificationEvent(message)
     }
 
