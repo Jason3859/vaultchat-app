@@ -7,7 +7,9 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -57,6 +59,28 @@ class AuthActivity : ComponentActivity() {
                     AuthScreen(
                         onAuthSuccess = ::startMainActivity
                     )
+
+                    Button(
+                        onClick = {
+                            val currentUser = User(
+                                uid = "CKu3zhKID9NRisxkUmrWoczAYts1",
+                                displayName = "Jason Augustine",
+                                profilePictureUrl = "https://lh3.googleusercontent.com/a/ACg8ocKMNmv5uWm3KG4enNW4KQUFtUh6xDxsxgcAXJZKx5ivTpCFErH5",
+                                status = User.Status.Offline
+                            )
+
+                            val currentDevice = Device.getCurrentDevice(this, "6aac1a03f9f6b1c1d9dcab7a", currentUser.uid)
+
+                            AppState.apply {
+                                updateCurrentUser(currentUser)
+                                updateCurrentDevice(currentDevice)
+                            }
+
+                            startMainActivity()
+                        }
+                    ) {
+                        Text("Bypass Auth")
+                    }
                 }
             }
         }
