@@ -33,16 +33,16 @@ android {
 
 dependencies {
     implementation(projects.ui.auth.concrete)
+    implementation(projects.feature.localStorage.datastore)
 
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.material.icons.extended)
-    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.bundles.androidx.compose)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
+
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     testImplementation(libs.junit)

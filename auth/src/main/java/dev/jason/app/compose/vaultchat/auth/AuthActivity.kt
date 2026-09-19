@@ -10,23 +10,45 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.Surface
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION_START_MAIN_ACTIVITY
 import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT_LAUNCH_FROM_AUTH_ACTIVITY
 import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT
+import dev.jason.app.compose.vaultchat.core.AppState
+import dev.jason.app.compose.vaultchat.core.model.device.Device
+import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
+import dev.jason.app.compose.vaultchat.feature.datastore.device_id.DeviceIdDataStoreRepository
 import dev.jason.app.compose.vaultchat.ui.auth.concrete.AuthScreen
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 
 class AuthActivity : ComponentActivity() {
+
+    private val deviceIdDataStoreRepository: DeviceIdDataStoreRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestNotificationPermission()
 
-        Firebase.auth.currentUser?.let {
-            startMainActivity()
+        Firebase.auth.currentUser?.let { firebaseUser ->
+            lifecycleScope.launch {
+
+                val currentUser = firebaseUser.asDomainUser()
+                AppState.updateCurrentUser(currentUser)
+
+                val deviceId = deviceIdDataStoreRepository.getCurrentDeviceId()
+                    ?: throw IllegalStateException("Device id is null")
+
+                val currentDevice = Device.getCurrentDevice(this@AuthActivity, deviceId, firebaseUser.uid)
+                AppState.updateCurrentDevice(currentDevice)
+
+                startMainActivity()
+            }
         }
 
         setContent {
@@ -63,4 +85,12 @@ class AuthActivity : ComponentActivity() {
             }
         }
     }
+
+    private fun FirebaseUser.asDomainUser() =
+        User(
+            uid,
+            displayName!!,
+            photoUrl.toString().removeSuffix("=s96-c"),
+            User.Status.Online
+        )
 }

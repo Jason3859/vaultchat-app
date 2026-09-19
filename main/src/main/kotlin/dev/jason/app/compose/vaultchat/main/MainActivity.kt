@@ -16,38 +16,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.lifecycleScope
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import dev.jason.app.compose.vaultchat.core.AppConstants
 import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION
-import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT_NEW_MESSAGE
 import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT
 import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT_LAUNCH_FROM_SHARE_ACTIVITY
+import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT_NEW_MESSAGE
 import dev.jason.app.compose.vaultchat.core.AppConstants.EXTRA_KEY_OTHER_USER_UID
 import dev.jason.app.compose.vaultchat.core.AppEvent
 import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.AppState
-import dev.jason.app.compose.vaultchat.core.model.device.Device
-import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
-import dev.jason.app.compose.vaultchat.feature.datastore.device_id.DeviceIdDataStoreRepository
 import dev.jason.app.compose.vaultchat.ui.main.concrete.MainScreen
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
 
     private val navViewModel: NavViewModel by viewModels()
-    private val deviceIdDataStoreRepository: DeviceIdDataStoreRepository by inject()
-
-    private val firebaseUser = Firebase.auth.currentUser!!
-    private var currentUser = User(
-        firebaseUser.uid,
-        firebaseUser.displayName!!,
-        firebaseUser.photoUrl.toString().removeSuffix("=s96-c"),
-        User.Status.Online
-    )
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
@@ -68,19 +51,6 @@ class MainActivity : ComponentActivity() {
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .build()
         connectivityManager.registerNetworkCallback(request, networkCallback)
-
-        lifecycleScope.launch {
-
-            if (AppState.currentUser.value != null) return@launch
-
-            val deviceId = deviceIdDataStoreRepository.getCurrentDeviceId()
-                ?: throw IllegalStateException("device id is null")
-
-            AppState.updateCurrentUser(currentUser)
-            AppState.updateCurrentDevice(
-                Device.getCurrentDevice(this@MainActivity, deviceId, currentUser.uid)
-            )
-        }
 
         handleIntent(intent)
 
