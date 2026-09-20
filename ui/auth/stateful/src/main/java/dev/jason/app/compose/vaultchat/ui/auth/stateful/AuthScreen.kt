@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,6 +24,7 @@ import org.koin.androidx.compose.koinViewModel
 fun AuthScreen(onAuthSuccess: () -> Unit) {
     val authViewModel: AuthViewModel = koinViewModel()
     val backStack = authViewModel.backStack
+    val context = LocalContext.current
 
     NavDisplay(
         backStack = backStack,
@@ -31,7 +33,7 @@ fun AuthScreen(onAuthSuccess: () -> Unit) {
             entry(AuthRoute.AUTH) {
                 AbstractAuthScreen(
                     onSignInClick = {
-                        authViewModel.register(onAuthSuccess)
+                        authViewModel.register(context, onAuthSuccess)
                     }
                 )
             }

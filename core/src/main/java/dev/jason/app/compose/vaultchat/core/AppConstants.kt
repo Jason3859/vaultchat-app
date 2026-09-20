@@ -2,7 +2,7 @@ package dev.jason.app.compose.vaultchat.core
 
 object AppConstants {
 
-    const val URL_HOST = "10.0.2.2:8080"
+    const val URL_HOST = "127.0.0.1:8080"
     const val BASE_HTTP_URL = "http://$URL_HOST"
     const val BASE_WS_URL = "ws://$URL_HOST"
 //    const val BASE_URL = "https://vaultchat-67jk.onrender.com"

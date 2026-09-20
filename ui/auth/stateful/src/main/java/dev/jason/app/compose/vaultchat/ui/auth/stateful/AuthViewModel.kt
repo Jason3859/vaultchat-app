@@ -1,5 +1,6 @@
 package dev.jason.app.compose.vaultchat.ui.auth.stateful
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
@@ -15,10 +16,10 @@ internal class AuthViewModel(
 
     val backStack = mutableStateListOf(AuthRoute.AUTH)
 
-    fun register(onAuthSuccess: () -> Unit) {
+    fun register(context: Context, onAuthSuccess: () -> Unit) {
 
         viewModelScope.launch {
-            firebaseGoogleAuthentication.beginSignIn()
+            firebaseGoogleAuthentication.beginSignIn(context)
                 ?.addOnFailureListener {
                     Log.e(
                         "AuthViewModel",

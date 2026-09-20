@@ -16,11 +16,9 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import dev.jason.app.compose.vaultchat.core.ToastController
 
-class FirebaseGoogleAuthentication(
-    private val context: Context
-) {
+class FirebaseGoogleAuthentication {
 
-    suspend fun beginSignIn(): Task<AuthResult?>? {
+    suspend fun beginSignIn(context: Context): Task<AuthResult?>? {
         try {
             val googleIdOption = GetGoogleIdOption.Builder()
                 .setFilterByAuthorizedAccounts(false)
@@ -43,7 +41,7 @@ class FirebaseGoogleAuthentication(
             throw IllegalStateException("Credential is not type of Google")
 
         } catch (e: GetCredentialException) {
-            Log.e("FirebaseGoogleAuth", "launchCredentialManagerBottomSheet: exception", e)
+            Log.e("FirebaseGoogleAuthentication", "beginSignIn: exception while logging in using google", e)
             if (e is NoCredentialException) {
                 ToastController.showToast("No Internet or no google account exists on device")
                 return null
