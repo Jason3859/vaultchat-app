@@ -47,7 +47,7 @@ class MessagingApiRepoImpl(
 
     override suspend fun sendMessage(message: Message) {
         val body = Json.encodeToString(message.toPayload())
-        webSocketSession.sendText("/app/send", body)
+        webSocketSession.sendText("/app/messaging.send", body)
     }
 
     override suspend fun fetchMessages(): List<Message> {
