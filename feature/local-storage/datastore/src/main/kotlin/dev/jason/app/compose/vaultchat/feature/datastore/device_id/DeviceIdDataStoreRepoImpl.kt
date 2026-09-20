@@ -1,5 +1,6 @@
 package dev.jason.app.compose.vaultchat.feature.datastore.device_id
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -38,7 +39,13 @@ class DeviceIdDataStoreRepoImpl(private val dataStore: DataStore<Preferences>) :
     init {
         coroutineScope.launch {
             AppEvents.events.collect { event ->
-                if (event is AppEvent.SaveCurrentDeviceId) saveCurrentDeviceId(event.deviceId)
+                if (event is AppEvent.SaveCurrentDeviceId) {
+                    Log.d(
+                        "DeviceIdDataStoreRepoImpl",
+                        "received save device id event. device id: ${event.deviceId}"
+                    )
+                    saveCurrentDeviceId(event.deviceId)
+                }
             }
         }
     }
