@@ -50,6 +50,7 @@ class AuthActivity : ComponentActivity() {
                 AppState.updateCurrentDevice(currentDevice)
 
                 startMainActivity()
+                finish()
             }
         }
 
