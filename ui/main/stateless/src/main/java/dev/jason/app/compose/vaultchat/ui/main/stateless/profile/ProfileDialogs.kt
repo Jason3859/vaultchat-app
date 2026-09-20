@@ -389,7 +389,9 @@ private fun DevicesDialog(
                             Icon(icon, null)
                         }
                     ) {
-                        val text = if (isCurrentDevice) "${device.name} (current)" else device.name
+                        var text = device.name
+                        if (isCurrentDevice) text += " (current)"
+
                         Text(text)
                     }
                 }

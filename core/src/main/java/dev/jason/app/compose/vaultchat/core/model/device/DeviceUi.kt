@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class DeviceUi(
+    val id: String? = null,
     val ownerUid: String,
     val name: String,
     val type: Device.Type,
@@ -12,6 +13,7 @@ data class DeviceUi(
 )
 
 fun Device.toUi() = DeviceUi(
+    id = id,
     ownerUid = ownerUid,
     name = name,
     type = type,
@@ -20,6 +22,7 @@ fun Device.toUi() = DeviceUi(
 )
 
 fun DeviceUi.toDevice() = Device(
+    id = id,
     ownerUid = ownerUid,
     name = name,
     type = type,

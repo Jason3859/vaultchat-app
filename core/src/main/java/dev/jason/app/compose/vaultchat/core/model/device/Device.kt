@@ -15,10 +15,7 @@ data class Device(
 
     override fun equals(other: Any?): Boolean {
         if (other !is Device) return false
-        return other.name == name &&
-                other.type == type &&
-                other.os == os &&
-                other.version == version
+        return other.id == this.id
     }
 
     override fun hashCode(): Int {
