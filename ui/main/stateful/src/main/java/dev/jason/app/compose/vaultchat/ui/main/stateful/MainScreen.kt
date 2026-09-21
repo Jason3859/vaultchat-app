@@ -9,7 +9,6 @@ import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDe
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.ui.main.stateful.home.HomeScreen
 import dev.jason.app.compose.vaultchat.ui.main.stateful.messaging.MessagingScreen
 import dev.jason.app.compose.vaultchat.ui.main.stateful.nav.Route
@@ -48,7 +47,7 @@ fun MainScreen(
             entry<Route.Messaging>(
                 metadata = ListDetailSceneStrategy.detailPane()
             ) { route ->
-                val user = UserUi(route.uid)
+                val user = route.asUserUi()
                 MessagingScreen(
                     otherUser = user,
                     onBackClick = onBackToHome,
@@ -59,11 +58,6 @@ fun MainScreen(
             }
 
             entry<Route.Profile>(
-//                metadata = if (Device.getDeviceType(context) == Device.Type.Tablet) {
-//                    ListDetailSceneStrategy.extraPane()
-//                } else {
-//                    ListDetailSceneStrategy.detailPane()
-//                }
                 metadata = ListDetailSceneStrategy.extraPane()
             ) {
                 ProfileScreen(

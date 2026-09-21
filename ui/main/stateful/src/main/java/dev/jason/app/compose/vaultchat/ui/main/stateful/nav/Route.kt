@@ -21,6 +21,15 @@ sealed interface Route : NavKey {
             fun fromUser(user: UserUi) =
                 Messaging(user.uid, user.displayName, user.profilePictureUrl, user.status)
         }
+
+        fun asUserUi(): UserUi {
+            return if (displayName == null) UserUi(uid) else UserUi(
+                uid,
+                displayName,
+                profilePictureUrl!!,
+                status!!
+            )
+        }
     }
 
     @Serializable

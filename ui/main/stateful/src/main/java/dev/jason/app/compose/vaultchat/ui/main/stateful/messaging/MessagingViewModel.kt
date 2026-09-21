@@ -108,20 +108,22 @@ class MessagingViewModel(
         openLinksService.open(url)
     }
 
+    private fun UserUi.isConnected() = displayName == "null"
+
     init {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
 
-            if (otherUser.displayName != "null") {
+            if (otherUser.isConnected()) {
+                val user = connectionsService.getConnection(otherUser.uid)
+                _otherUser.update { user?.toUi() }
+                _uiState.update { it.copy(isLoading = false) }
+            } else {
                 _otherUser.update { otherUser }
                 _uiState.update { it.copy(isLoading = false) }
-                return@launch
             }
 
-            val user = connectionsService.getConnection(otherUser.uid)
-            _otherUser.update { user?.toUi() }
             AppState.updateOtherUser(_otherUser.value?.toUser())
-            _uiState.update { it.copy(isLoading = false) }
         }
 
         viewModelScope.launch {

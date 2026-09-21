@@ -1,6 +1,5 @@
 package dev.jason.app.compose.vaultchat.ui.main.stateful.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.jason.app.compose.vaultchat.core.model.user.User
@@ -18,7 +17,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -34,7 +32,6 @@ class HomeViewModel(
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
         .onStart { updateConnections() }
-        .onEach { Log.d("HomeViewModel", "state: ${_uiState.value}") }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),

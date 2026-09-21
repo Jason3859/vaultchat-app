@@ -20,6 +20,7 @@ import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION_START_MAIN_ACTIV
 import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT
 import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT_LAUNCH_FROM_AUTH_ACTIVITY
 import dev.jason.app.compose.vaultchat.core.AppState
+import dev.jason.app.compose.vaultchat.core.ToastController
 import dev.jason.app.compose.vaultchat.core.model.device.Device
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
@@ -38,6 +39,7 @@ class AuthActivity : ComponentActivity() {
         requestNotificationPermission()
 
         Firebase.auth.currentUser?.let { firebaseUser ->
+            ToastController.showToast("signed in")
             lifecycleScope.launch {
 
                 val currentUser = firebaseUser.asDomainUser()
@@ -52,7 +54,7 @@ class AuthActivity : ComponentActivity() {
                 startMainActivity()
                 finish()
             }
-        }
+        } ?: ToastController.showToast("Not signed in")
 
         setContent {
             VaultChatTheme {
@@ -64,7 +66,7 @@ class AuthActivity : ComponentActivity() {
                     Button(
                         onClick = {
                             val currentUser = User(
-                                uid = "CKu3zhKID9NRisxkUmrWoczAYts1",
+                                uid = "hQbTyfIFnOUkIDWT5TGXLGm5XGU2",
                                 displayName = "Jason Augustine",
                                 profilePictureUrl = "https://lh3.googleusercontent.com/a/ACg8ocKMNmv5uWm3KG4enNW4KQUFtUh6xDxsxgcAXJZKx5ivTpCFErH5",
                                 status = User.Status.Offline

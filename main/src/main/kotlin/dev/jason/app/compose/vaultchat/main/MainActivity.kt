@@ -103,7 +103,7 @@ class MainActivity : ComponentActivity() {
     private fun handleNewMessageEvent(intent: Intent) {
         AppEvents.sendEvent(
             AppEvent.NavEvent.NavigateToMessagingScreen(
-                intent.getStringExtra(EXTRA_KEY_OTHER_USER_UID) ?: return // received from notification
+                intent.getStringExtra(EXTRA_KEY_OTHER_USER_UID) ?: return
             )
         )
     }
