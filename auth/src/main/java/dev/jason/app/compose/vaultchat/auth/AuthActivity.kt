@@ -1,10 +1,12 @@
 package dev.jason.app.compose.vaultchat.auth
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.Button
@@ -24,16 +26,13 @@ import dev.jason.app.compose.vaultchat.core.ToastController
 import dev.jason.app.compose.vaultchat.core.model.device.Device
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
-import dev.jason.app.compose.vaultchat.feature.datastore.device_id.DeviceIdDataStoreRepository
 import dev.jason.app.compose.vaultchat.ui.auth.stateful.AuthScreen
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 
 
 class AuthActivity : ComponentActivity() {
 
-    private val deviceIdDataStoreRepository: DeviceIdDataStoreRepository by inject()
-
+    @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestNotificationPermission()
@@ -45,9 +44,7 @@ class AuthActivity : ComponentActivity() {
                 val currentUser = firebaseUser.asDomainUser()
                 AppState.updateCurrentUser(currentUser)
 
-                val deviceId = deviceIdDataStoreRepository.getCurrentDeviceId()
-                    ?: throw IllegalStateException("Device id is null")
-
+                val deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
                 val currentDevice = Device.getCurrentDevice(this@AuthActivity, deviceId, firebaseUser.uid)
                 AppState.updateCurrentDevice(currentDevice)
 
@@ -66,7 +63,7 @@ class AuthActivity : ComponentActivity() {
                     Button(
                         onClick = {
                             val currentUser = User(
-                                uid = "hQbTyfIFnOUkIDWT5TGXLGm5XGU2",
+                                uid = "CKu3zhKID9NRisxkUmrWoczAYts1",
                                 displayName = "Jason Augustine",
                                 profilePictureUrl = "https://lh3.googleusercontent.com/a/ACg8ocKMNmv5uWm3KG4enNW4KQUFtUh6xDxsxgcAXJZKx5ivTpCFErH5",
                                 status = User.Status.Offline
