@@ -21,11 +21,7 @@ class LogoutService(
         clearMessages: Boolean
     ) {
         try {
-            repository.sendLogoutRequest(
-                deviceId = deviceId,
-                clearMessages = clearMessages,
-                onLogoutSuccessful = { Firebase.auth.signOut() }
-            )
+            repository.sendLogoutRequest(deviceId, clearMessages)
         } catch (e: Exception) {
             Log.e("LogoutService", "beginLogout: exception occurred", e)
             ToastController.showErrorOccurredToast()

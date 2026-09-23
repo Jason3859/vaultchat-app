@@ -12,18 +12,12 @@ internal class LogoutRemoteRepoImpl(
     private val client: HttpClient
 ) : LogoutRemoteRepository {
 
-    override suspend fun sendLogoutRequest(
-        deviceId: String,
-        clearMessages: Boolean,
-        onLogoutSuccessful: () -> Unit
-    ): Int {
-        val response = client.delete("$BASE_HTTP_URL/request-logout") {
+    override suspend fun sendLogoutRequest(deviceId: String, clearMessages: Boolean) {
+        client.delete("$BASE_HTTP_URL/request-logout") {
             contentType(ContentType.Application.Json)
             parameter("deviceId", deviceId)
             parameter("clear_messages", clearMessages.toString())
         }
-
-        return response.status.value.also { onLogoutSuccessful.invoke() }
     }
 
     override suspend fun sendDeleteCurrentDeviceRequest() {

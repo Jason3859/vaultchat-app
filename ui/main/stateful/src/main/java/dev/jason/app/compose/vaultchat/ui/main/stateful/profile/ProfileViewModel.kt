@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.device.Device
 import dev.jason.app.compose.vaultchat.core.model.device.DeviceUi
-import dev.jason.app.compose.vaultchat.core.model.device.toDevice
 import dev.jason.app.compose.vaultchat.core.model.device.toUi
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
@@ -66,20 +65,13 @@ class ProfileViewModel(
 
     private fun logoutDeviceWithoutClearingMessages(device: DeviceUi) {
         viewModelScope.launch {
-//            logoutService.sendLogoutRequest(
-//                device = device.toDevice(),
-//                clearMessages = false
-//            )
+            logoutService.sendLogoutRequest(device.id!!, false)
         }
     }
 
     private fun logoutDeviceByClearingMessages(device: DeviceUi) {
         viewModelScope.launch {
-            // TODO
-//            logoutService.sendLogoutRequest(
-//                device = device.toDevice(),
-//                clearMessages = true
-//            )
+            logoutService.sendLogoutRequest(device.id!!, true)
         }
     }
 
