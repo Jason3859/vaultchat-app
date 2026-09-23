@@ -122,11 +122,9 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun restartApp() {
-        val intent = baseContext.packageManager.getLaunchIntentForPackage(baseContext.packageName)!!
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-
-        startActivity(intent)
-        finish()
+        val intent = packageManager.getLaunchIntentForPackage(packageName)!!
+        val mainIntent = Intent.makeRestartActivityTask(intent.component)
+        startActivity(mainIntent)
+        Runtime.getRuntime().exit(0)
     }
 }

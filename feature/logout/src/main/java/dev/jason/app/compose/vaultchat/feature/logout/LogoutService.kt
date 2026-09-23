@@ -32,6 +32,10 @@ class LogoutService(
         repository.sendDeleteCurrentDeviceRequest()
         if (clearMessages) AppEvents.sendEvent(AppEvent.DeleteAllMessages)
         Firebase.auth.signOut()
+
+        @Suppress("BlockingMethodInNonBlockingContext")
+        Thread.sleep(500)
+
         AppEvents.sendEvent(AppEvent.RestartApp)
     }
 
