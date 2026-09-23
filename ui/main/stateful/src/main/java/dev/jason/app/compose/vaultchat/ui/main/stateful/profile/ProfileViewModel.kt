@@ -66,19 +66,20 @@ class ProfileViewModel(
 
     private fun logoutDeviceWithoutClearingMessages(device: DeviceUi) {
         viewModelScope.launch {
-            logoutService.beginLogout(
-                device = device.toDevice(),
-                clearMessages = false
-            )
+//            logoutService.sendLogoutRequest(
+//                device = device.toDevice(),
+//                clearMessages = false
+//            )
         }
     }
 
     private fun logoutDeviceByClearingMessages(device: DeviceUi) {
         viewModelScope.launch {
-            logoutService.beginLogout(
-                device = device.toDevice(),
-                clearMessages = true
-            )
+            // TODO
+//            logoutService.sendLogoutRequest(
+//                device = device.toDevice(),
+//                clearMessages = true
+//            )
         }
     }
 

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
 import dev.jason.app.compose.vaultchat.core.AppConstants
 import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION
 import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT
@@ -26,7 +27,10 @@ import dev.jason.app.compose.vaultchat.core.AppEvent
 import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
+import dev.jason.app.compose.vaultchat.feature.device.DeviceApiService
 import dev.jason.app.compose.vaultchat.ui.main.stateful.MainScreen
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
 
@@ -45,6 +49,7 @@ class MainActivity : ComponentActivity() {
     @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        inject<DeviceApiService>().value
 
         val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val request = NetworkRequest.Builder()
@@ -53,6 +58,14 @@ class MainActivity : ComponentActivity() {
         connectivityManager.registerNetworkCallback(request, networkCallback)
 
         handleIntent(intent)
+
+        lifecycleScope.launch {
+            AppEvents.events.collect { event ->
+                if (event is AppEvent.RestartApp) {
+                    restartApp()
+                }
+            }
+        }
 
         setContent {
             VaultChatTheme {
@@ -106,5 +119,14 @@ class MainActivity : ComponentActivity() {
                 intent.getStringExtra(EXTRA_KEY_OTHER_USER_UID) ?: return
             )
         )
+    }
+
+    private fun restartApp() {
+        val intent = baseContext.packageManager.getLaunchIntentForPackage(baseContext.packageName)!!
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        startActivity(intent)
+        finish()
     }
 }

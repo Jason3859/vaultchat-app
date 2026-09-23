@@ -33,6 +33,7 @@ android {
 dependencies {
 
     implementation(projects.ui.main.stateful)
+    implementation(projects.feature.device)
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.android)

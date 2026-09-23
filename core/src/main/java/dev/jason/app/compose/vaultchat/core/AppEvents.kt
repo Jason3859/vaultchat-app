@@ -28,6 +28,10 @@ sealed interface AppEvent {
 
     data class SaveCurrentDeviceId(val deviceId: String) : AppEvent
 
+    data class LogoutCurrentDevice(val clearMessages: Boolean) : AppEvent
+
+    data object RestartApp : AppEvent
+
     data class ShowNotification(
         val title: String,
         val content: String,
