@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
-import dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.AbstractMessagingScreen
-import dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.MessagePagingState
+import dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.component.AbstractMessagingScreen
+import dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.component.MessagePagingState
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf

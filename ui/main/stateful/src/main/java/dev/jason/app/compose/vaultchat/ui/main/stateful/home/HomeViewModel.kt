@@ -9,8 +9,8 @@ import dev.jason.app.compose.vaultchat.feature.connections.ConnectionsService
 import dev.jason.app.compose.vaultchat.feature.messaging.MessagingApiService
 import dev.jason.app.compose.vaultchat.feature.room_db.messages.MessageDatabaseRepository
 import dev.jason.app.compose.vaultchat.feature.user.UserApiService
-import dev.jason.app.compose.vaultchat.ui.main.action.HomeUiAction
-import dev.jason.app.compose.vaultchat.ui.main.state.HomeUiState
+import dev.jason.app.compose.vaultchat.ui.main.stateless.home.action.HomeUiAction
+import dev.jason.app.compose.vaultchat.ui.main.stateless.home.state.HomeUiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
