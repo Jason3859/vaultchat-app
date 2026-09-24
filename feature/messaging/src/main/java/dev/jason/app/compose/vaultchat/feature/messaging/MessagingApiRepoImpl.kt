@@ -43,7 +43,7 @@ class MessagingApiRepoImpl(
 
     private val currentUser by lazy { AppState.currentUser.value!! }
     private val currentDevice by lazy { AppState.currentDevice.value!! }
-    private val otherUser by lazy { AppState.otherUser.value!! }
+    private val otherUser by lazy { AppState.otherUser.value }
 
     init {
         coroutineScope.launch {
