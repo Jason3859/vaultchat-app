@@ -19,11 +19,19 @@ import io.ktor.client.request.get
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.hildan.krossbow.stomp.StompClient
 import org.hildan.krossbow.stomp.StompSession
 import org.hildan.krossbow.stomp.sendText
 import org.hildan.krossbow.stomp.subscribeText
+
+@Serializable
+private data class LogoutRequestResponsePayload(
+    val deviceId: String,
+    @SerialName("clear_messages") val clearMessages: Boolean
+)
 
 class MessagingApiRepoImpl(
     private val stompClient: StompClient,
@@ -33,15 +41,16 @@ class MessagingApiRepoImpl(
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     private lateinit var webSocketSession: StompSession
 
-    private val currentUser by lazy { AppState.currentUser.value }
-    private val currentDevice by lazy { AppState.currentDevice.value }
-    private val otherUser by lazy { AppState.otherUser.value }
+    private val currentUser by lazy { AppState.currentUser.value!! }
+    private val currentDevice by lazy { AppState.currentDevice.value!! }
+    private val otherUser by lazy { AppState.otherUser.value!! }
 
     init {
         coroutineScope.launch {
             connectToWebSocketServer()
             subscribeToMessages()
             subscribeToConnectionStatusUpdates()
+            subscribeToLogoutRequests()
         }
     }
 
@@ -51,7 +60,7 @@ class MessagingApiRepoImpl(
     }
 
     override suspend fun fetchMessages(): List<Message> {
-        val urlString = "$BASE_HTTP_URL/messages/fetch?uid=${currentUser?.uid!!}"
+        val urlString = "$BASE_HTTP_URL/messages/fetch?uid=${currentUser.uid}"
         return httpClient.get(urlString)
             .body<List<MessageDto>>()
             .map(MessageDto::toMessage)
@@ -59,8 +68,8 @@ class MessagingApiRepoImpl(
 
     private suspend fun connectToWebSocketServer() {
         try {
-            val uid = currentUser?.uid!!
-            val deviceId = currentDevice?.id!!
+            val uid = currentUser.uid
+            val deviceId = currentDevice.id!!
 
             val url = "$BASE_WS_URL/ws?uid=$uid&device_id=$deviceId"
             webSocketSession = stompClient.connect(url)
@@ -70,31 +79,49 @@ class MessagingApiRepoImpl(
         }
     }
 
-    private suspend fun subscribeToMessages() {
-        webSocketSession.subscribeText("/user/topic/messages").collect { messageJsonString ->
-            val message = Json.decodeFromString<MessageDto>(messageJsonString).toMessage()
-            showNotification(message)
-            AppEvents.sendEvent(AppEvent.AddMessage(message))
+    private fun subscribeToMessages() {
+        coroutineScope.launch {
+            webSocketSession.subscribeText("/user/topic/messages").collect { messageJsonString ->
+                val message = Json.decodeFromString<MessageDto>(messageJsonString).toMessage()
+                showNotification(message)
+                AppEvents.sendEvent(AppEvent.AddMessage(message))
+            }
         }
     }
 
-    private suspend fun subscribeToConnectionStatusUpdates() {
-        webSocketSession.subscribeText("/user/topic/connections-status")
-            .collect { connectionsStatusUpdateJsonString ->
-                val map =
-                    Json.decodeFromString<Map<String, String>>(connectionsStatusUpdateJsonString)
+    private fun subscribeToLogoutRequests() {
+        coroutineScope.launch {
+            webSocketSession.subscribeText("/user/topic/logout-request")
+                .collect { json ->
+                    val payload = Json.decodeFromString<LogoutRequestResponsePayload>(json)
 
-                val uid = map["uid"] ?: run {
-                    Log.w(
-                        "MessagingApiRepoImpl",
-                        "subscribeToConnectionStatusUpdates: invalid update received: $map"
-                    )
-                    return@collect
+                    if (payload.deviceId == currentDevice.id) {
+                        val clearMessages = payload.clearMessages
+                        AppEvents.sendEvent(AppEvent.LogoutCurrentDevice(clearMessages))
+                    }
                 }
-                val status = User.Status.valueOf(map["status"]!!)
+        }
+    }
 
-                AppEvents.sendEvent(AppEvent.UpdateConnectionStatus(uid, status))
-            }
+    private fun subscribeToConnectionStatusUpdates() {
+        coroutineScope.launch {
+            webSocketSession.subscribeText("/user/topic/connections-status")
+                .collect { connectionsStatusUpdateJsonString ->
+                    val map =
+                        Json.decodeFromString<Map<String, String>>(connectionsStatusUpdateJsonString)
+
+                    val uid = map["uid"] ?: run {
+                        Log.w(
+                            "MessagingApiRepoImpl",
+                            "subscribeToConnectionStatusUpdates: invalid update received: $map"
+                        )
+                        return@collect
+                    }
+                    val status = User.Status.valueOf(map["status"]!!)
+
+                    AppEvents.sendEvent(AppEvent.UpdateConnectionStatus(uid, status))
+                }
+        }
     }
 
     private fun showNotification(message: Message) {
