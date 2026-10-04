@@ -34,6 +34,7 @@ fun ProfileScreen(
         AbstractProfileScreen(
             onBack = onBack,
             user = otherUser?.toUi()!!,
+            isOtherUserBlocked = otherUser?.toUi() in blocklist,
             onAction = viewModel::onAction
         )
 }

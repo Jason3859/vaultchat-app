@@ -67,7 +67,6 @@ internal fun ProfileDialogs(
         ProfileScreenRowItemId.Blocklist -> blocklist?.let {
             BlocklistDialog(
                 blocklist = it,
-                onAction = onAction,
                 onDismiss = onDismiss
             )
         }
@@ -101,6 +100,16 @@ internal fun ProfileDialogs(
                 onDismiss.invoke()
                 onBack.invoke()
             }
+        )
+
+        ProfileScreenRowItemId.UnblockUser -> UnblockUserDialog(
+            userDisplayName = user.displayName,
+            onConfirmClick = {
+                onAction(ProfileUiAction.UnblockUser(user, onDismiss))
+                onDismiss()
+                AppEvents.sendEvent(AppEvent.NavEvent.NavigateToHomeScreen)
+            },
+            onDismiss = onDismiss
         )
 
         null -> {}
@@ -156,6 +165,34 @@ private fun BlockUserDialog(
                 )
             ) {
                 Text(stringResource(R.string.block))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.cancel))
+            }
+        }
+    )
+}
+
+@Composable
+private fun UnblockUserDialog(
+    userDisplayName: String,
+    onConfirmClick: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.unblock_user_warning_title, userDisplayName)) },
+        text = { Text(stringResource(R.string.unblock_user_warning_text)) },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirmClick,
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                Text(stringResource(R.string.unblock))
             }
         },
         dismissButton = {
@@ -229,7 +266,6 @@ private fun LogoutDialog(
 @Composable
 private fun BlocklistDialog(
     blocklist: ImmutableList<UserUi>,
-    onAction: (ProfileUiAction) -> Unit,
     onDismiss: () -> Unit
 ) {
     val imageModifier = Modifier
@@ -250,13 +286,11 @@ private fun BlocklistDialog(
             }
             itemsIndexed(blocklist) { index, user ->
                 SegmentedListItem(
+                    onClick = {},
                     shapes = ListItemDefaults.segmentedShapes(
                         index = index,
                         count = blocklist.count(),
                     ),
-                    onClick = {
-                        onAction(ProfileUiAction.UnblockUser(user, onDismiss))
-                    },
                     leadingContent = {
                         LoadProfilePicture(
                             url = user.profilePictureUrl,

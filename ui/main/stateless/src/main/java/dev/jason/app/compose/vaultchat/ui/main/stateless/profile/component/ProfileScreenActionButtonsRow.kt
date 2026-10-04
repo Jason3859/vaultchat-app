@@ -16,7 +16,8 @@ import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileSc
 @Composable
 internal fun ProfileScreenActionButtonsRow(
     isOwnProfile: Boolean,
-    onActionClick: (ProfileScreenRowItemId) -> Unit
+    onActionClick: (ProfileScreenRowItemId) -> Unit,
+    isOtherUserBlocked: Boolean? = null
 ) {
     val items = if (isOwnProfile) {
         listOf(
@@ -38,11 +39,19 @@ internal fun ProfileScreenActionButtonsRow(
         )
     } else {
         listOf(
-            ProfileScreenRowItem(
-                id = ProfileScreenRowItemId.BlockUser,
-                name = "Block user",
-                icon = Icons.Default.Block
-            ),
+            if (isOtherUserBlocked == true) {
+                ProfileScreenRowItem(
+                    id = ProfileScreenRowItemId.UnblockUser,
+                    name = "Unblock user",
+                    icon = Icons.Default.Block
+                )
+            } else {
+                ProfileScreenRowItem(
+                    id = ProfileScreenRowItemId.BlockUser,
+                    name = "Block user",
+                    icon = Icons.Default.Block
+                )
+            },
             ProfileScreenRowItem(
                 id = ProfileScreenRowItemId.DeleteAllMessages,
                 name = "Delete all messages",

@@ -23,6 +23,7 @@ import kotlinx.collections.immutable.ImmutableList
 fun AbstractProfileScreen(
     onBack: () -> Unit,
     user: UserUi,
+    isOtherUserBlocked: Boolean? = null,
     devices: ImmutableList<DeviceUi>? = null,
     blocklist: ImmutableList<UserUi>? = null,
     onAction: (ProfileUiAction) -> Unit
@@ -36,13 +37,13 @@ fun AbstractProfileScreen(
         }
     ) { innerPadding ->
         ProfileDialogs(
+            onBack = onBack,
             currentDialog = currentDialog,
             onDismiss = { currentDialog = null },
             user = user,
             devices = devices,
             blocklist = blocklist,
-            onAction = onAction,
-            onBack = onBack
+            onAction = onAction
         )
 
         Column(
@@ -52,6 +53,7 @@ fun AbstractProfileScreen(
         ) {
             ProfileScreenUserInfoSection(user)
             ProfileScreenActionButtonsRow(
+                isOtherUserBlocked = isOtherUserBlocked,
                 isOwnProfile = (devices != null && blocklist != null),
                 onActionClick = { currentDialog = it }
             )
