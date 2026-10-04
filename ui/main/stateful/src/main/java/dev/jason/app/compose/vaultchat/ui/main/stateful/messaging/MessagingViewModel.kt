@@ -15,6 +15,7 @@ import dev.jason.app.compose.vaultchat.core.model.message.toUi
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUser
+import dev.jason.app.compose.vaultchat.feature.blocklist.BlocklistApiService
 import dev.jason.app.compose.vaultchat.feature.connections.ConnectionsService
 import dev.jason.app.compose.vaultchat.feature.messaging.MessagingApiService
 import dev.jason.app.compose.vaultchat.feature.open_links.OpenLinksService
@@ -30,6 +31,7 @@ import java.time.LocalDateTime
 
 class MessagingViewModel(
     otherUser: UserUi,
+    private val blocklistApiService: BlocklistApiService,
     private val connectionsService: ConnectionsService,
     private val messageDatabaseRepository: MessageDatabaseRepository,
     private val messagingApiService: MessagingApiService,
@@ -136,6 +138,15 @@ class MessagingViewModel(
                 .cachedIn(this)
                 .collect { data ->
                     _messages.value = data
+                }
+        }
+
+        viewModelScope.launch {
+            blocklistApiService.getBlocklist()
+                .let { blocklist ->
+                    if (blocklist.contains(otherUser.toUser())) {
+                        _uiState.update { it.copy(isUserBlocked = true) }
+                    }
                 }
         }
     }

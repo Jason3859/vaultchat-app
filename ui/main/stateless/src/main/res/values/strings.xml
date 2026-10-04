@@ -30,4 +30,5 @@
     <string name="delete_all_messages_warning_title">Do you want to delete all messages of conversation with %1$s?</string>
 
     <string name="delete_all_messages">Delete all messages</string>
+    <string name="user_blocked_warning">You have blocked this user</string>
 </resources>
