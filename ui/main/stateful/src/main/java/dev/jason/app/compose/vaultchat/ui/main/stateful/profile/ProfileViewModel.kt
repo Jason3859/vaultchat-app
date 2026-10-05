@@ -47,6 +47,16 @@ class ProfileViewModel(
 
     init {
         loadUserProfile()
+
+        viewModelScope.launch {
+            AppState.isOtherUserBlocked.collect {
+                _uiState.update { state ->
+                    state.copy(
+                        isOtherUserBlocked = it
+                    )
+                }
+            }
+        }
     }
 
     fun onAction(action: ProfileUiAction) {
@@ -100,10 +110,9 @@ class ProfileViewModel(
                 .toImmutableList()
 
             _uiState.update { state ->
-                val isBlocked = state.user in blocklist
+                AppState.updateIsOtherUserBlocked(blocklist.map(UserUi::toUser))
                 state.copy(
-                    blocklist = blocklist,
-                    isOtherUserBlocked = isBlocked
+                    blocklist = blocklist
                 )
             }
         }

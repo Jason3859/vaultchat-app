@@ -143,11 +143,17 @@ class MessagingViewModel(
 
         viewModelScope.launch {
             blocklistApiService.getBlocklist()
-                .let { blocklist ->
-                    if (blocklist.contains(otherUser.toUser())) {
-                        _uiState.update { it.copy(isUserBlocked = true) }
-                    }
+                .let(AppState::updateIsOtherUserBlocked)
+        }
+
+        viewModelScope.launch {
+            AppState.isOtherUserBlocked.collect {
+                _uiState.update { state ->
+                    state.copy(
+                        isUserBlocked = it
+                    )
                 }
+            }
         }
     }
 }

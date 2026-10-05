@@ -11,6 +11,9 @@ object AppState {
     private val _otherUser = MutableStateFlow<User?>(null)
     val otherUser = _otherUser.asStateFlow()
 
+    private val _isOtherUserBlocked = MutableStateFlow(false)
+    val isOtherUserBlocked = _isOtherUserBlocked.asStateFlow()
+
     private val _currentDevice = MutableStateFlow<Device?>(null)
     val currentDevice = _currentDevice.asStateFlow()
 
@@ -49,5 +52,9 @@ object AppState {
 
     fun appInBackground() {
         _isAppInForeground.update { false }
+    }
+
+    fun updateIsOtherUserBlocked(blocklist: List<User>) {
+        _isOtherUserBlocked.update { otherUser.value in blocklist }
     }
 }

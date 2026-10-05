@@ -32,8 +32,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import dev.jason.app.compose.vaultchat.core.AppEvent
-import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.device.Device
 import dev.jason.app.compose.vaultchat.core.model.device.DeviceUi
@@ -79,7 +77,6 @@ internal fun ProfileDialogs(
                     ProfileUiAction.BlockUser(
                         user = user,
                         onFinish = {
-                            AppEvents.sendEvent(AppEvent.NavEvent.NavigateToHomeScreen)
                         }
                     )
                 )
@@ -102,8 +99,6 @@ internal fun ProfileDialogs(
             userDisplayName = user.displayName,
             onConfirmClick = {
                 onAction(ProfileUiAction.UnblockUser(user, onDismiss))
-                onDismiss()
-                AppEvents.sendEvent(AppEvent.NavEvent.NavigateToHomeScreen)
             },
             onDismiss = onDismiss
         )
