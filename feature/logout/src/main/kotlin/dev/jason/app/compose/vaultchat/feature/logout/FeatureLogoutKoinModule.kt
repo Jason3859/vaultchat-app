@@ -5,7 +5,7 @@ import org.koin.core.module.dsl.createdAtStart
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-val FeatureLogoutKoinModule = module {
+val logoutFeatureModule = module {
     singleOf(::LogoutService) { createdAtStart() }
     singleOf(::LogoutRemoteRepoImpl) { bind<LogoutRemoteRepository>() }
 }

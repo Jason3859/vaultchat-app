@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.jason.app.compose.vaultchat.feature.open_links"
+    namespace = "dev.jason.app.compose.vaultchat.feature.openlinks"
     compileSdk {
         version = release(37)
     }

@@ -1,9 +1,9 @@
-package dev.jason.app.compose.vaultchat.feature.open_links
+package dev.jason.app.compose.vaultchat.feature.openlinks
 
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-val OpenLinksFeatureKoinModule = module {
+val openLinksFeatureModule = module {
 
     singleOf(::OpenLinksService)
 }

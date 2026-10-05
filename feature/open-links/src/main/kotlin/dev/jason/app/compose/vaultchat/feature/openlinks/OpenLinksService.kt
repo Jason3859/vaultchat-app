@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.feature.open_links
+package dev.jason.app.compose.vaultchat.feature.openlinks
 
 import android.content.Context
 import android.content.Intent

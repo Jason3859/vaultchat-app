@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.feature.datastore.device_id
+package dev.jason.app.compose.vaultchat.feature.datastore.deviceid
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

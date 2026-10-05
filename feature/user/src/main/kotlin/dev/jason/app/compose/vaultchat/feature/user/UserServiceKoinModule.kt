@@ -4,7 +4,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-val UserServiceKoinModule = module {
+val userFeatureModule = module {
     singleOf(::UserApiService)
     singleOf(::UserApiRepoImpl) { bind<UserApiRepository>() }
 }

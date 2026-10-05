@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.feature.room_db.messages
+package dev.jason.app.compose.vaultchat.feature.roomdb.messages
 
 import androidx.paging.PagingData
 import dev.jason.app.compose.vaultchat.core.model.message.Message

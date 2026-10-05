@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.feature.room_db.messages
+package dev.jason.app.compose.vaultchat.feature.roomdb.messages
 
 import android.content.Context
 import androidx.room.Database
@@ -13,7 +13,7 @@ abstract class MessageDatabase : RoomDatabase() {
     companion object {
         @Volatile
         private var INSTANCE: MessageDatabase? = null
-        
+
         fun getInstance(context: Context): MessageDatabase {
             return INSTANCE ?: Room.databaseBuilder(
                 context = context,

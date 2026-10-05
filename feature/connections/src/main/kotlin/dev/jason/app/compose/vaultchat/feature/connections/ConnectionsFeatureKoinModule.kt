@@ -12,7 +12,7 @@ import org.koin.core.module.dsl.createdAtStart
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-val ConnectionsFeatureKoinModule = module {
+val connectionsFeatureModule = module {
     singleOf(::ConnectionsService) { createdAtStart() }
     singleOf(::ConnectionsDbRepoImpl) { bind<ConnectionsDbRepository>() }
     singleOf(::ConnectionsApiRepoImpl) { bind<ConnectionsApiRepository>() }

@@ -18,8 +18,8 @@ import dev.jason.app.compose.vaultchat.core.model.user.toUser
 import dev.jason.app.compose.vaultchat.feature.blocklist.BlocklistApiService
 import dev.jason.app.compose.vaultchat.feature.connections.ConnectionsService
 import dev.jason.app.compose.vaultchat.feature.messaging.MessagingApiService
-import dev.jason.app.compose.vaultchat.feature.open_links.OpenLinksService
-import dev.jason.app.compose.vaultchat.feature.room_db.messages.MessageDatabaseRepository
+import dev.jason.app.compose.vaultchat.feature.openlinks.OpenLinksService
+import dev.jason.app.compose.vaultchat.feature.roomdb.messages.MessageDatabaseRepository
 import dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.action.MessagingUiAction
 import dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.state.MessagingUiState
 import kotlinx.coroutines.flow.MutableStateFlow
