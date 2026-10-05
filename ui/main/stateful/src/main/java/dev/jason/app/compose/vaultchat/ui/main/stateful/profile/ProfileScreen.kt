@@ -1,13 +1,15 @@
 package dev.jason.app.compose.vaultchat.ui.main.stateful.profile
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.jason.app.compose.vaultchat.core.AppState
-import dev.jason.app.compose.vaultchat.core.model.user.toUi
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import dev.jason.app.compose.vaultchat.core.ui.LoadingIndicator
 import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.component.AbstractProfileScreen
-import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -15,26 +17,26 @@ fun ProfileScreen(
     onBack: () -> Unit
 ) {
     val viewModel: ProfileViewModel = koinViewModel()
+    val uiState by viewModel.uiState.collectAsState()
 
-    val devices by viewModel.devices.collectAsStateWithLifecycle()
-    val blocklist by viewModel.blocklist.collectAsStateWithLifecycle()
-
-    val currentUser by AppState.currentUser.collectAsState()
-    val otherUser by AppState.otherUser.collectAsState()
-
-    if (otherUser == null)
+    if (uiState.user != null) {
         AbstractProfileScreen(
+            uiState = uiState,
             onBack = onBack,
-            user = currentUser?.toUi()!!,
-            devices = devices.toImmutableList(),
-            blocklist = blocklist.toImmutableList(),
             onAction = viewModel::onAction
         )
-    else
-        AbstractProfileScreen(
-            onBack = onBack,
-            user = otherUser?.toUi()!!,
-            isOtherUserBlocked = otherUser?.toUi() in blocklist,
-            onAction = viewModel::onAction
-        )
+    } else {
+        LoadingScreen()
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun LoadingScreen() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        LoadingIndicator()
+    }
 }

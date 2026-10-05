@@ -42,41 +42,37 @@ import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.ui.LoadProfilePicture
 import dev.jason.app.compose.vaultchat.ui.main.stateless.R
 import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.action.ProfileUiAction
-import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileScreenRowItemId
+import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileScreenDialogId
+import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.state.ProfileUiState
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 internal fun ProfileDialogs(
+    uiState: ProfileUiState,
     onBack: () -> Unit,
-    currentDialog: ProfileScreenRowItemId?,
-    onDismiss: () -> Unit,
-    user: UserUi,
-    devices: ImmutableList<DeviceUi>?,
-    blocklist: ImmutableList<UserUi>?,
     onAction: (ProfileUiAction) -> Unit
 ) {
-    when (currentDialog) {
-        ProfileScreenRowItemId.Devices -> devices?.let {
-            DevicesDialog(
-                devices = it,
-                onAction = onAction,
-                onDismiss = onDismiss
-            )
-        }
+    val user = uiState.user!!
+    val onDismiss = { onAction(ProfileUiAction.DismissCurrentDialog) }
 
-        ProfileScreenRowItemId.Blocklist -> blocklist?.let {
-            BlocklistDialog(
-                blocklist = it,
-                onDismiss = onDismiss
-            )
-        }
+    when (uiState.currentDialog) {
+        ProfileScreenDialogId.Devices -> DevicesDialog(
+            devices = uiState.devices,
+            onAction = onAction,
+            onDismiss = onDismiss
+        )
 
-        ProfileScreenRowItemId.Logout -> LogoutDialog(
+        ProfileScreenDialogId.Blocklist -> BlocklistDialog(
+            blocklist = uiState.blocklist,
+            onDismiss = onDismiss
+        )
+
+        ProfileScreenDialogId.Logout -> LogoutDialog(
             onDismiss = onDismiss,
             onAction = onAction
         )
 
-        ProfileScreenRowItemId.BlockUser -> BlockUserDialog(
+        ProfileScreenDialogId.BlockUser -> BlockUserDialog(
             userDisplayName = user.displayName,
             onConfirmClick = {
                 onAction(
@@ -92,7 +88,7 @@ internal fun ProfileDialogs(
             onDismiss = onDismiss
         )
 
-        ProfileScreenRowItemId.DeleteAllMessages -> DeleteMessagesHistoryDialog(
+        ProfileScreenDialogId.DeleteAllMessages -> DeleteMessagesHistoryDialog(
             displayName = user.displayName,
             onDismiss = onDismiss,
             onConfirmClick = {
@@ -102,7 +98,7 @@ internal fun ProfileDialogs(
             }
         )
 
-        ProfileScreenRowItemId.UnblockUser -> UnblockUserDialog(
+        ProfileScreenDialogId.UnblockUser -> UnblockUserDialog(
             userDisplayName = user.displayName,
             onConfirmClick = {
                 onAction(ProfileUiAction.UnblockUser(user, onDismiss))

@@ -54,7 +54,7 @@ private val previewContent = @Composable {
         AbstractHomeScreen(
             isOffline = true,
             selectedUserUid = null,
-            uiState = HomeUiState.asPreview(),
+            uiState = HomeUiState.forPreview(),
             currentUserProfilePictureUrl = "",
             onAction = {},
             onUserClick = { },

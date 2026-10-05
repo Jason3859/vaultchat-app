@@ -11,29 +11,29 @@ import androidx.compose.material.icons.filled.Devices
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileScreenRowItem
-import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileScreenRowItemId
+import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileScreenDialogId
 
 @Composable
 internal fun ProfileScreenActionButtonsRow(
     isOwnProfile: Boolean,
-    onActionClick: (ProfileScreenRowItemId) -> Unit,
+    onActionClick: (ProfileScreenDialogId) -> Unit,
     isOtherUserBlocked: Boolean? = null
 ) {
     val items = if (isOwnProfile) {
         listOf(
             ProfileScreenRowItem(
-                id = ProfileScreenRowItemId.Devices,
-                name = ProfileScreenRowItemId.Devices.toString(),
+                id = ProfileScreenDialogId.Devices,
+                name = ProfileScreenDialogId.Devices.toString(),
                 icon = Icons.Default.Devices
             ),
             ProfileScreenRowItem(
-                id = ProfileScreenRowItemId.Blocklist,
-                name = ProfileScreenRowItemId.Blocklist.toString(),
+                id = ProfileScreenDialogId.Blocklist,
+                name = ProfileScreenDialogId.Blocklist.toString(),
                 icon = Icons.Default.Block
             ),
             ProfileScreenRowItem(
-                id = ProfileScreenRowItemId.Logout,
-                name = ProfileScreenRowItemId.Logout.toString(),
+                id = ProfileScreenDialogId.Logout,
+                name = ProfileScreenDialogId.Logout.toString(),
                 icon = Icons.AutoMirrored.Filled.Logout
             )
         )
@@ -41,19 +41,19 @@ internal fun ProfileScreenActionButtonsRow(
         listOf(
             if (isOtherUserBlocked == true) {
                 ProfileScreenRowItem(
-                    id = ProfileScreenRowItemId.UnblockUser,
+                    id = ProfileScreenDialogId.UnblockUser,
                     name = "Unblock user",
                     icon = Icons.Default.Block
                 )
             } else {
                 ProfileScreenRowItem(
-                    id = ProfileScreenRowItemId.BlockUser,
+                    id = ProfileScreenDialogId.BlockUser,
                     name = "Block user",
                     icon = Icons.Default.Block
                 )
             },
             ProfileScreenRowItem(
-                id = ProfileScreenRowItemId.DeleteAllMessages,
+                id = ProfileScreenDialogId.DeleteAllMessages,
                 name = "Delete all messages",
                 icon = Icons.Default.DeleteForever
             )

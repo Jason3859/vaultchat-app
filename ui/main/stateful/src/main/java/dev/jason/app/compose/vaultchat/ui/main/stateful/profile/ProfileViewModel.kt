@@ -15,6 +15,9 @@ import dev.jason.app.compose.vaultchat.feature.device.DeviceApiService
 import dev.jason.app.compose.vaultchat.feature.logout.LogoutService
 import dev.jason.app.compose.vaultchat.feature.room_db.messages.MessageDatabaseRepository
 import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.action.ProfileUiAction
+import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileScreenDialogId
+import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.state.ProfileUiState
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,95 +33,129 @@ class ProfileViewModel(
     private val messageDatabaseRepository: MessageDatabaseRepository
 ) : ViewModel() {
 
-    private val _devices = MutableStateFlow<List<DeviceUi>>(emptyList())
-    val devices = _devices.asStateFlow()
-        .onStart { fetchDevices() }
+    private val _uiState = MutableStateFlow(ProfileUiState())
+    val uiState = _uiState.asStateFlow()
+        .onStart {
+            fetchBlocklist()
+            fetchDevices()
+        }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
+            started = SharingStarted.WhileSubscribed(2500),
+            initialValue = ProfileUiState()
         )
 
-    private val _blocklist = MutableStateFlow(emptyList<UserUi>())
-    val blocklist = _blocklist.asStateFlow()
-        .onStart { fetchBlocklist() }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
-        )
+    init {
+        loadUserProfile()
+    }
 
     fun onAction(action: ProfileUiAction) {
         when (action) {
-            ProfileUiAction.LogoutCurrentDeviceByClearingMessages -> logoutCurrentDeviceByClearingMessages()
-            ProfileUiAction.LogoutCurrentDeviceWithoutClearingMessages -> logoutCurrentDeviceWithoutClearingMessages()
+            is ProfileUiAction.ShowDialog -> showDialog(action.id)
+            ProfileUiAction.DismissCurrentDialog -> dismissCurrentDialog()
 
-            is ProfileUiAction.LogoutDeviceByClearingMessages -> logoutDeviceByClearingMessages(action.device)
-            is ProfileUiAction.LogoutDeviceWithoutClearingMessages -> logoutDeviceWithoutClearingMessages(action.device)
+            is ProfileUiAction.BlockUser -> blockUser(action.user, action.onFinish)
+            is ProfileUiAction.UnblockUser -> unblockUser(action.user, action.onFinish)
 
-            is ProfileUiAction.BlockUser -> blockUser(action)
-            is ProfileUiAction.UnblockUser -> unblockUser(action)
+            ProfileUiAction.LogoutCurrentDeviceByClearingMessages -> logoutCurrentDevice(clearMessages = true)
+            ProfileUiAction.LogoutCurrentDeviceWithoutClearingMessages -> logoutCurrentDevice(clearMessages = false)
 
-            is ProfileUiAction.DeleteMessagesHistory -> deleteMessagesHistory()
+            is ProfileUiAction.LogoutDeviceByClearingMessages -> logoutDevice(action.device, clearMessages = true)
+            is ProfileUiAction.LogoutDeviceWithoutClearingMessages -> logoutDevice(action.device, clearMessages = false)
+
+            ProfileUiAction.DeleteMessagesHistory -> deleteMessagesHistory()
         }
     }
 
-    private fun logoutDeviceWithoutClearingMessages(device: DeviceUi) {
-        viewModelScope.launch {
-            logoutService.sendLogoutRequest(device.id!!, false)
-        }
+    // Dialog Management
+
+    private fun showDialog(id: ProfileScreenDialogId) {
+        _uiState.update { it.copy(currentDialog = id) }
     }
 
-    private fun logoutDeviceByClearingMessages(device: DeviceUi) {
-        viewModelScope.launch {
-            logoutService.sendLogoutRequest(device.id!!, true)
-        }
+    private fun dismissCurrentDialog() {
+        _uiState.update { it.copy(currentDialog = null) }
     }
 
-    private fun logoutCurrentDeviceWithoutClearingMessages() {
-        viewModelScope.launch {
-            logoutService.logoutCurrentDevice(clearMessages = false)
-        }
-    }
+    // User Profile & Blocklist
 
-    private fun logoutCurrentDeviceByClearingMessages() {
-        viewModelScope.launch {
-            logoutService.logoutCurrentDevice(clearMessages = true)
-        }
-    }
+    private fun loadUserProfile() {
+        val currentUser = AppState.currentUser.value?.toUi()
+        val otherUser = AppState.otherUser.value?.toUi()
+        val isOwnProfile = (otherUser == null)
+        val profileUser = otherUser ?: currentUser ?: return
 
-    private fun fetchDevices() {
-        viewModelScope.launch {
-            val devices = deviceApiService.getDevices()
-            _devices.update { devices.map(Device::toUi) }
+        _uiState.update { state ->
+            state.copy(
+                user = profileUser,
+                isOwnProfile = isOwnProfile
+            )
         }
     }
 
     private fun fetchBlocklist() {
         viewModelScope.launch {
             val blocklist = blocklistApiService.getBlocklist()
-            _blocklist.update { blocklist.map(User::toUi) }
+                .map(User::toUi)
+                .toImmutableList()
+
+            _uiState.update { state ->
+                val isBlocked = blocklist.any { it.uid == state.user?.uid }
+                state.copy(
+                    blocklist = blocklist,
+                    isOtherUserBlocked = isBlocked
+                )
+            }
         }
     }
 
-    private fun blockUser(action: ProfileUiAction.BlockUser) {
+    private fun blockUser(user: UserUi, onFinish: () -> Unit) {
         viewModelScope.launch {
-            blocklistApiService.blockUser(action.user.toUser())
-            action.onFinish.invoke()
+            blocklistApiService.blockUser(user.toUser())
+            fetchBlocklist()
+            onFinish()
         }
     }
 
-    private fun unblockUser(action: ProfileUiAction.UnblockUser) {
+    private fun unblockUser(user: UserUi, onFinish: () -> Unit) {
         viewModelScope.launch {
-            blocklistApiService.unblockUser(action.user.toUser())
-            action.onFinish.invoke()
+            blocklistApiService.unblockUser(user.toUser())
+            fetchBlocklist()
+            onFinish()
         }
     }
+
+    // Device Management & Logout
+
+    private fun fetchDevices() {
+        viewModelScope.launch {
+            val devices = deviceApiService.getDevices()
+                .map(Device::toUi)
+                .toImmutableList()
+
+            _uiState.update { it.copy(devices = devices) }
+        }
+    }
+
+    private fun logoutCurrentDevice(clearMessages: Boolean) {
+        viewModelScope.launch {
+            logoutService.logoutCurrentDevice(clearMessages = clearMessages)
+        }
+    }
+
+    private fun logoutDevice(device: DeviceUi, clearMessages: Boolean) {
+        val deviceId = device.id ?: return
+        viewModelScope.launch {
+            logoutService.sendLogoutRequest(deviceId, clearMessages)
+        }
+    }
+
+    // Message History
 
     private fun deleteMessagesHistory() {
         viewModelScope.launch {
-            val currentUser = AppState.currentUser.value!!
-            val otherUser = AppState.otherUser.value!!
+            val currentUser = AppState.currentUser.value ?: return@launch
+            val otherUser = AppState.otherUser.value ?: return@launch
 
             messageDatabaseRepository.deleteMessageHistory(currentUser.uid, otherUser.uid)
         }

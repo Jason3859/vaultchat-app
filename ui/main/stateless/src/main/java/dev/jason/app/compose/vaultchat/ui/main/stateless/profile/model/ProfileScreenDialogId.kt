@@ -1,6 +1,6 @@
 package dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model
 
-internal enum class ProfileScreenRowItemId {
+enum class ProfileScreenDialogId {
     Devices, Blocklist, Logout,
     BlockUser, UnblockUser, DeleteAllMessages
 }
