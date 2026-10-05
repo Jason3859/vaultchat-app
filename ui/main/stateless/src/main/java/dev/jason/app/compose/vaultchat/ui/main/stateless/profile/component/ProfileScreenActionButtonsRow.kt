@@ -10,6 +10,8 @@ import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Devices
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import dev.jason.app.compose.vaultchat.ui.main.stateless.R
 import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileScreenRowItem
 import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileScreenDialogId
 
@@ -23,17 +25,17 @@ internal fun ProfileScreenActionButtonsRow(
         listOf(
             ProfileScreenRowItem(
                 id = ProfileScreenDialogId.Devices,
-                name = ProfileScreenDialogId.Devices.toString(),
+                name = stringResource(R.string.your_devices),
                 icon = Icons.Default.Devices
             ),
             ProfileScreenRowItem(
                 id = ProfileScreenDialogId.Blocklist,
-                name = ProfileScreenDialogId.Blocklist.toString(),
+                name = stringResource(R.string.blocklist),
                 icon = Icons.Default.Block
             ),
             ProfileScreenRowItem(
                 id = ProfileScreenDialogId.Logout,
-                name = ProfileScreenDialogId.Logout.toString(),
+                name = stringResource(R.string.logout),
                 icon = Icons.AutoMirrored.Filled.Logout
             )
         )
@@ -42,19 +44,19 @@ internal fun ProfileScreenActionButtonsRow(
             if (isOtherUserBlocked == true) {
                 ProfileScreenRowItem(
                     id = ProfileScreenDialogId.UnblockUser,
-                    name = "Unblock user",
+                    name = stringResource(R.string.unblock),
                     icon = Icons.Default.Block
                 )
             } else {
                 ProfileScreenRowItem(
                     id = ProfileScreenDialogId.BlockUser,
-                    name = "Block user",
+                    name = stringResource(R.string.block),
                     icon = Icons.Default.Block
                 )
             },
             ProfileScreenRowItem(
-                id = ProfileScreenDialogId.DeleteAllMessages,
-                name = "Delete all messages",
+                id = ProfileScreenDialogId.ClearChat,
+                name = stringResource(R.string.clear_chat),
                 icon = Icons.Default.DeleteForever
             )
         )

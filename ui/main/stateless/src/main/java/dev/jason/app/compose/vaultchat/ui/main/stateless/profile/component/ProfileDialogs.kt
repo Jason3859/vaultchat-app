@@ -88,7 +88,7 @@ internal fun ProfileDialogs(
             onDismiss = onDismiss
         )
 
-        ProfileScreenDialogId.DeleteAllMessages -> DeleteMessagesHistoryDialog(
+        ProfileScreenDialogId.ClearChat -> DeleteMessagesHistoryDialog(
             displayName = user.displayName,
             onDismiss = onDismiss,
             onConfirmClick = {
@@ -121,8 +121,8 @@ fun DeleteMessagesHistoryDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.delete_all_messages_warning_title, displayName)) },
-        text = { Text(stringResource(R.string.delete_all_messages_warning_text)) },
+        title = { Text(stringResource(R.string.clear_chat_warning_title, displayName)) },
+        text = { Text(stringResource(R.string.clear_chat_warning_text, displayName)) },
         confirmButton = {
             TextButton(
                 onClick = onConfirmClick,
@@ -130,7 +130,7 @@ fun DeleteMessagesHistoryDialog(
                     contentColor = MaterialTheme.colorScheme.error
                 )
             ) {
-                Text(stringResource(R.string.delete_all_messages))
+                Text(stringResource(R.string.clear_chat))
             }
         },
         dismissButton = {

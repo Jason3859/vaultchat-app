@@ -6,6 +6,7 @@
 
     <string name="search_for_users">Search for users</string>
     <string name="your_devices">Your devices</string>
+    <string name="blocklist">Blocklist</string>
 
     <string name="logout">Logout</string>
     <string name="cancel">Cancel</string>
@@ -23,15 +24,15 @@
 
     <string name="block">Block</string>
     <string name="block_user_warning_title">Do you want to block %1$s?</string>
-    <string name="block_user_warning_text">You can always unblock by going to your profile and clicking the user name in blocklist section</string>
+    <string name="block_user_warning_text">You will not be able to send and receive messages from this user.</string>
 
     <string name="unblock">Unblock</string>
     <string name="unblock_user_warning_title">Do you want to unblock %1$s?</string>
     <string name="unblock_user_warning_text">You will continue sending and receiving messages from this user</string>
 
-    <string name="delete_all_messages_warning_text">Messages will be lost forever. This action cannot be undone</string>
-    <string name="delete_all_messages_warning_title">Do you want to delete all messages of conversation with %1$s?</string>
+    <string name="clear_chat">Clear chat</string>
+    <string name="clear_chat_warning_title">Do you want to delete all messages of conversation with %1$s?</string>
+    <string name="clear_chat_warning_text">Messages will be lost forever. This action cannot be undone. %1$s might still be having messages on their device</string>
 
-    <string name="delete_all_messages">Delete all messages</string>
     <string name="user_blocked_warning">You have blocked this user</string>
 </resources>

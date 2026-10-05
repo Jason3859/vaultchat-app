@@ -20,8 +20,7 @@ data class UserUi(
     override fun equals(other: Any?): Boolean {
         if (other == null) return false
         if (other !is UserUi) return false
-        if (this.uid != other.uid) return false
-        return true
+        return this.uid == other.uid
     }
 
     override fun hashCode(): Int {

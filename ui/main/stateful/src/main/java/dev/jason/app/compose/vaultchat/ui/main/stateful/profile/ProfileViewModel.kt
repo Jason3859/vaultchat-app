@@ -100,7 +100,7 @@ class ProfileViewModel(
                 .toImmutableList()
 
             _uiState.update { state ->
-                val isBlocked = blocklist.any { it.uid == state.user?.uid }
+                val isBlocked = state.user in blocklist
                 state.copy(
                     blocklist = blocklist,
                     isOtherUserBlocked = isBlocked
