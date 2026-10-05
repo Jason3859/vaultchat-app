@@ -65,9 +65,12 @@ class MessagingViewModel(
 
     private fun updateState(state: (MessagingUiState) -> MessagingUiState) {
         _uiState.update {
-            state(it).copy(
-                sendButtonEnabled = it.messageText.isNotBlank()
-            )
+            state(it).let { newState ->
+                newState.copy(
+                    messageText = newState.messageText.trim(),
+                    sendButtonEnabled = newState.messageText.isNotBlank()
+                )
+            }
         }
     }
 
