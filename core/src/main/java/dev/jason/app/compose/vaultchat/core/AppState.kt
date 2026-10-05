@@ -4,9 +4,17 @@ import dev.jason.app.compose.vaultchat.core.model.device.Device
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 
+/**
+ * Global application state holder managing user sessions, device information,
+ * and app visibility/connectivity state.
+ */
 object AppState {
+
+    // --- User State ---
+
+    private val _currentUser = MutableStateFlow<User?>(null)
+    val currentUser = _currentUser.asStateFlow()
 
     private val _otherUser = MutableStateFlow<User?>(null)
     val otherUser = _otherUser.asStateFlow()
@@ -14,11 +22,12 @@ object AppState {
     private val _isOtherUserBlocked = MutableStateFlow(false)
     val isOtherUserBlocked = _isOtherUserBlocked.asStateFlow()
 
+    // --- Device State ---
+
     private val _currentDevice = MutableStateFlow<Device?>(null)
     val currentDevice = _currentDevice.asStateFlow()
 
-    private val _currentUser = MutableStateFlow<User?>(null)
-    val currentUser = _currentUser.asStateFlow()
+    // --- Connectivity & App Lifecycle State ---
 
     private val _isOnline = MutableStateFlow(true)
     val isOnline = _isOnline.asStateFlow()
@@ -26,35 +35,38 @@ object AppState {
     private val _isAppInForeground = MutableStateFlow(false)
     val isAppInForeground = _isAppInForeground.asStateFlow()
 
+    // --- State Mutators ---
+
+    fun updateCurrentUser(user: User?) {
+        _currentUser.value = user
+    }
+
     fun updateOtherUser(user: User?) {
-        _otherUser.update { user }
-    }
-
-    fun updateCurrentDevice(device: Device) {
-        _currentDevice.update { device }
-    }
-
-    fun updateCurrentUser(user: User) {
-        _currentUser.update { user }
-    }
-
-    fun deviceOnline() {
-        _isOnline.update { true }
-    }
-
-    fun deviceOffline() {
-        _isOnline.update { false }
-    }
-
-    fun appInForeground() {
-        _isAppInForeground.update { true }
-    }
-
-    fun appInBackground() {
-        _isAppInForeground.update { false }
+        _otherUser.value = user
     }
 
     fun updateIsOtherUserBlocked(blocklist: List<User>) {
-        _isOtherUserBlocked.update { otherUser.value in blocklist }
+        val activeOtherUser = _otherUser.value
+        _isOtherUserBlocked.value = activeOtherUser != null && activeOtherUser in blocklist
+    }
+
+    fun updateCurrentDevice(device: Device?) {
+        _currentDevice.value = device
+    }
+
+    fun deviceOnline() {
+        _isOnline.value = true
+    }
+
+    fun deviceOffline() {
+        _isOnline.value = false
+    }
+
+    fun appInForeground() {
+        _isAppInForeground.value = true
+    }
+
+    fun appInBackground() {
+        _isAppInForeground.value = false
     }
 }
