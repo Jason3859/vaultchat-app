@@ -36,6 +36,7 @@ include(":main")
 include(":share")
 
 include(":feature")
+include(":feature:profile")
 include(":feature:logout")
 include(":feature:device")
 include(":feature:connections")
