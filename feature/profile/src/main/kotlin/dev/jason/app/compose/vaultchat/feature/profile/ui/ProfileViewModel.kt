@@ -2,6 +2,8 @@ package dev.jason.app.compose.vaultchat.feature.profile.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.jason.app.compose.vaultchat.core.AppEvent
+import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.device.Device
 import dev.jason.app.compose.vaultchat.core.model.device.DeviceUi
@@ -10,7 +12,6 @@ import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUser
-import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessageDatabaseRepository
 import dev.jason.app.compose.vaultchat.feature.profile.domain.BlocklistApiRepository
 import dev.jason.app.compose.vaultchat.feature.profile.domain.DeviceApiRepository
 import dev.jason.app.compose.vaultchat.feature.profile.domain.LogoutService
@@ -26,8 +27,7 @@ import kotlinx.coroutines.launch
 class ProfileViewModel(
     private val logoutService: LogoutService,
     private val deviceApiRepository: DeviceApiRepository,
-    private val blocklistApiRepository: BlocklistApiRepository,
-    private val messageDatabaseRepository: MessageDatabaseRepository
+    private val blocklistApiRepository: BlocklistApiRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProfileUiState())
@@ -163,7 +163,7 @@ class ProfileViewModel(
             val currentUser = AppState.currentUser.value ?: return@launch
             val otherUser = AppState.otherUser.value ?: return@launch
 
-            messageDatabaseRepository.deleteMessageHistory(currentUser.uid, otherUser.uid)
+            AppEvents.sendEvent(AppEvent.ClearChat(currentUser.uid, otherUser.uid))
         }
     }
 }

@@ -22,11 +22,12 @@ sealed interface AppEvent {
     data class UpdateConnectionStatus(val uid: String, val status: User.Status) : AppEvent
 
     data class AddMessage(val message: Message) : AppEvent
+
+    data class ClearChat(val currentUserUid: String, val otherUserUid: String) : AppEvent
+
     data object DeleteAllMessages : AppEvent
 
     data object ReFetchConnections : AppEvent
-
-    data class SaveCurrentDeviceId(val deviceId: String) : AppEvent
 
     data class LogoutCurrentDevice(val clearMessages: Boolean) : AppEvent
 

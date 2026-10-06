@@ -31,6 +31,9 @@ dependencies {
     implementation(platform(libs.ktor.bom))
     implementation(libs.bundles.remote.communication)
 
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidx.compose)
     implementation(libs.bundles.androidx.navigation3)

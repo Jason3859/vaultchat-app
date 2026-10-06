@@ -69,6 +69,7 @@ class MessageDatabaseRepoImpl(private val dao: MessageDao) : MessageDatabaseRepo
                 when (event) {
                     is AppEvent.AddMessage -> addMessage(event.message)
                     is AppEvent.DeleteAllMessages -> deleteAllMessages()
+                    is AppEvent.ClearChat -> deleteMessageHistory(event.currentUserUid, event.otherUserUid)
                     else -> {}
                 }
             }
