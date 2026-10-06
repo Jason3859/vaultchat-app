@@ -26,10 +26,7 @@ dependencies {
 
     implementation(projects.ui.main.stateless)
 
-    implementation(projects.feature.blocklist)
     implementation(projects.feature.connections)
-    implementation(projects.feature.device)
-    implementation(projects.feature.logout)
     implementation(projects.feature.messaging)
     implementation(projects.feature.user)
 

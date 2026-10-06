@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.feature.logout
+package dev.jason.app.compose.vaultchat.feature.profile.domain
 
 interface LogoutRemoteRepository {
 

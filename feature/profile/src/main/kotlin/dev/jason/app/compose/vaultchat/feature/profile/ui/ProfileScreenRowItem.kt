@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model
+package dev.jason.app.compose.vaultchat.feature.profile.ui
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

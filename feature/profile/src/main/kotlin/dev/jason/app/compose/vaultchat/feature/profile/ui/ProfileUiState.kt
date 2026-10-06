@@ -1,8 +1,7 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateless.profile.state
+package dev.jason.app.compose.vaultchat.feature.profile.ui
 
 import dev.jason.app.compose.vaultchat.core.model.device.DeviceUi
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
-import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileScreenDialogId
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 

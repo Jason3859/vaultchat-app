@@ -1,8 +1,6 @@
-package dev.jason.app.compose.vaultchat.feature.logout
+package dev.jason.app.compose.vaultchat.feature.profile.domain
 
 import android.util.Log
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import dev.jason.app.compose.vaultchat.core.AppEvent
 import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.ToastController

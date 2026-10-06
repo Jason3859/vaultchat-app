@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateless.profile.component
+package dev.jason.app.compose.vaultchat.feature.profile.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.jason.app.compose.vaultchat.ui.main.stateless.R
-import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileScreenRowItem
 import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileScreenDialogId
 
 @Composable

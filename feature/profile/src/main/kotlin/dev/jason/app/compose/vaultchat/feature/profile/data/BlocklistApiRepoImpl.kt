@@ -1,10 +1,11 @@
-package dev.jason.app.compose.vaultchat.feature.blocklist
+package dev.jason.app.compose.vaultchat.feature.profile.data
 
-import dev.jason.app.compose.vaultchat.core.AppConstants.BASE_HTTP_URL
+import dev.jason.app.compose.vaultchat.core.AppConstants
 import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.model.user.UserDto
 import dev.jason.app.compose.vaultchat.core.model.user.toUser
+import dev.jason.app.compose.vaultchat.feature.profile.domain.BlocklistApiRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -16,7 +17,7 @@ class BlocklistApiRepoImpl(private val client: HttpClient) : BlocklistApiReposit
     private val currentUserUid by lazy { AppState.currentUser.value?.uid!! }
 
     override suspend fun getBlocklist(): List<User> {
-        val response = client.get("$BASE_HTTP_URL/social/blocked-users") {
+        val response = client.get("${AppConstants.BASE_HTTP_URL}/social/blocked-users") {
             parameter("uid", currentUserUid)
         }
 
@@ -24,14 +25,14 @@ class BlocklistApiRepoImpl(private val client: HttpClient) : BlocklistApiReposit
     }
 
     override suspend fun blockUser(user: User) {
-        client.patch("$BASE_HTTP_URL/social/block") {
+        client.patch("${AppConstants.BASE_HTTP_URL}/social/block") {
             parameter("from_uid", currentUserUid)
             parameter("other_uid", user.uid)
         }
     }
 
     override suspend fun unblockUser(user: User) {
-        client.patch("$BASE_HTTP_URL/social/unblock") {
+        client.patch("${AppConstants.BASE_HTTP_URL}/social/unblock") {
             parameter("from_uid", currentUserUid)
             parameter("other_uid", user.uid)
         }

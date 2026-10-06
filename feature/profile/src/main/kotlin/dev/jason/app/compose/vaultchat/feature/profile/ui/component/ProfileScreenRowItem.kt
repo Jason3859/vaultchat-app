@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateless.profile.component
+package dev.jason.app.compose.vaultchat.feature.profile.ui.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.shape.RoundedCornerShape

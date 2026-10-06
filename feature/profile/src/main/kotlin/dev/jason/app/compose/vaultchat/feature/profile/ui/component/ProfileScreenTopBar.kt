@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateless.profile.component
+package dev.jason.app.compose.vaultchat.feature.profile.ui.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack

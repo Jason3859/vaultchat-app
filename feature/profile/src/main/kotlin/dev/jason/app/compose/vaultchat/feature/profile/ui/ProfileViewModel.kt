@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateful.profile
+package dev.jason.app.compose.vaultchat.feature.profile.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,13 +10,10 @@ import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUser
-import dev.jason.app.compose.vaultchat.feature.blocklist.BlocklistApiService
-import dev.jason.app.compose.vaultchat.feature.device.DeviceApiService
-import dev.jason.app.compose.vaultchat.feature.logout.LogoutService
 import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessageDatabaseRepository
-import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.action.ProfileUiAction
-import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileScreenDialogId
-import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.state.ProfileUiState
+import dev.jason.app.compose.vaultchat.feature.profile.domain.BlocklistApiRepository
+import dev.jason.app.compose.vaultchat.feature.profile.domain.DeviceApiRepository
+import dev.jason.app.compose.vaultchat.feature.profile.domain.LogoutService
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -28,8 +25,8 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val logoutService: LogoutService,
-    private val deviceApiService: DeviceApiService,
-    private val blocklistApiService: BlocklistApiService,
+    private val deviceApiRepository: DeviceApiRepository,
+    private val blocklistApiRepository: BlocklistApiRepository,
     private val messageDatabaseRepository: MessageDatabaseRepository
 ) : ViewModel() {
 
@@ -105,7 +102,7 @@ class ProfileViewModel(
 
     private fun fetchBlocklist() {
         viewModelScope.launch {
-            val blocklist = blocklistApiService.getBlocklist()
+            val blocklist = blocklistApiRepository.getBlocklist()
                 .map(User::toUi)
                 .toImmutableList()
 
@@ -120,7 +117,7 @@ class ProfileViewModel(
 
     private fun blockUser(user: UserUi, onFinish: () -> Unit) {
         viewModelScope.launch {
-            blocklistApiService.blockUser(user.toUser())
+            blocklistApiRepository.blockUser(user.toUser())
             fetchBlocklist()
             onFinish()
         }
@@ -128,7 +125,7 @@ class ProfileViewModel(
 
     private fun unblockUser(user: UserUi, onFinish: () -> Unit) {
         viewModelScope.launch {
-            blocklistApiService.unblockUser(user.toUser())
+            blocklistApiRepository.unblockUser(user.toUser())
             fetchBlocklist()
             onFinish()
         }
@@ -138,7 +135,7 @@ class ProfileViewModel(
 
     private fun fetchDevices() {
         viewModelScope.launch {
-            val devices = deviceApiService.getDevices()
+            val devices = deviceApiRepository.getDevices()
                 .map(Device::toUi)
                 .toImmutableList()
 

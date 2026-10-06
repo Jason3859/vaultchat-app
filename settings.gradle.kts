@@ -37,12 +37,9 @@ include(":share")
 
 include(":feature")
 include(":feature:profile")
-include(":feature:logout")
-include(":feature:device")
 include(":feature:connections")
 include(":feature:user")
 include(":feature:messaging")
-include(":feature:blocklist")
 include(":feature:auth")
 
 include(":ui")

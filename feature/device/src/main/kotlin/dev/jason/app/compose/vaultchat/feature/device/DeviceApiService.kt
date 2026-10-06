@@ -27,21 +27,4 @@ class DeviceApiService(private val repository: DeviceApiRepository, private val 
             emptyList()
         }
     }
-
-    init {
-        coroutineScope.launch {
-            val currentUser = AppState.currentUser.value!!
-            val currentDevice = AppState.currentDevice.value!!
-
-            client.get("$BASE_HTTP_URL/device/marked-for-logout?uid=${currentUser.uid}")
-                .let { response ->
-                    response.body<List<Map<String, String>>>()
-                        .firstOrNull { it["device_id"] == currentDevice.id }
-                        ?.let { map ->
-                            val clearMessages = map["clear_messages"]?.toBoolean()!!
-                            AppEvents.sendEvent(AppEvent.LogoutCurrentDevice(clearMessages))
-                        }
-                }
-        }
-    }
 }

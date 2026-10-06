@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateful.profile
+package dev.jason.app.compose.vaultchat.feature.profile.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dev.jason.app.compose.vaultchat.core.ui.LoadingIndicator
+import dev.jason.app.compose.vaultchat.feature.profile.ui.component.AbstractProfileScreen
 import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.component.AbstractProfileScreen
 import org.koin.androidx.compose.koinViewModel
 
