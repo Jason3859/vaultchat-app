@@ -1,5 +1,6 @@
 package dev.jason.app.compose.vaultchat.main.ui
 
+import dev.jason.app.compose.vaultchat.core.AppConstants.defaultUsers
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

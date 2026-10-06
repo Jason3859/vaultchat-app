@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
-import dev.jason.app.compose.vaultchat.ui.main.stateless.R
+import dev.jason.app.compose.vaultchat.main.R
 import dev.jason.app.compose.vaultchat.main.ui.HomeUiState
 
 @Composable

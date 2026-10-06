@@ -6,6 +6,7 @@ import dev.jason.app.compose.vaultchat.feature.messaging.data.local.MessageDatab
 import dev.jason.app.compose.vaultchat.feature.messaging.data.remote.MessagingApiRepoImpl
 import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessageDatabaseRepository
 import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessagingApiRepository
+import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessagingService
 import dev.jason.app.compose.vaultchat.feature.messaging.ui.MessagingViewModel
 import io.ktor.client.HttpClient
 import org.hildan.krossbow.stomp.StompClient
@@ -35,4 +36,6 @@ val messagingFeatureModule = module {
     }
 
     viewModelOf(::MessagingViewModel)
+
+    singleOf(::MessagingService) { createdAtStart() }
 }

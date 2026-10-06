@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
-import dev.jason.app.compose.vaultchat.ui.main.stateless.R
+import dev.jason.app.compose.vaultchat.main.R
 import dev.jason.app.compose.vaultchat.main.ui.HomeUiAction
 import dev.jason.app.compose.vaultchat.main.ui.HomeUiState
 import kotlinx.collections.immutable.persistentListOf

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_users_found">No users found</string>
+    <string name="no_recent_connections">No recent connections</string>
+    <string name="search_for_users">Search for users</string>
+</resources>

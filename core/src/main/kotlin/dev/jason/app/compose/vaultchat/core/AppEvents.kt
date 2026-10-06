@@ -33,6 +33,8 @@ sealed interface AppEvent {
 
     data object RestartApp : AppEvent
 
+    data object FetchAndAddMessagesToDatabase : AppEvent
+
     data class ShowNotification(
         val title: String,
         val content: String,

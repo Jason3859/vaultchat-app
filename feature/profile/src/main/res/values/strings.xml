@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="no_users_found">No users found</string>
+
     <string name="no_recent_connections">No recent connections</string>
     <string name="no_blocked_users">No blocked users</string>
 
-    <string name="search_for_users">Search for users</string>
     <string name="your_devices">Your devices</string>
     <string name="blocklist">Blocklist</string>
 

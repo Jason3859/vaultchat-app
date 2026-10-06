@@ -2,15 +2,15 @@ package dev.jason.app.compose.vaultchat.main.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.jason.app.compose.vaultchat.core.AppEvent
+import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUi
-import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessageDatabaseRepository
 import dev.jason.app.compose.vaultchat.main.domain.ConnectionsService
 import dev.jason.app.compose.vaultchat.main.domain.UserApiRepository
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,9 +21,7 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val userApiRepository: UserApiRepository,
-    private val connectionsService: ConnectionsService,
-    private val messageDatabaseRepository: MessageDatabaseRepository,
-    private val messagingApiService: MessagingApiService
+    private val connectionsService: ConnectionsService
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -75,21 +73,9 @@ class HomeViewModel(
         }
     }
 
-    private suspend fun fetchAndAddMessagesToDatabase() {
-        _uiState.update { it.copy(isLoading = true) }
-
-        val localMessages = messageDatabaseRepository.getAllMessages()
-        val fetchedMessages = messagingApiService.fetchMessages()
-        val newMessages = fetchedMessages.filter { it !in localMessages }
-
-        messageDatabaseRepository.addMessages(newMessages)
-
-        _uiState.update { it.copy(isLoading = false) }
-    }
-
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            fetchAndAddMessagesToDatabase()
+        viewModelScope.launch {
+            AppEvents.sendEvent(AppEvent.FetchAndAddMessagesToDatabase)
         }
     }
 }
