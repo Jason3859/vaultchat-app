@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.jason.app.compose.vaultchat.core.model.message.MessageUi
-import dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.action.MessagingUiAction
-import dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.model.MessageStatus
+import dev.jason.app.compose.vaultchat.feature.messaging.ui.MessageStatus
+import dev.jason.app.compose.vaultchat.feature.messaging.ui.MessagingUiAction
 
 @Composable
 internal fun MessageItem(

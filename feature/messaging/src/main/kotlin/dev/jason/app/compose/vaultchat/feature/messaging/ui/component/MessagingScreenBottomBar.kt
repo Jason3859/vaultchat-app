@@ -26,9 +26,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import dev.jason.app.compose.vaultchat.ui.main.stateless.R
-import dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.action.MessagingUiAction
-import dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.state.MessagingUiState
+import dev.jason.app.compose.vaultchat.feature.messaging.R
+import dev.jason.app.compose.vaultchat.feature.messaging.ui.MessagingUiAction
+import dev.jason.app.compose.vaultchat.feature.messaging.ui.MessagingUiState
 
 @Composable
 internal fun MessagingScreenBottomBar(

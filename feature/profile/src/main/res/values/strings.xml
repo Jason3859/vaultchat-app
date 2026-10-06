@@ -33,6 +33,4 @@
     <string name="clear_chat">Clear chat</string>
     <string name="clear_chat_warning_title">Do you want to delete all messages of conversation with %1$s?</string>
     <string name="clear_chat_warning_text">Messages will be lost forever. This action cannot be undone. %1$s might still be having messages on their device</string>
-
-    <string name="user_blocked_warning">You have blocked this user</string>
 </resources>

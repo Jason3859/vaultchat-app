@@ -15,8 +15,9 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import dev.jason.app.compose.vaultchat.core.model.message.MessageUi
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
-import dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.action.MessagingUiAction
-import dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.model.MessageStatus
+import dev.jason.app.compose.vaultchat.feature.messaging.ui.MessagePagingState
+import dev.jason.app.compose.vaultchat.feature.messaging.ui.MessageStatus
+import dev.jason.app.compose.vaultchat.feature.messaging.ui.MessagingUiAction
 import kotlinx.collections.immutable.ImmutableList
 
 

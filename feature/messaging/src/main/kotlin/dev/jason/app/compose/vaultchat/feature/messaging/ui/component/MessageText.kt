@@ -8,7 +8,7 @@ import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
-import dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.action.MessagingUiAction
+import dev.jason.app.compose.vaultchat.feature.messaging.ui.MessagingUiAction
 
 @Composable
 internal fun MessageText(text: String, onAction: (MessagingUiAction) -> Unit) {

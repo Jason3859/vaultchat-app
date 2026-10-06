@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="user_blocked_warning">You have blocked this user</string>
+</resources>

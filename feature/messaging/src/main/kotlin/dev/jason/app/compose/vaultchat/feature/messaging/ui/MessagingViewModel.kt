@@ -6,17 +6,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
-import dev.jason.app.compose.vaultchat.core.AppEvent
-import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.message.Message
 import dev.jason.app.compose.vaultchat.core.model.message.MessageUi
 import dev.jason.app.compose.vaultchat.core.model.message.toUi
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
-import dev.jason.app.compose.vaultchat.core.model.user.toUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUser
 import dev.jason.app.compose.vaultchat.core.utils.OpenLinksService
 import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessageDatabaseRepository
+import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessagingApiRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
@@ -26,10 +24,8 @@ import java.time.LocalDateTime
 
 class MessagingViewModel(
     otherUser: UserUi,
-    private val blocklistApiService: BlocklistApiService,
-    private val connectionsService: ConnectionsService,
     private val messageDatabaseRepository: MessageDatabaseRepository,
-    private val messagingApiService: MessagingApiService,
+    private val messagingApiService: MessagingApiRepository,
     private val openLinksService: OpenLinksService
 ) : ViewModel() {
 
@@ -93,14 +89,6 @@ class MessagingViewModel(
                 .onSuccess {
                     _pendingMessages.remove(messageUi)
                 }
-
-            // value of `otherUserFromConstructor` will be `UserUi.emptyUser()` only
-            // if the other user is not connected to current user
-            // if the user sent a message means that the 2 users are connected
-            // so, refetch connections for this
-            if (otherUser.displayName != "null") {
-                AppEvents.sendEvent(AppEvent.ReFetchConnections)
-            }
         }
     }
 
@@ -108,22 +96,10 @@ class MessagingViewModel(
         openLinksService.open(url)
     }
 
-    private fun UserUi.isConnected() = displayName == "null"
-
     init {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
-
-            if (otherUser.isConnected()) {
-                val user = connectionsService.getConnection(otherUser.uid)
-                _otherUser.update { user?.toUi() }
-                _uiState.update { it.copy(isLoading = false) }
-            } else {
-                _otherUser.update { otherUser }
-                _uiState.update { it.copy(isLoading = false) }
-            }
-
-            AppState.updateOtherUser(_otherUser.value?.toUser())
+            _otherUser.update { otherUser }
+            AppState.updateOtherUser(otherUser.toUser())
         }
 
         viewModelScope.launch {
@@ -137,11 +113,6 @@ class MessagingViewModel(
                 .collect { data ->
                     _messages.value = data
                 }
-        }
-
-        viewModelScope.launch {
-            blocklistApiService.getBlocklist()
-                .let(AppState::updateIsOtherUserBlocked)
         }
 
         viewModelScope.launch {
