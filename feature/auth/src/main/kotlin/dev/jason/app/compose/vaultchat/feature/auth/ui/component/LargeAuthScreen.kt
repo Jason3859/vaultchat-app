@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
+import dev.jason.app.compose.vaultchat.feature.auth.R
 
 @Composable
 internal fun LargeAuthScreen(

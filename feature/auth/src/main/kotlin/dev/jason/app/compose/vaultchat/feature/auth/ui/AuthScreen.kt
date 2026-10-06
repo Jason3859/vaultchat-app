@@ -10,12 +10,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
+import dev.jason.app.compose.vaultchat.core.ui.DeviceType
 import dev.jason.app.compose.vaultchat.core.ui.LoadingIndicator
-import dev.jason.app.compose.vaultchat.feature.auth.ui.component.AbstractAuthScreen
+import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
+import dev.jason.app.compose.vaultchat.feature.auth.R
+import dev.jason.app.compose.vaultchat.feature.auth.ui.component.CompactAuthScreen
+import dev.jason.app.compose.vaultchat.feature.auth.ui.component.LargeAuthScreen
+import dev.jason.app.compose.vaultchat.feature.auth.ui.component.MediumAuthScreen
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -30,7 +36,7 @@ fun AuthScreen(onAuthSuccess: () -> Unit) {
         onBack = { backStack.removeLastOrNull() },
         entryProvider = entryProvider {
             entry(AuthRoute.AUTH) {
-                AbstractAuthScreen(
+                AuthScreen(
                     onSignInClick = {
                         authViewModel.register(context, onAuthSuccess)
                     }
@@ -52,4 +58,31 @@ fun AuthScreen(onAuthSuccess: () -> Unit) {
             }
         }
     )
+}
+
+@Composable
+fun AuthScreen(
+    onSignInClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val deviceType = DeviceType.rememberWindowSize()
+
+    when (deviceType) {
+        is DeviceType.Compact -> CompactAuthScreen(onSignInClick, modifier)
+        is DeviceType.Medium -> MediumAuthScreen(onSignInClick, modifier)
+        is DeviceType.Foldable -> LargeAuthScreen(onSignInClick, modifier)
+        is DeviceType.Expanded -> LargeAuthScreen(onSignInClick, modifier)
+        is DeviceType.Large -> LargeAuthScreen(onSignInClick, modifier)
+        is DeviceType.ExtraLarge -> LargeAuthScreen(onSignInClick, modifier)
+    }
+}
+
+@PreviewScreenSizes
+@Composable
+private fun AuthScreenPreview() {
+    VaultChatTheme {
+        AuthScreen(
+            onSignInClick = {}
+        )
+    }
 }
