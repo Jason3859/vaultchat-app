@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.state
+package dev.jason.app.compose.vaultchat.feature.messaging.ui
 
 data class MessagingUiState(
     val messageText: String = "",

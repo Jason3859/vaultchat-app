@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateful.messaging
+package dev.jason.app.compose.vaultchat.feature.messaging.ui
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
@@ -15,13 +15,8 @@ import dev.jason.app.compose.vaultchat.core.model.message.toUi
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUser
-import dev.jason.app.compose.vaultchat.feature.blocklist.BlocklistApiService
-import dev.jason.app.compose.vaultchat.feature.connections.ConnectionsService
-import dev.jason.app.compose.vaultchat.feature.messaging.MessagingApiService
 import dev.jason.app.compose.vaultchat.core.utils.OpenLinksService
-import dev.jason.app.compose.vaultchat.feature.roomdb.messages.MessageDatabaseRepository
-import dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.action.MessagingUiAction
-import dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.state.MessagingUiState
+import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessageDatabaseRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
@@ -46,7 +41,7 @@ class MessagingViewModel(
     private val _otherUser = MutableStateFlow<UserUi?>(null)
     val otherUser = _otherUser.asStateFlow()
 
-    private val _messages = MutableStateFlow<PagingData<MessageUi>>(PagingData.empty())
+    private val _messages = MutableStateFlow<PagingData<MessageUi>>(PagingData.Companion.empty())
     val messages = _messages.asStateFlow()
 
     private val _pendingMessages = mutableStateListOf<MessageUi>()

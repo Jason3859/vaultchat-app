@@ -48,7 +48,6 @@ dependencies {
     implementation(projects.feature.user)
     implementation(projects.feature.messaging)
     implementation(projects.feature.blocklist)
-    implementation(projects.feature.localStorage.roomDb)
 
     implementation(projects.ui.main.stateless)
     implementation(projects.ui.main.stateful)

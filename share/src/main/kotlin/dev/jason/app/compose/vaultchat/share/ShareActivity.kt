@@ -43,8 +43,7 @@ import dev.jason.app.compose.vaultchat.core.model.user.toUser
 import dev.jason.app.compose.vaultchat.core.ui.LoadProfilePicture
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
 import dev.jason.app.compose.vaultchat.feature.connections.ConnectionsService
-import dev.jason.app.compose.vaultchat.feature.messaging.MessagingApiService
-import dev.jason.app.compose.vaultchat.feature.roomdb.messages.MessageDatabaseRepository
+import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessageDatabaseRepository
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch

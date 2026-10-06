@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.feature.roomdb.messages
+package dev.jason.app.compose.vaultchat.feature.messaging.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

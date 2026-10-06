@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.feature.messaging
+package dev.jason.app.compose.vaultchat.feature.messaging.domain
 
 import dev.jason.app.compose.vaultchat.core.model.message.Message
 

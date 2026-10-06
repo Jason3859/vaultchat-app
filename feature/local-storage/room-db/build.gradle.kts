@@ -32,12 +32,6 @@ dependencies {
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.android)
 
-    implementation(libs.room.runtime)
-    ksp(libs.room.compiler)
-    api(libs.room.paging)
-    api(libs.paging.runtime.ktx)
-    api(libs.paging.compose)
-
     implementation(libs.androidx.core.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)

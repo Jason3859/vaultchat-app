@@ -43,8 +43,6 @@ include(":feature:user")
 include(":feature:messaging")
 include(":feature:blocklist")
 include(":feature:auth")
-include(":feature:local-storage")
-include(":feature:local-storage:room-db")
 
 include(":ui")
 include(":ui:auth")

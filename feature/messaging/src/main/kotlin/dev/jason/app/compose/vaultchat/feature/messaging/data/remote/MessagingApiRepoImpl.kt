@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.feature.messaging
+package dev.jason.app.compose.vaultchat.feature.messaging.data.remote
 
 import android.util.Log
 import dev.jason.app.compose.vaultchat.core.AppConstants.BASE_HTTP_URL
@@ -13,6 +13,7 @@ import dev.jason.app.compose.vaultchat.core.model.message.MessageDto
 import dev.jason.app.compose.vaultchat.core.model.message.toMessage
 import dev.jason.app.compose.vaultchat.core.model.message.toPayload
 import dev.jason.app.compose.vaultchat.core.model.user.User
+import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessagingApiRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get

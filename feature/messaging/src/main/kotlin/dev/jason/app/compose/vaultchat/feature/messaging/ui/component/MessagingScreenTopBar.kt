@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.component
+package dev.jason.app.compose.vaultchat.feature.messaging.ui.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

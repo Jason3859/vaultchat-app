@@ -23,7 +23,6 @@ dependencies {
 
     implementation(projects.feature.connections)
     implementation(projects.feature.messaging)
-    implementation(projects.feature.localStorage.roomDb)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)

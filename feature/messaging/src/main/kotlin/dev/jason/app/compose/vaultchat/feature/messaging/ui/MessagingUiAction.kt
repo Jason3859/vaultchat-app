@@ -1,6 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.action
-
-import dev.jason.app.compose.vaultchat.ui.main.stateless.messaging.state.MessagingUiState
+package dev.jason.app.compose.vaultchat.feature.messaging.ui
 
 interface MessagingUiAction {
 

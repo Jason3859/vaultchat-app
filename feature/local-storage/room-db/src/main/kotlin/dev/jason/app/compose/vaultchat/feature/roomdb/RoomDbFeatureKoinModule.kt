@@ -11,12 +11,5 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val roomDbFeatureModule = module {
-    singleOf(::MessageDatabaseRepoImpl) {
-        bind<MessageDatabaseRepository>()
-        createdAtStart()
-    }
 
-    single<MessageDao> {
-        MessageDatabase.getInstance(androidContext()).dao
-    }
 }

@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.feature.roomdb.messages
+package dev.jason.app.compose.vaultchat.feature.messaging.data.local
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -8,6 +8,7 @@ import androidx.paging.map
 import dev.jason.app.compose.vaultchat.core.AppEvent
 import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.model.message.Message
+import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessageDatabaseRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

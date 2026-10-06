@@ -13,7 +13,7 @@ import dev.jason.app.compose.vaultchat.core.model.user.toUser
 import dev.jason.app.compose.vaultchat.feature.blocklist.BlocklistApiService
 import dev.jason.app.compose.vaultchat.feature.device.DeviceApiService
 import dev.jason.app.compose.vaultchat.feature.logout.LogoutService
-import dev.jason.app.compose.vaultchat.feature.roomdb.messages.MessageDatabaseRepository
+import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessageDatabaseRepository
 import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.action.ProfileUiAction
 import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileScreenDialogId
 import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.state.ProfileUiState
