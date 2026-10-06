@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.auth.stateful
+package dev.jason.app.compose.vaultchat.feature.auth.ui
 
 import android.content.Context
 import android.util.Log
@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.FirebaseNetworkException
 import dev.jason.app.compose.vaultchat.core.ToastController
-import dev.jason.app.compose.vaultchat.feature.auth.AuthApiService
-import dev.jason.app.compose.vaultchat.feature.auth.FirebaseGoogleAuthentication
+import dev.jason.app.compose.vaultchat.feature.auth.data.AuthApiService
+import dev.jason.app.compose.vaultchat.feature.auth.data.FirebaseGoogleAuthentication
 import kotlinx.coroutines.launch
 
 internal class AuthViewModel(

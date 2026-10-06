@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.feature.auth
+package dev.jason.app.compose.vaultchat.feature.auth.data
 
 import android.content.Context
 import android.util.Log
@@ -15,6 +15,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import dev.jason.app.compose.vaultchat.core.ToastController
+import dev.jason.app.compose.vaultchat.feature.auth.R
 
 class FirebaseGoogleAuthentication {
 

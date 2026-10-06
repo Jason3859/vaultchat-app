@@ -1,4 +1,5 @@
 plugins {
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.plugin.serialization)
 }
@@ -25,12 +26,17 @@ dependencies {
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
 
     implementation(platform(libs.ktor.bom))
     implementation(libs.bundles.remote.communication)
 
     api(platform(libs.firebase.bom))
     api(libs.firebase.auth)
+
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.bundles.androidx.compose)
+    implementation(libs.bundles.androidx.navigation3)
 
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)

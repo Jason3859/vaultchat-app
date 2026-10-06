@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.auth.stateless
+package dev.jason.app.compose.vaultchat.feature.auth.ui.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

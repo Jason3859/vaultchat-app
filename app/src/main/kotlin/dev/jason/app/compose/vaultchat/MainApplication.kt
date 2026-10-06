@@ -6,17 +6,14 @@ import android.os.Bundle
 import androidx.datastore.preferences.preferencesDataStore
 import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.notifications.MessagesNotificationChannel
-import dev.jason.app.compose.vaultchat.feature.auth.authFeatureModule
+import dev.jason.app.compose.vaultchat.feature.auth.ui.authModule
 import dev.jason.app.compose.vaultchat.feature.blocklist.blocklistFeatureModule
 import dev.jason.app.compose.vaultchat.feature.connections.connectionsFeatureModule
-import dev.jason.app.compose.vaultchat.feature.datastore.dataStoreFeatureModule
 import dev.jason.app.compose.vaultchat.feature.device.deviceFeatureModule
 import dev.jason.app.compose.vaultchat.feature.logout.logoutFeatureModule
 import dev.jason.app.compose.vaultchat.feature.messaging.messagingFeatureModule
-import dev.jason.app.compose.vaultchat.feature.openlinks.openLinksFeatureModule
 import dev.jason.app.compose.vaultchat.feature.roomdb.roomDbFeatureModule
 import dev.jason.app.compose.vaultchat.feature.user.userFeatureModule
-import dev.jason.app.compose.vaultchat.ui.auth.stateful.authUiModule
 import dev.jason.app.compose.vaultchat.ui.main.stateful.mainUiModule
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
@@ -67,18 +64,15 @@ class MainApplication : Application() {
             androidContext(this@MainApplication)
             modules(
                 baseModule,
-                authFeatureModule,
+                authModule,
                 userFeatureModule,
                 connectionsFeatureModule,
-                authUiModule,
                 messagingFeatureModule,
                 logoutFeatureModule,
                 mainUiModule,
                 blocklistFeatureModule,
                 roomDbFeatureModule,
                 deviceFeatureModule,
-                openLinksFeatureModule,
-                dataStoreFeatureModule,
             )
         }
     }

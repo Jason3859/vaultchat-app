@@ -33,7 +33,6 @@ dependencies {
     implementation(projects.feature.localStorage.roomDb)
     implementation(projects.feature.messaging)
     implementation(projects.feature.user)
-    implementation(projects.feature.openLinks)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidx.compose)

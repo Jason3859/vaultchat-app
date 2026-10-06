@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.feature.auth
+package dev.jason.app.compose.vaultchat.feature.auth.data
 
 import android.annotation.SuppressLint
 import android.content.Context

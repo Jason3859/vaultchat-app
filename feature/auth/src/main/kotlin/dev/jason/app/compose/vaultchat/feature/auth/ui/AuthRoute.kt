@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.auth.stateful
+package dev.jason.app.compose.vaultchat.feature.auth.ui
 
 import androidx.navigation3.runtime.NavKey
 

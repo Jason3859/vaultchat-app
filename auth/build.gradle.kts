@@ -32,8 +32,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.ui.auth.stateful)
-    implementation(projects.feature.localStorage.datastore)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidx.compose)

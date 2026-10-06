@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.auth.stateless
+package dev.jason.app.compose.vaultchat.feature.auth.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,21 +28,21 @@ import androidx.compose.ui.unit.sp
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
 
 @Composable
-internal fun MediumAuthScreen(
+internal fun CompactAuthScreen(
     onSignInClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(36.dp),
+            .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Icon(
             imageVector = Icons.Default.Lock,
             contentDescription = null,
-            modifier = Modifier.size(200.dp),
+            modifier = Modifier.size(100.dp),
             tint = MaterialTheme.colorScheme.primary
         )
 
@@ -52,8 +52,7 @@ internal fun MediumAuthScreen(
             text = stringResource(R.string.auth_screen_title),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            fontSize = 40.sp
+            textAlign = TextAlign.Center
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -62,8 +61,7 @@ internal fun MediumAuthScreen(
             text = stringResource(R.string.auth_screen_text),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontSize = 24.sp
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
         Spacer(modifier = Modifier.height(48.dp))
@@ -72,7 +70,7 @@ internal fun MediumAuthScreen(
             onClick = onSignInClick,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(70.dp),
+                .height(56.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary
@@ -80,21 +78,19 @@ internal fun MediumAuthScreen(
         ) {
             Text(
                 text = stringResource(R.string.sign_in_with_google),
-                fontSize = 18.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold
             )
         }
     }
 }
 
-@Preview(showBackground = true, showSystemUi = false,
-    device = "spec:width=1280dp,height=800dp,dpi=240,orientation=portrait"
-)
+@Preview(showBackground = true)
 @Composable
-private fun MediumAuthScreenLightModePreview() {
+private fun CompactAuthScreenLightModePreview() {
     VaultChatTheme {
-        MediumAuthScreen(
-            onSignInClick = {}
+        CompactAuthScreen(
+            onSignInClick = { }
         )
     }
 }

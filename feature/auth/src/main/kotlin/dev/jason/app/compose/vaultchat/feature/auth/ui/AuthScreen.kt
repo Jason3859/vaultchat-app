@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.auth.stateful
+package dev.jason.app.compose.vaultchat.feature.auth.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import dev.jason.app.compose.vaultchat.core.ui.LoadingIndicator
-import dev.jason.app.compose.vaultchat.ui.auth.stateless.AbstractAuthScreen
+import dev.jason.app.compose.vaultchat.feature.auth.ui.component.AbstractAuthScreen
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)

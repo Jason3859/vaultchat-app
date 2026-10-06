@@ -1,8 +1,7 @@
-package dev.jason.app.compose.vaultchat.ui.auth.stateless
+package dev.jason.app.compose.vaultchat.feature.auth.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,53 +28,51 @@ import androidx.compose.ui.unit.sp
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
 
 @Composable
-internal fun LargeAuthScreen(
+internal fun MediumAuthScreen(
     onSignInClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
+    Column(
         modifier = modifier
-            .fillMaxSize(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly
+            .fillMaxSize()
+            .padding(36.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Column(
-            modifier = Modifier
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Icon(
-                imageVector = Icons.Default.Lock,
-                contentDescription = null,
-                modifier = Modifier.size(100.dp),
-                tint = MaterialTheme.colorScheme.primary
-            )
+        Icon(
+            imageVector = Icons.Default.Lock,
+            contentDescription = null,
+            modifier = Modifier.size(200.dp),
+            tint = MaterialTheme.colorScheme.primary
+        )
 
-            Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
-            Text(
-                text = stringResource(R.string.auth_screen_title),
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
+        Text(
+            text = stringResource(R.string.auth_screen_title),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            fontSize = 40.sp
+        )
 
-            Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-            Text(
-                text = stringResource(R.string.auth_screen_text),
-                style = MaterialTheme.typography.bodyLarge,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
+        Text(
+            text = stringResource(R.string.auth_screen_text),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontSize = 24.sp
+        )
+
+        Spacer(modifier = Modifier.height(48.dp))
 
         Button(
             onClick = onSignInClick,
             modifier = Modifier
-                .fillMaxWidth(0.4f)
-                .height(56.dp),
+                .fillMaxWidth()
+                .height(70.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary
@@ -83,19 +80,21 @@ internal fun LargeAuthScreen(
         ) {
             Text(
                 text = stringResource(R.string.sign_in_with_google),
-                fontSize = 16.sp,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
         }
     }
 }
 
-@Preview(showBackground = true, device = "spec:width=1280dp,height=800dp,dpi=240")
+@Preview(showBackground = true, showSystemUi = false,
+    device = "spec:width=1280dp,height=800dp,dpi=240,orientation=portrait"
+)
 @Composable
-private fun LargeAuthScreenLightModePreview() {
+private fun MediumAuthScreenLightModePreview() {
     VaultChatTheme {
-        LargeAuthScreen(
-            onSignInClick = {  }
+        MediumAuthScreen(
+            onSignInClick = {}
         )
     }
 }
