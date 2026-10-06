@@ -11,8 +11,9 @@ import androidx.compose.material.icons.filled.Devices
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import dev.jason.app.compose.vaultchat.ui.main.stateless.R
-import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileScreenDialogId
+import dev.jason.app.compose.vaultchat.feature.profile.R
+import dev.jason.app.compose.vaultchat.feature.profile.ui.ProfileScreenDialogId
+import dev.jason.app.compose.vaultchat.feature.profile.ui.ProfileScreenRowItem
 
 @Composable
 internal fun ProfileScreenActionButtonsRow(

@@ -7,6 +7,7 @@ import dev.jason.app.compose.vaultchat.feature.profile.domain.BlocklistApiReposi
 import dev.jason.app.compose.vaultchat.feature.profile.domain.DeviceApiRepository
 import dev.jason.app.compose.vaultchat.feature.profile.domain.LogoutRemoteRepository
 import dev.jason.app.compose.vaultchat.feature.profile.domain.LogoutService
+import dev.jason.app.compose.vaultchat.feature.profile.ui.ProfileViewModel
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.createdAtStart
 import org.koin.core.module.dsl.singleOf

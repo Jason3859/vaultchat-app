@@ -8,7 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
-import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileScreenRowItem
+import dev.jason.app.compose.vaultchat.feature.profile.ui.ProfileScreenRowItem
 
 @Composable
 internal fun ProfileScreenRowItem(item: ProfileScreenRowItem, onClick: () -> Unit) {

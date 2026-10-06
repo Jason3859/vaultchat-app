@@ -38,10 +38,8 @@ import dev.jason.app.compose.vaultchat.core.model.device.DeviceUi
 import dev.jason.app.compose.vaultchat.core.model.device.toDevice
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.ui.LoadProfilePicture
-import dev.jason.app.compose.vaultchat.ui.main.stateless.R
-import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.action.ProfileUiAction
-import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.model.ProfileScreenDialogId
-import dev.jason.app.compose.vaultchat.ui.main.stateless.profile.state.ProfileUiState
+import dev.jason.app.compose.vaultchat.feature.profile.R
+import dev.jason.app.compose.vaultchat.feature.profile.ui.*
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
