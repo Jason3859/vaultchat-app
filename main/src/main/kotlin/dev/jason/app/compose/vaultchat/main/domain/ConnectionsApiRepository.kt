@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.feature.connections.api
+package dev.jason.app.compose.vaultchat.main.domain
 
 import dev.jason.app.compose.vaultchat.core.model.user.User
 

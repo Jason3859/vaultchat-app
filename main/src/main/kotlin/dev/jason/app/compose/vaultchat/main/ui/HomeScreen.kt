@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateful.home
+package dev.jason.app.compose.vaultchat.main.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue

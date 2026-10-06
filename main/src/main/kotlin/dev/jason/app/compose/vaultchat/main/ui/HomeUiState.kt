@@ -1,7 +1,6 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateless.home.state
+package dev.jason.app.compose.vaultchat.main.ui
 
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
-import dev.jason.app.compose.vaultchat.ui.main.stateless.defaultUsers
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 

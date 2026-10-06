@@ -1,6 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateless.home.action
-
-import dev.jason.app.compose.vaultchat.ui.main.stateless.home.state.HomeUiState
+package dev.jason.app.compose.vaultchat.main.ui
 
 sealed interface HomeUiAction {
 

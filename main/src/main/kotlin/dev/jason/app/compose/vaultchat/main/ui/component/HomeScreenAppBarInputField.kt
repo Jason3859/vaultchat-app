@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateless.home.component
+package dev.jason.app.compose.vaultchat.main.ui.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -12,8 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
 import dev.jason.app.compose.vaultchat.ui.main.stateless.R
-import dev.jason.app.compose.vaultchat.ui.main.stateless.home.action.HomeUiAction
-import dev.jason.app.compose.vaultchat.ui.main.stateless.home.state.HomeUiState
+import dev.jason.app.compose.vaultchat.main.ui.HomeUiAction
+import dev.jason.app.compose.vaultchat.main.ui.HomeUiState
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 

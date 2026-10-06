@@ -1,6 +1,7 @@
-package dev.jason.app.compose.vaultchat.feature.connections.db
+package dev.jason.app.compose.vaultchat.main.data
 
 import dev.jason.app.compose.vaultchat.core.model.user.User
+import dev.jason.app.compose.vaultchat.main.domain.ConnectionsDbRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

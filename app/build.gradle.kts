@@ -42,12 +42,7 @@ dependencies {
     implementation(projects.share)
 
     implementation(projects.feature.auth)
-    implementation(projects.feature.connections)
-    implementation(projects.feature.user)
     implementation(projects.feature.messaging)
-
-    implementation(projects.ui.main.stateless)
-    implementation(projects.ui.main.stateful)
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.android)

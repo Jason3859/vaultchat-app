@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.feature.connections.db
+package dev.jason.app.compose.vaultchat.main.data
 
 import android.content.Context
 import androidx.room.Database

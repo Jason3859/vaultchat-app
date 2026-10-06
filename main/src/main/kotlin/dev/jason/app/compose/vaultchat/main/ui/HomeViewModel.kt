@@ -1,15 +1,13 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateful.home
+package dev.jason.app.compose.vaultchat.main.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUi
-import dev.jason.app.compose.vaultchat.feature.connections.ConnectionsService
 import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessageDatabaseRepository
-import dev.jason.app.compose.vaultchat.feature.user.UserApiService
-import dev.jason.app.compose.vaultchat.ui.main.stateless.home.action.HomeUiAction
-import dev.jason.app.compose.vaultchat.ui.main.stateless.home.state.HomeUiState
+import dev.jason.app.compose.vaultchat.main.domain.ConnectionsService
+import dev.jason.app.compose.vaultchat.main.domain.UserApiRepository
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +20,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val userApiService: UserApiService,
+    private val userApiRepository: UserApiRepository,
     private val connectionsService: ConnectionsService,
     private val messageDatabaseRepository: MessageDatabaseRepository,
     private val messagingApiService: MessagingApiService
@@ -52,7 +50,7 @@ class HomeViewModel(
         if (searchQuery.isBlank()) return
 
         viewModelScope.launch {
-            val searchResults = userApiService.searchUsers(searchQuery)
+            val searchResults = userApiRepository.searchUser(searchQuery)
             _uiState.update {
                 it.copy(
                     searchResults = searchResults.toUi(),

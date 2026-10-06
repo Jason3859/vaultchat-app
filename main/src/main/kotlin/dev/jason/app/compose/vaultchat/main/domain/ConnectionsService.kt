@@ -1,11 +1,9 @@
-package dev.jason.app.compose.vaultchat.feature.connections
+package dev.jason.app.compose.vaultchat.main.domain
 
 import android.util.Log
 import dev.jason.app.compose.vaultchat.core.AppEvent
 import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.model.user.User
-import dev.jason.app.compose.vaultchat.feature.connections.api.ConnectionsApiRepository
-import dev.jason.app.compose.vaultchat.feature.connections.db.ConnectionsDbRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

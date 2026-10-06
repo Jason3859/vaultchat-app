@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateless.home.component
+package dev.jason.app.compose.vaultchat.main.ui.component
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,8 +12,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
-import dev.jason.app.compose.vaultchat.ui.main.stateless.home.action.HomeUiAction
-import dev.jason.app.compose.vaultchat.ui.main.stateless.home.state.HomeUiState
+import dev.jason.app.compose.vaultchat.main.ui.HomeUiAction
+import dev.jason.app.compose.vaultchat.main.ui.HomeUiState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable

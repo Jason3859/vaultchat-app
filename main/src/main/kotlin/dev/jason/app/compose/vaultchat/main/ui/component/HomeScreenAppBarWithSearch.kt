@@ -1,4 +1,4 @@
-package dev.jason.app.compose.vaultchat.ui.main.stateless.home.component
+package dev.jason.app.compose.vaultchat.main.ui.component
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
