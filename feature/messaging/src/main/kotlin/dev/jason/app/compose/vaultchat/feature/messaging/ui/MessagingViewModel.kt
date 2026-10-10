@@ -56,7 +56,6 @@ class MessagingViewModel(
         _uiState.update {
             state(it).let { newState ->
                 newState.copy(
-                    messageText = newState.messageText.trim(),
                     sendButtonEnabled = newState.messageText.isNotBlank()
                 )
             }
@@ -76,7 +75,7 @@ class MessagingViewModel(
             val message = Message(
                 from = currentUser,
                 to = otherUser,
-                text = uiState.messageText,
+                text = uiState.messageText.trim(),
                 timestamp = LocalDateTime.now()
             )
             val messageUi = message.toUi()
