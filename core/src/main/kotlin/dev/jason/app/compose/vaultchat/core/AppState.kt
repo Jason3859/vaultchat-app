@@ -4,6 +4,7 @@ import dev.jason.app.compose.vaultchat.core.model.device.Device
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 /**
  * Global application state holder managing user sessions, device information,
@@ -21,6 +22,9 @@ object AppState {
 
     private val _isOtherUserBlocked = MutableStateFlow(false)
     val isOtherUserBlocked = _isOtherUserBlocked.asStateFlow()
+
+    private val _isOtherUserConnected = MutableStateFlow<Boolean?>(null)
+    val isOtherUserConnected = _isOtherUserConnected.asStateFlow()
 
     // --- Device State ---
 
@@ -47,11 +51,15 @@ object AppState {
 
     fun updateIsOtherUserBlocked(blocklist: List<User>) {
         val activeOtherUser = _otherUser.value
-        _isOtherUserBlocked.value = activeOtherUser != null && activeOtherUser in blocklist
+        _isOtherUserBlocked.value = activeOtherUser in blocklist
     }
 
     fun updateCurrentDevice(device: Device?) {
         _currentDevice.value = device
+    }
+
+    fun updateIsOtherUserConnected(isConnected: Boolean?) {
+        _isOtherUserConnected.update { isConnected }
     }
 
     fun deviceOnline() {

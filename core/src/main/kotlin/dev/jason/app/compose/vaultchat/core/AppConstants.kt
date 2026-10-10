@@ -14,7 +14,7 @@ object AppConstants {
 //    const val BASE_URL = "https://vaultchat-67jk.onrender.com"
 
     const val TEXT_PLAIN = "text/plain"
-    const val EXTRA_KEY_OTHER_USER_UID = "uid"
+    const val EXTRA_KEY_OTHER_USER = "other_user"
     const val ACTION_START_MAIN_ACTIVITY = "dev.jason.app.compose.vaultchat.main.ACTION_START_MAIN_ACTIVITY"
 
     const val ACTION = "ACTION"

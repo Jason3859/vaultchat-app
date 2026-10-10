@@ -1,11 +1,15 @@
 package dev.jason.app.compose.vaultchat.core.model.user
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class User(
     val uid: String,
     val displayName: String?, // TODO: remove null
     val profilePictureUrl: String?,
     val status: Status?
-) {
+) : Parcelable {
     enum class Status {
         Online, Offline
     }

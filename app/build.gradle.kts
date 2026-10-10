@@ -39,10 +39,11 @@ dependencies {
     implementation(projects.core)
     implementation(projects.auth)
     implementation(projects.main)
-    implementation(projects.share)
+//    implementation(projects.share)
 
     implementation(projects.feature.auth)
     implementation(projects.feature.messaging)
+    implementation(projects.feature.profile)
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.android)

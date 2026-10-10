@@ -22,16 +22,18 @@ import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION
 import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT
 import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT_LAUNCH_FROM_SHARE_ACTIVITY
 import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT_NEW_MESSAGE
-import dev.jason.app.compose.vaultchat.core.AppConstants.EXTRA_KEY_OTHER_USER_UID
+import dev.jason.app.compose.vaultchat.core.AppConstants.EXTRA_KEY_OTHER_USER
 import dev.jason.app.compose.vaultchat.core.AppEvent
 import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.AppState
+import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
-import dev.jason.app.compose.vaultchat.feature.device.DeviceApiService
-import dev.jason.app.compose.vaultchat.ui.main.stateful.MainScreen
+import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessagingService
+import dev.jason.app.compose.vaultchat.main.ui.MainScreen
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
+@Suppress("DEPRECATION")
 class MainActivity : ComponentActivity() {
 
     private val navViewModel: NavViewModel by viewModels()
@@ -49,7 +51,7 @@ class MainActivity : ComponentActivity() {
     @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        inject<DeviceApiService>().value
+        inject<MessagingService>().value
 
         val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val request = NetworkRequest.Builder()
@@ -105,10 +107,10 @@ class MainActivity : ComponentActivity() {
         val action = intent.getStringExtra(ACTION) ?: return
 
         if (action == AppConstants.ACTION_NAVIGATE_TO_MESSAGING_SCREEN) {
-            val uid = intent.getStringExtra(EXTRA_KEY_OTHER_USER_UID) ?: return
+            val user = intent.getParcelableExtra<User>(EXTRA_KEY_OTHER_USER) ?: return
 
             AppEvents.sendEvent(
-                AppEvent.NavEvent.NavigateToMessagingScreen(uid)
+                AppEvent.NavEvent.NavigateToMessagingScreen(user)
             )
         }
     }
@@ -116,7 +118,7 @@ class MainActivity : ComponentActivity() {
     private fun handleNewMessageEvent(intent: Intent) {
         AppEvents.sendEvent(
             AppEvent.NavEvent.NavigateToMessagingScreen(
-                intent.getStringExtra(EXTRA_KEY_OTHER_USER_UID) ?: return
+                intent.getParcelableExtra(EXTRA_KEY_OTHER_USER) ?: return
             )
         )
     }

@@ -6,12 +6,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
+import dev.jason.app.compose.vaultchat.core.AppEvent
+import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.message.Message
 import dev.jason.app.compose.vaultchat.core.model.message.MessageUi
 import dev.jason.app.compose.vaultchat.core.model.message.toUi
-import dev.jason.app.compose.vaultchat.core.model.user.UserUi
-import dev.jason.app.compose.vaultchat.core.model.user.toUser
 import dev.jason.app.compose.vaultchat.core.utils.OpenLinksService
 import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessageDatabaseRepository
 import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessagingApiRepository
@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 class MessagingViewModel(
-    otherUser: UserUi,
     private val messageDatabaseRepository: MessageDatabaseRepository,
     private val messagingApiService: MessagingApiRepository,
     private val openLinksService: OpenLinksService
@@ -33,9 +32,8 @@ class MessagingViewModel(
     val uiState = _uiState.asStateFlow()
 
     private val currentUser by lazy { AppState.currentUser.value!! }
-
-    private val _otherUser = MutableStateFlow<UserUi?>(null)
-    val otherUser = _otherUser.asStateFlow()
+    private val otherUser by lazy { AppState.otherUser.value!! }
+    private val isOtherUserConnected by lazy { AppState.isOtherUserConnected.value!! }
 
     private val _messages = MutableStateFlow<PagingData<MessageUi>>(PagingData.Companion.empty())
     val messages = _messages.asStateFlow()
@@ -67,7 +65,6 @@ class MessagingViewModel(
 
     private fun sendMessage() {
         val uiState = _uiState.value.copy()
-        val otherUser = _otherUser.value!!
 
         updateState { currentState ->
             currentState.copy(
@@ -78,7 +75,7 @@ class MessagingViewModel(
         viewModelScope.launch {
             val message = Message(
                 from = currentUser,
-                to = otherUser.toUser(),
+                to = otherUser,
                 text = uiState.messageText,
                 timestamp = LocalDateTime.now()
             )
@@ -89,6 +86,11 @@ class MessagingViewModel(
                 .onSuccess {
                     _pendingMessages.remove(messageUi)
                 }
+
+            if (!isOtherUserConnected) {
+                AppEvents.sendEvent(AppEvent.ReFetchConnections)
+                AppState.updateIsOtherUserConnected(true)
+            }
         }
     }
 
@@ -97,11 +99,6 @@ class MessagingViewModel(
     }
 
     init {
-        viewModelScope.launch {
-            _otherUser.update { otherUser }
-            AppState.updateOtherUser(otherUser.toUser())
-        }
-
         viewModelScope.launch {
             messageDatabaseRepository.getMessagesPaginated(
                 currentUserUid = currentUser.uid,

@@ -25,7 +25,7 @@ internal fun HomeScreenTopBar(
     isOffline: Boolean,
     onProfileClick: () -> Unit,
     currentUserProfilePictureUrl: String?,
-    onNonConnectedUserClick: (UserUi) -> Unit
+    onUserClick: (UserUi) -> Unit
 ) {
 
     val searchBarState = rememberSearchBarWithGapState(initialValue = SearchBarValue.Collapsed)
@@ -53,7 +53,7 @@ internal fun HomeScreenTopBar(
             searchBarState,
             inputField,
             uiState,
-            onNonConnectedUserClick
+            onUserClick
         )
     }
 }

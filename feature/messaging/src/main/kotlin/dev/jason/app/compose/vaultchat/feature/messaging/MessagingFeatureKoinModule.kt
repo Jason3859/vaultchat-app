@@ -18,7 +18,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-val messagingFeatureModule = module {
+val messagingModule = module {
 
     singleOf(::MessagingApiRepoImpl) { bind<MessagingApiRepository>() }
 
@@ -37,5 +37,5 @@ val messagingFeatureModule = module {
 
     viewModelOf(::MessagingViewModel)
 
-    singleOf(::MessagingService) { createdAtStart() }
+    singleOf(::MessagingService)
 }

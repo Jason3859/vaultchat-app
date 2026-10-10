@@ -22,7 +22,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
     onUserClick: (UserUi) -> Unit,
-    onNonConnectedUserClick: (UserUi) -> Unit,
+    onNewUserClick: (UserUi) -> Unit,
     onProfileClick: () -> Unit
 ) {
     val viewModel: HomeViewModel = koinViewModel()
@@ -40,8 +40,8 @@ fun HomeScreen(
         currentUserProfilePictureUrl = currentUserProfilePictureUrl,
         onAction = viewModel::onAction,
         onUserClick = onUserClick,
+        onNewUserClick = onNewUserClick,
         onProfileClick = onProfileClick,
-        onNonConnectedUserClick = onNonConnectedUserClick,
     )
 }
 
@@ -54,7 +54,7 @@ fun HomeScreen(
     currentUserProfilePictureUrl: String?,
     onAction: (HomeUiAction) -> Unit,
     onUserClick: (UserUi) -> Unit,
-    onNonConnectedUserClick: (UserUi) -> Unit,
+    onNewUserClick: (UserUi) -> Unit,
     onProfileClick: () -> Unit,
 ) {
     val scrollBehavior = SearchBarDefaults.enterAlwaysSearchBarScrollBehavior()
@@ -71,7 +71,7 @@ fun HomeScreen(
                 isOffline,
                 onProfileClick,
                 currentUserProfilePictureUrl,
-                onNonConnectedUserClick
+                onNewUserClick
             )
         }
     ) { innerPadding ->
@@ -88,7 +88,7 @@ private val previewContent = @Composable {
             currentUserProfilePictureUrl = "",
             onAction = {},
             onUserClick = { },
-            onNonConnectedUserClick = {},
+            onNewUserClick = {},
             onProfileClick = {}
         )
     }

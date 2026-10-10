@@ -32,7 +32,7 @@ class MessagesNotificationChannel(private val context: Context) :
 
         val intent = Intent(AppConstants.ACTION_START_MAIN_ACTIVITY).apply {
             putExtra(AppConstants.EVENT, AppConstants.EVENT_NEW_MESSAGE)
-            putExtra(AppConstants.EXTRA_KEY_OTHER_USER_UID, message.from.uid)
+            putExtra(AppConstants.EXTRA_KEY_OTHER_USER, message.from)
 
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }

@@ -33,6 +33,8 @@ android {
 
 dependencies {
 
+    implementation(projects.feature.auth)
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidx.compose)
 

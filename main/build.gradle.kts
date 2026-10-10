@@ -35,6 +35,9 @@ android {
 room { schemaDirectory("$projectDir/schema") }
 
 dependencies {
+    
+    implementation(projects.feature.messaging)
+    implementation(projects.feature.profile)
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.android)

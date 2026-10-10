@@ -51,7 +51,7 @@ sealed interface AppEvent {
 
     sealed interface NavEvent : AppEvent {
 
-        data class NavigateToMessagingScreen(val uid: String) : NavEvent
+        data class NavigateToMessagingScreen(val user: User) : NavEvent
         data object NavigateToHomeScreen : NavEvent
     }
 }

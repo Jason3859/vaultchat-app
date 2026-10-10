@@ -15,6 +15,7 @@ import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.message.MessageUi
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
+import dev.jason.app.compose.vaultchat.core.model.user.toUi
 import dev.jason.app.compose.vaultchat.core.ui.LoadingIndicator
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
 import dev.jason.app.compose.vaultchat.feature.messaging.ui.component.MessagingScreenBottomBar
@@ -24,19 +25,17 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.flowOf
 import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun MessagingScreen(
-    otherUser: UserUi,
     onBackClick: () -> Unit,
     onUserInfoClick: () -> Unit
 ) {
-    val viewModel: MessagingViewModel = koinViewModel { parametersOf(otherUser) }
+    val viewModel: MessagingViewModel = koinViewModel()
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val otherUser by viewModel.otherUser.collectAsStateWithLifecycle()
+    val otherUser by AppState.otherUser.collectAsStateWithLifecycle()
     val isOnline by AppState.isOnline.collectAsStateWithLifecycle()
 
     if (uiState.isLoading) {
@@ -48,7 +47,7 @@ fun MessagingScreen(
         }
     } else if (otherUser != null) {
         MessagingScreen(
-            otherUser = otherUser!!,
+            otherUser = otherUser?.toUi()!!,
             onBackClick = onBackClick,
             uiState = uiState,
             onAction = viewModel::onAction,

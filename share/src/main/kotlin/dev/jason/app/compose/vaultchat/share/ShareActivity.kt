@@ -32,7 +32,7 @@ import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION_NAVIGATE_TO_MESS
 import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION_START_MAIN_ACTIVITY
 import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT
 import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT_LAUNCH_FROM_SHARE_ACTIVITY
-import dev.jason.app.compose.vaultchat.core.AppConstants.EXTRA_KEY_OTHER_USER_UID
+import dev.jason.app.compose.vaultchat.core.AppConstants.EXTRA_KEY_OTHER_USER
 import dev.jason.app.compose.vaultchat.core.AppConstants.TEXT_PLAIN
 import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.message.Message
@@ -139,7 +139,7 @@ class ShareActivity : ComponentActivity() {
 
         if (selectedUsers.size <= 1) {
             intent.putExtra(ACTION, ACTION_NAVIGATE_TO_MESSAGING_SCREEN)
-            intent.putExtra(EXTRA_KEY_OTHER_USER_UID, selectedUsers.first().uid)
+            intent.putExtra(EXTRA_KEY_OTHER_USER, selectedUsers.first().uid) // TODO
         } else {
             AppState.updateOtherUser(null)
         }
