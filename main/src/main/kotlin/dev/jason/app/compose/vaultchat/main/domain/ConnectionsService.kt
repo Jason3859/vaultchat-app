@@ -19,10 +19,6 @@ class ConnectionsService(
 
     private var isRequestSent = false
 
-    suspend fun getConnection(uid: String): User? {
-        return dbRepository.getConnection(uid)
-    }
-
     fun getConnections(): Flow<List<User>> = channelFlow {
 
         launch {

@@ -9,28 +9,7 @@ data class UserUi(
     val displayName: String,
     val profilePictureUrl: String,
     val status: Status
-) {
-    /**
-     * For known users. i.e., for the users that are already connected.
-     * This constructor is used by navigation and is being passed to
-     * [MessagingViewModel] for fetching the user from database
-     */
-    constructor(uid: String) : this(uid, "null", "null", Status.Offline)
-
-    override fun equals(other: Any?): Boolean {
-        if (other == null) return false
-        if (other !is UserUi) return false
-        return this.uid == other.uid
-    }
-
-    override fun hashCode(): Int {
-        var result = uid.hashCode()
-        result = 31 * result + displayName.hashCode()
-        result = 31 * result + profilePictureUrl.hashCode()
-        result = 31 * result + status.hashCode()
-        return result
-    }
-}
+)
 
 fun User.toUi() = UserUi(
     uid = uid,

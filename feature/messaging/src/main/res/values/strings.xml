@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="user_blocked_warning">You have blocked this user</string>
+    <string name="you_are_offline">You are offline</string>
+    <string name="user_status_display_text">User currently %1$s</string>
 </resources>

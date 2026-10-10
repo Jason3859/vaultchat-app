@@ -23,10 +23,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.ui.LoadProfilePicture
+import dev.jason.app.compose.vaultchat.feature.messaging.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,7 +58,10 @@ internal fun MessagingScreenTopBar(
                 Column {
                     Text(otherUser.displayName)
                     Text(
-                        text = if (isOffline) "You are offline" else "Currently ${otherUser.status}",
+                        text = if (isOffline) stringResource(R.string.you_are_offline) else stringResource(
+                            R.string.user_status_display_text,
+                            otherUser.status.toString().lowercase()
+                        ),
                         fontSize = 12.sp
                     )
                 }

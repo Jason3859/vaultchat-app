@@ -15,7 +15,6 @@ import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.message.MessageUi
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
-import dev.jason.app.compose.vaultchat.core.model.user.toUi
 import dev.jason.app.compose.vaultchat.core.ui.LoadingIndicator
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
 import dev.jason.app.compose.vaultchat.feature.messaging.ui.component.MessagingScreenBottomBar
@@ -47,7 +46,7 @@ fun MessagingScreen(
         }
     } else if (otherUser != null) {
         MessagingScreen(
-            otherUser = otherUser?.toUi()!!,
+            otherUser = otherUser!!,
             onBackClick = onBackClick,
             uiState = uiState,
             onAction = viewModel::onAction,

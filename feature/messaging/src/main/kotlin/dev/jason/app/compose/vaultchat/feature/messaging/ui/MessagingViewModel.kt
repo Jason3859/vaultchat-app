@@ -12,6 +12,7 @@ import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.message.Message
 import dev.jason.app.compose.vaultchat.core.model.message.MessageUi
 import dev.jason.app.compose.vaultchat.core.model.message.toUi
+import dev.jason.app.compose.vaultchat.core.model.user.toUser
 import dev.jason.app.compose.vaultchat.core.utils.OpenLinksService
 import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessageDatabaseRepository
 import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessagingApiRepository
@@ -74,7 +75,7 @@ class MessagingViewModel(
         viewModelScope.launch {
             val message = Message(
                 from = currentUser,
-                to = otherUser,
+                to = otherUser.toUser(),
                 text = uiState.messageText.trim(),
                 timestamp = LocalDateTime.now()
             )

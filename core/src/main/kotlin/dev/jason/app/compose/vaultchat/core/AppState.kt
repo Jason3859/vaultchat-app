@@ -2,6 +2,8 @@ package dev.jason.app.compose.vaultchat.core
 
 import dev.jason.app.compose.vaultchat.core.model.device.Device
 import dev.jason.app.compose.vaultchat.core.model.user.User
+import dev.jason.app.compose.vaultchat.core.model.user.UserUi
+import dev.jason.app.compose.vaultchat.core.model.user.toUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -17,7 +19,7 @@ object AppState {
     private val _currentUser = MutableStateFlow<User?>(null)
     val currentUser = _currentUser.asStateFlow()
 
-    private val _otherUser = MutableStateFlow<User?>(null)
+    private val _otherUser = MutableStateFlow<UserUi?>(null)
     val otherUser = _otherUser.asStateFlow()
 
     private val _isOtherUserBlocked = MutableStateFlow(false)
@@ -45,12 +47,12 @@ object AppState {
         _currentUser.value = user
     }
 
-    fun updateOtherUser(user: User?) {
+    fun updateOtherUser(user: UserUi?) {
         _otherUser.value = user
     }
 
     fun updateIsOtherUserBlocked(blocklist: List<User>) {
-        val activeOtherUser = _otherUser.value
+        val activeOtherUser = _otherUser.value?.toUser()
         _isOtherUserBlocked.value = activeOtherUser in blocklist
     }
 

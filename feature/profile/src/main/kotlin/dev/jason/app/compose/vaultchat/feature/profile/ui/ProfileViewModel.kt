@@ -88,7 +88,7 @@ class ProfileViewModel(
 
     private fun loadUserProfile() {
         val currentUser = AppState.currentUser.value?.toUi()
-        val otherUser = AppState.otherUser.value?.toUi()
+        val otherUser = AppState.otherUser.value
         val isOwnProfile = (otherUser == null)
         val profileUser = otherUser ?: currentUser ?: return
 

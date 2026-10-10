@@ -4,18 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.jason.app.compose.vaultchat.core.AppEvent
 import dev.jason.app.compose.vaultchat.core.AppEvents
+import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUi
+import dev.jason.app.compose.vaultchat.core.model.user.toUser
 import dev.jason.app.compose.vaultchat.main.domain.ConnectionsService
 import dev.jason.app.compose.vaultchat.main.domain.UserApiRepository
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -26,17 +25,13 @@ class HomeViewModel(
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
-        .onStart { updateConnections() }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = HomeUiState()
-        )
 
     fun onAction(action: HomeUiAction) {
         when (action) {
             is HomeUiAction.OnUiStateChange -> {
-                _uiState.update { action.state(it) }
+                _uiState.update {
+                    action.state(it)
+                }
             }
 
             HomeUiAction.Search -> search()
@@ -69,13 +64,19 @@ class HomeViewModel(
                         isLoading = false
                     )
                 }
+
+                AppState.apply {
+                    if (otherUser.value?.toUser() in connections) {
+                        connections.find { it.uid == otherUser.value?.uid }
+                            ?.let { updateOtherUser(it.toUi()) }
+                    }
+                }
             }
         }
     }
 
     init {
-        viewModelScope.launch {
-            AppEvents.sendEvent(AppEvent.FetchAndAddMessagesToDatabase)
-        }
+        updateConnections()
+        AppEvents.sendEvent(AppEvent.FetchAndAddMessagesToDatabase)
     }
 }
