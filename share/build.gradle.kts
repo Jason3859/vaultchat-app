@@ -21,6 +21,7 @@ android {
 
 dependencies {
 
+    implementation(projects.main)
     implementation(projects.feature.messaging)
 
     implementation(platform(libs.firebase.bom))

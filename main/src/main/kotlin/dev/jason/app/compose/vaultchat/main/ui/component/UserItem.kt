@@ -16,7 +16,7 @@ import dev.jason.app.compose.vaultchat.core.ui.LoadProfilePicture
 
 @Composable
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
-internal fun UserItem(
+fun UserItem(
     selected: Boolean,
     count: Int,
     user: UserUi,

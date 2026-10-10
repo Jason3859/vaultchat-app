@@ -39,7 +39,7 @@ dependencies {
     implementation(projects.core)
     implementation(projects.auth)
     implementation(projects.main)
-//    implementation(projects.share)
+    implementation(projects.share)
 
     implementation(projects.feature.auth)
     implementation(projects.feature.messaging)

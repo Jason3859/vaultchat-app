@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dev.jason.app.compose.vaultchat.core.AppEvent
 import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.AppState
+import dev.jason.app.compose.vaultchat.core.model.user.toUi
 import dev.jason.app.compose.vaultchat.main.ui.Route
 import kotlinx.coroutines.launch
 
@@ -45,6 +46,10 @@ class NavViewModel : ViewModel() {
                 if (event is AppEvent.NavEvent) {
                     when (event) {
                         is AppEvent.NavEvent.NavigateToMessagingScreen -> {
+                            AppState.apply {
+                                updateOtherUser(event.user.toUi())
+                                updateIsOtherUserConnected(true)
+                            }
                             navigate(Route.Messaging(event.user.uid))
                         }
                         is AppEvent.NavEvent.NavigateToHomeScreen -> {

@@ -6,7 +6,9 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.plus
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -14,9 +16,7 @@ import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SegmentedListItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -35,15 +35,16 @@ import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT_LAUNCH_FROM_SHARE
 import dev.jason.app.compose.vaultchat.core.AppConstants.EXTRA_KEY_OTHER_USER
 import dev.jason.app.compose.vaultchat.core.AppConstants.TEXT_PLAIN
 import dev.jason.app.compose.vaultchat.core.AppState
+import dev.jason.app.compose.vaultchat.core.ToastController
 import dev.jason.app.compose.vaultchat.core.model.message.Message
 import dev.jason.app.compose.vaultchat.core.model.user.User
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUi
 import dev.jason.app.compose.vaultchat.core.model.user.toUser
-import dev.jason.app.compose.vaultchat.core.ui.LoadProfilePicture
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
-import dev.jason.app.compose.vaultchat.feature.connections.ConnectionsService
-import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessageDatabaseRepository
+import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessagingApiRepository
+import dev.jason.app.compose.vaultchat.main.domain.ConnectionsService
+import dev.jason.app.compose.vaultchat.main.ui.component.UserItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
@@ -53,8 +54,7 @@ import java.time.LocalDateTime
 class ShareActivity : ComponentActivity() {
 
     private val connectionsService: ConnectionsService by inject()
-    private val messagingApiService: MessagingApiService by inject()
-    private val messageDatabaseRepository: MessageDatabaseRepository by inject()
+    private val messagingApiRepository: MessagingApiRepository by inject()
 
     private val connections = mutableStateListOf<UserUi>()
     private val selectedUsers = mutableStateListOf<UserUi>()
@@ -128,8 +128,9 @@ class ShareActivity : ComponentActivity() {
                     timestamp = LocalDateTime.now()
                 )
 
-                messagingApiService.sendMessage(message)
-                messageDatabaseRepository.addMessage(message)
+                messagingApiRepository.sendMessage(message)
+                    .onSuccess { ToastController.showToast("Sent successfully") }
+                    .onFailure { ToastController.showToast("Failed to send message") }
             }
         }.invokeOnCompletion { finish() }
 
@@ -139,7 +140,7 @@ class ShareActivity : ComponentActivity() {
 
         if (selectedUsers.size <= 1) {
             intent.putExtra(ACTION, ACTION_NAVIGATE_TO_MESSAGING_SCREEN)
-            intent.putExtra(EXTRA_KEY_OTHER_USER, selectedUsers.first().uid) // TODO
+            intent.putExtra(EXTRA_KEY_OTHER_USER, selectedUsers.first().toUser())
         } else {
             AppState.updateOtherUser(null)
         }
@@ -160,47 +161,19 @@ private fun ShareScreen(
     connections: ImmutableList<UserUi>,
     selectedUsers: ImmutableList<UserUi>,
     onUserItemClick: (UserUi) -> Unit,
-    innerPadding: PaddingValues = PaddingValues()
+    innerPadding: PaddingValues
 ) {
-    LazyColumn(contentPadding = innerPadding) {
+    LazyColumn(contentPadding = innerPadding + PaddingValues(12.dp)) {
         items(connections) { user ->
             UserItem(
                 selected = user in selectedUsers,
-                onClick = { onUserItemClick(user) },
+                onUserClick = { onUserItemClick(it) },
                 user = user,
                 index = connections.indexOf(user),
                 count = connections.count()
             )
+            Spacer(Modifier.height(6.dp))
         }
-    }
-}
-
-@Composable
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
-private fun UserItem(
-    selected: Boolean,
-    onClick: () -> Unit,
-    user: UserUi,
-    index: Int,
-    count: Int
-) {
-    val itemPadding = 6.dp
-
-    SegmentedListItem(
-        selected = selected,
-        onClick = onClick,
-        shapes = ListItemDefaults.segmentedShapes(
-            index = index,
-            count = count
-        ),
-        leadingContent = {
-            LoadProfilePicture(
-                url = user.profilePictureUrl
-            )
-        },
-        modifier = Modifier.padding(horizontal = itemPadding, vertical = itemPadding / 2)
-    ) {
-        Text(user.displayName)
     }
 }
 
@@ -225,14 +198,8 @@ private fun ShareScreenPreview() {
                     status = User.Status.Online
                 )
             }.toImmutableList(),
-            onUserItemClick = { }
+            onUserItemClick = { },
+            innerPadding = PaddingValues()
         )
     }
 }
-
-//        val intent = Intent(ACTION_START_MAIN_ACTIVITY)
-//
-//        intent.putExtra(
-//            SHARE_ACTIVITY_LAUNCH_MAIN_ACTIVITY_ACTION,
-//            if (selectedUsers.size > 1) ACTION_MAIN_ACTIVITY_CLEAR_OTHER_USER else selectedUsers.first().uid
-//        )
