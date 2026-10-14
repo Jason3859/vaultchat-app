@@ -9,13 +9,9 @@ import android.net.NetworkRequest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.RequiresPermission
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import dev.jason.app.compose.vaultchat.core.AppConstants
 import dev.jason.app.compose.vaultchat.core.AppConstants.ACTION
@@ -51,6 +47,7 @@ class MainActivity : ComponentActivity() {
     @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         inject<MessagingService>().value
 
         val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -71,20 +68,12 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             VaultChatTheme {
-                Scaffold { innerPadding ->
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
-                    ) {
-                        MainScreen(
-                            backStack = navViewModel.backStack,
-                            onBack = navViewModel::back,
-                            navigate = navViewModel::navigate,
-                            onBackToHome = navViewModel::backToHome
-                        )
-                    }
-                }
+                MainScreen(
+                    backStack = navViewModel.backStack,
+                    onBack = navViewModel::back,
+                    navigate = navViewModel::navigate,
+                    onBackToHome = navViewModel::backToHome
+                )
             }
         }
     }

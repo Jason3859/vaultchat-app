@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.user.UserUi
@@ -94,13 +95,12 @@ private val previewContent = @Composable {
     }
 }
 
-@Preview
-@Composable
-private fun HomeScreenLightModePreview() {
-    previewContent.invoke()
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+    device = "id:pixel_9_pro",
+    wallpaper = Wallpapers.GREEN_DOMINATED_EXAMPLE,
+    showSystemUi = true
+)
 @Composable
 private fun HomeScreenDarkModePreview() {
     previewContent.invoke()

@@ -12,8 +12,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +31,7 @@ import dev.jason.app.compose.vaultchat.core.AppConstants.EVENT_LAUNCH_FROM_AUTH_
 import dev.jason.app.compose.vaultchat.core.AppState
 import dev.jason.app.compose.vaultchat.core.model.device.Device
 import dev.jason.app.compose.vaultchat.core.model.user.User
+import dev.jason.app.compose.vaultchat.core.ui.LoadingIndicator
 import dev.jason.app.compose.vaultchat.core.ui.theme.VaultChatTheme
 import dev.jason.app.compose.vaultchat.feature.auth.ui.AuthScreen
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,7 +43,6 @@ class AuthActivity : ComponentActivity() {
 
     private val isLoading = MutableStateFlow(true)
 
-    @OptIn(ExperimentalMaterial3ExpressiveApi::class)
     @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,7 +97,7 @@ class AuthActivity : ComponentActivity() {
                     )
 
                     val currentDevice =
-                        Device.getCurrentDevice(this, "6aac1a03f9f6b1c1d9dcab7a", currentUser.uid)
+                        Device.getCurrentDevice(this@AuthActivity, "b0226284f8a37fc5", currentUser.uid)
 
                     AppState.apply {
                         updateCurrentUser(currentUser)

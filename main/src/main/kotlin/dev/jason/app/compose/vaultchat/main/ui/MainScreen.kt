@@ -1,10 +1,13 @@
 package dev.jason.app.compose.vaultchat.main.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
@@ -30,6 +33,7 @@ fun MainScreen(
             rememberViewModelStoreNavEntryDecorator()
         ),
         sceneStrategies = listOf(rememberListDetailSceneStrategy()),
+        modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainer),
         entryProvider = entryProvider {
             entry<Route.Home>(
                 metadata = ListDetailSceneStrategy.listPane()
