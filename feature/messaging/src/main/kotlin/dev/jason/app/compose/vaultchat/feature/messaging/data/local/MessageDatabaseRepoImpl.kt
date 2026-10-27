@@ -8,6 +8,7 @@ import androidx.paging.map
 import dev.jason.app.compose.vaultchat.core.AppEvent
 import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.model.message.Message
+import dev.jason.app.compose.vaultchat.core.model.message.MessageUi
 import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessageDatabaseRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +24,7 @@ class MessageDatabaseRepoImpl(private val dao: MessageDao) : MessageDatabaseRepo
         currentUserUid: String,
         otherUserUid: String,
         coroutineScope: CoroutineScope
-    ): Flow<PagingData<Message>> {
+    ): Flow<PagingData<MessageUi>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
@@ -35,7 +36,7 @@ class MessageDatabaseRepoImpl(private val dao: MessageDao) : MessageDatabaseRepo
             .cachedIn(coroutineScope)
             .map { pagingData ->
                 pagingData.map { entity ->
-                    entity.toMessage()
+                    entity.toUi()
                 }
             }
     }
@@ -59,8 +60,8 @@ class MessageDatabaseRepoImpl(private val dao: MessageDao) : MessageDatabaseRepo
         dao.deleteAllMessages()
     }
 
-    override suspend fun getAllMessages(): List<Message> {
-        return dao.getAllMessages().map(MessageEntity::toMessage)
+    override suspend fun getAllMessages(): List<MessageUi> {
+        return dao.getAllMessages().map(MessageEntity::toUi)
     }
 
     init {

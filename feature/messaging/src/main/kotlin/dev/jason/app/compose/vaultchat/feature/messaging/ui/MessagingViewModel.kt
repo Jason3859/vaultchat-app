@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import androidx.paging.map
 import dev.jason.app.compose.vaultchat.core.AppEvent
 import dev.jason.app.compose.vaultchat.core.AppEvents
 import dev.jason.app.compose.vaultchat.core.AppState
@@ -18,7 +17,6 @@ import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessageDatabaseR
 import dev.jason.app.compose.vaultchat.feature.messaging.domain.MessagingApiRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -83,9 +81,11 @@ class MessagingViewModel(
             _pendingMessages.add(messageUi)
 
             messagingApiService.sendMessage(message)
-                .onSuccess {
-                    _pendingMessages.remove(messageUi)
+                .onFailure {
+                    _failedMessages.add(messageUi)
                 }
+
+            _pendingMessages.remove(messageUi)
 
             if (!isOtherUserConnected) {
                 AppEvents.sendEvent(AppEvent.ReFetchConnections)
@@ -105,7 +105,6 @@ class MessagingViewModel(
                 otherUserUid = otherUser.uid,
                 coroutineScope = this
             )
-                .map { it.map(Message::toUi) }
                 .cachedIn(this)
                 .collect { data ->
                     _messages.value = data

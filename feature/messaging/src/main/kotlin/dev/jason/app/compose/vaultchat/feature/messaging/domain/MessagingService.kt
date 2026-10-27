@@ -15,11 +15,8 @@ class MessagingService(
 
     private suspend fun fetchAndAddMessagesToDatabase() {
 
-        val localMessages = databaseRepository.getAllMessages()
         val fetchedMessages = apiRepository.fetchMessages()
-        val newMessages = fetchedMessages.filter { it !in localMessages }
-
-        databaseRepository.addMessages(newMessages)
+        databaseRepository.addMessages(fetchedMessages)
     }
 
     init {

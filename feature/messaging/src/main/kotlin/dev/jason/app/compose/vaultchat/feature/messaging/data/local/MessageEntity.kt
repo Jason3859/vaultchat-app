@@ -3,7 +3,8 @@ package dev.jason.app.compose.vaultchat.feature.messaging.data.local
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import dev.jason.app.compose.vaultchat.core.model.message.Message
-import dev.jason.app.compose.vaultchat.core.model.user.User
+import dev.jason.app.compose.vaultchat.core.model.message.MessageUi
+import dev.jason.app.compose.vaultchat.core.model.message.asString
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -17,12 +18,11 @@ data class MessageEntity(
     val timestamp: Long
 )
 
-fun MessageEntity.toMessage() = Message(
-    id = id,
-    from = User.emptyUserWithUid(from),
-    to = User.emptyUserWithUid(to),
+fun MessageEntity.toUi() = MessageUi(
+    from = from,
+    to = to,
     text = text,
-    timestamp = timestamp.toLocalDateTime()
+    timestamp = timestamp.toLocalDateTime().asString()
 )
 
 fun Message.toEntity() = MessageEntity(

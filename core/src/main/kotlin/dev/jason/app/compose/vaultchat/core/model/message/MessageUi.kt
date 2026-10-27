@@ -18,6 +18,6 @@ fun Message.toUi() = MessageUi(
     timestamp = timestamp.asString()
 )
 
-private fun LocalDateTime.asString() = "${dayOfMonth}/${month.value}/${year % 100} ${hour}:${
+fun LocalDateTime.asString() = "${dayOfMonth}/${month.value}/${year % 100} ${hour}:${
     if (minute >= 10) minute else minute.toString().padStart(2, '0')
 }"
