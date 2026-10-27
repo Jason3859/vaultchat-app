@@ -77,8 +77,7 @@ class MainApplication : Application() {
         override fun onActivityDestroyed(activity: Activity) {}
         override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
-
-        override fun onActivityPaused(activity: Activity) = AppState.updateOtherUser(null)
+        override fun onActivityPaused(activity: Activity) {}
 
         override fun onActivityStarted(activity: Activity) {
             if (activityCount == 0) {
